@@ -20,15 +20,35 @@
             android:padding="8dp"
             android:src="@mipmap/ic_logo" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="BING+ 🍿🎞📽🎬"
-            android:textSize="20sp"
-            android:layout_marginLeft="10dp"
-            android:textStyle="bold"
-            android:textColor="@color/white"
-            android:layout_gravity="center_vertical"/>
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="match_parent"
+           android:orientation="vertical"
+           android:layout_weight="1"
+           android:gravity="center_vertical">
+
+           <TextView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="BINGE+ 🍿🎞📽🎬"
+               android:textSize="20sp"
+               android:layout_marginLeft="10dp"
+               android:textStyle="bold"
+               android:textColor="@color/white"
+               android:layout_gravity="center_vertical"/>
+
+       </LinearLayout>
+
+        <ImageView
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="10dp"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:src="@drawable/ic_baseline_more_vert_24"/>
 
 
     </LinearLayout>

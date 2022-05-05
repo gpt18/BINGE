@@ -4,7 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DatabaseReference;
@@ -15,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     adapter adapter;
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
+    ImageView more;
 
     //offline data storage
     static {
@@ -25,6 +32,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        more = findViewById(R.id.more);
+
+        more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Developer")
+                        .setMessage("BINGE+ App is Created by G. Prajapati.")
+                        .setPositiveButton("Thanks", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(MainActivity.this, "Your Welcome", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .show();
+            }
+        });
 
         recyclerView = findViewById(R.id.recyclerView);
 

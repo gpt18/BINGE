@@ -13,8 +13,11 @@ import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences sp = getSharedPreferences("credentials", MODE_PRIVATE);
         String spText = sp.getString("username", "");
         String username = "👤 "+spText;
-        tvUsername.setText(username);
+
 
         imgLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +65,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), add.class);
                 startActivity(intent);
+            }
+        });
+
+        tvUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getMovieCount(username);
             }
         });
 
@@ -84,6 +94,27 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new adapter(options, getApplicationContext());
         recyclerView.setAdapter(adapter);
+
+        getMovieCount(username);
+
+    }
+
+    private void getMovieCount(String username) {
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int childCount = (int) dataSnapshot.getChildrenCount();
+                String subTitle = username+" | "+"Total Movies: "+ childCount;
+                tvUsername.setText(subTitle);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
     }
 
     @Override

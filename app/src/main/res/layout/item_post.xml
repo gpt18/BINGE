@@ -27,14 +27,6 @@
                 android:background="@color/card_bg_dark"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:paddingTop="8dp"
-                    android:paddingLeft="8dp"
-                    android:text="BINGE+ :"
-                    android:textColor="@color/white" />
-
 
                 <TextView
                     android:id="@+id/tvAdmin"
@@ -60,7 +52,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <!--                <ImageView-->
@@ -86,7 +78,7 @@
                     android:layout_height="1dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:background="@color/teal_700" />
+                    android:background="@color/black" />
 
                 <TextView
                     android:id="@+id/tvMessage"
@@ -104,7 +96,7 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:padding="8dp"
-                    android:text="Title of the Movies  will  came hereTitle of the Movies  will  came hereTitle of the Movies  will  came here Title of the Movies  will  came here"
+                    android:text="Open Link"
                     android:textColor="@android:color/holo_blue_bright" />
 
 
@@ -127,13 +119,27 @@
 <!--                    android:focusable="true"-->
 <!--                    android:foreground="?attr/selectableItemBackground" />-->
 
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:padding="5dp"
+                    android:src="@mipmap/ic_logo_round"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="BINGE+"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/white" />
+
                 <TextView
                     android:id="@+id/tvDate"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical|end"
-                    android:padding="8dp"
+                    android:paddingBottom="8dp"
+                    android:paddingRight="8dp"
                     android:text="May 1, 2022 9:15 PM"
                     android:textColor="@color/teal_200" />
             </LinearLayout>

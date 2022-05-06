@@ -102,6 +102,15 @@
                     android:text="Title of the Movies  will  came hereTitle of the Movies  will  came hereTitle of the Movies  will  came here Title of the Movies  will  came here"
                     android:textColor="@android:color/holo_blue_bright" />
 
+                <TextView
+                    android:id="@+id/buttonText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:paddingLeft="8dp"
+                    android:text="TextView"
+                    android:textColor="@color/teal_200" />
+
 
             </LinearLayout>
 

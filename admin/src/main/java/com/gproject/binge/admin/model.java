@@ -1,7 +1,7 @@
 package com.gproject.binge.admin;
 
 public class model {
-    String admin, img, link, message, name, official, date;
+    String admin, img, link, message, name, official, date, button;
 
     public model() {
     }
@@ -14,6 +14,18 @@ public class model {
         this.name = name;
         this.official = official;
         this.date = date;
+    }
+
+    public model(String button) {
+        this.button = button;
+    }
+
+    public String getButton() {
+        return button;
+    }
+
+    public void setButton(String button) {
+        this.button = button;
     }
 
     public String getDate() {

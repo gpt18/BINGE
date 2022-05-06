@@ -33,7 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="BING+ Admin 🍿🎞📽🎬"
+                android:text="BINGE+ Admin 🍿📽🎬"
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="10dp"
-                android:text="username"
+                android:text="Loading..."
                 android:textColor="@color/white" />
 
         </LinearLayout>

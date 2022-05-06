@@ -43,7 +43,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         holder.tvMovieName.setText(model.getName());
         holder.tvMessage.setText(model.getMessage());
         holder.tvDate.setText(model.getDate());
-        holder.tvLink.setText(model.getLink());
+        holder.tvLink.setText(model.getButton());
 
         holder.tvLink.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +66,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             public boolean onLongClick(View v) {
                 myClip[0] = ClipData.newPlainText("text", model.getLink());
                 clipboard.setPrimaryClip(myClip[0]);
-                Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Link Copied", Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

@@ -1,5 +1,7 @@
 package com.gproject.plus.binge;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,11 +12,16 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
     ImageView more;
+    TextView tvUsername;
+
 
     //offline data storage
     static {
@@ -34,6 +43,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         more = findViewById(R.id.more);
+        tvUsername = findViewById(R.id.tvUsername);
+
+        tvUsername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getMovieCount();
+            }
+        });
+
 
         more.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,6 +88,27 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new adapter(options, getApplicationContext());
         recyclerView.setAdapter(adapter);
+
+        getMovieCount();
+
+    }
+
+    private void getMovieCount() {
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int childCount = (int) dataSnapshot.getChildrenCount();
+                String subTitle =  "Total Movies: "+ childCount;
+                tvUsername.setText(subTitle);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
     }
 
     @Override

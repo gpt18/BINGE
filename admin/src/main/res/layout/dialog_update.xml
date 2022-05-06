@@ -13,8 +13,8 @@
         android:background="@color/cardview_dark_background">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:padding="8dp"
             android:src="@mipmap/ic_logo1" />
 
@@ -28,11 +28,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="BINGE+ 🍿🎞📽🎬"
+                android:text="Update Post Details"
                 android:textSize="20sp"
                 android:layout_marginLeft="10dp"
                 android:textStyle="bold"
                 android:textColor="@color/white"
+                android:layout_gravity="center_vertical"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="BINGE+"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/teal_200"
                 android:layout_gravity="center_vertical"/>
 
         </LinearLayout>
@@ -104,6 +111,22 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/itMovieLink"
                     android:hint="Movie Link"
+                    android:textColor="@color/white" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:textColorHint="@color/teal_200"
+                app:boxBackgroundColor="@color/card_bg_dark">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/itButton"
+                    android:hint="Button Text"
                     android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>

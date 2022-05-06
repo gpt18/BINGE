@@ -61,6 +61,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         holder.tvMessage.setText(model.getMessage());
         holder.tvDate.setText(model.getDate());
         holder.tvLink.setText(model.getLink());
+        holder.buttonText.setText(model.getButton());
 
         holder.imgEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +77,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                 TextInputEditText itMovieName = myView.findViewById(R.id.itMovieName);
                 TextInputEditText itMessage = myView.findViewById(R.id.itMessage);
                 TextInputEditText itMovieLink = myView.findViewById(R.id.itMovieLink);
+                TextInputEditText itButton = myView.findViewById(R.id.itButton);
                 Button submit = myView.findViewById(R.id.addSubmit);
                 Button delete = myView.findViewById(R.id.delete);
                 ImageView more = myView.findViewById(R.id.more);
@@ -83,6 +85,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                 itMovieName.setText(model.getName());
                 itMessage.setText(model.getMessage());
                 itMovieLink.setText(model.getLink());
+                itButton.setText(model.getButton());
 
                 dialogPlus.show();
 
@@ -93,6 +96,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                         map.put("name",itMovieName.getText().toString());
                         map.put("message",itMessage.getText().toString());
                         map.put("link",itMovieLink.getText().toString());
+                        map.put("button", itButton.getText().toString());
 
                         String timeStamp = new SimpleDateFormat("dd MMM, yyyy | HH:mm a", Locale.getDefault()).format(new Date());
                         map.put("date", timeStamp);
@@ -230,7 +234,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
 
     public class myViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvAdmin,tvMovieName, tvMessage, tvDate, tvLink;
+        TextView tvAdmin,tvMovieName, tvMessage, tvDate, tvLink, buttonText;
         ImageView imgEditBtn, imgShareBtn;
 
         public myViewHolder(@NonNull View itemView) {
@@ -243,6 +247,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             tvDate = itemView.findViewById(R.id.tvDate);
             imgShareBtn = itemView.findViewById(R.id.imgShareBtn);
             tvLink = itemView.findViewById(R.id.tvLink);
+            buttonText = itemView.findViewById(R.id.buttonText);
         }
     }
 }

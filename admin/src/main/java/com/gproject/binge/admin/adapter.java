@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -63,13 +64,20 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         holder.tvLink.setText(model.getLink());
         holder.buttonText.setText(model.getButton());
 
+        if (model.getImg()==null){
+            holder.imgMovie.setImageResource(R.mipmap.ic_logo1);
+
+        }else {
+            Glide.with(holder.imgMovie.getContext()).load(model.getImg()).into(holder.imgMovie);
+        }
+
         holder.imgEditBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 final DialogPlus dialogPlus = DialogPlus.newDialog(holder.tvMovieName.getContext())
                         .setContentHolder(new ViewHolder(R.layout.dialog_update))
-                        .setExpanded(true,1100)
+                        .setExpanded(true,1350)
                         .create();
 
                 View myView = dialogPlus.getHolderView();
@@ -78,6 +86,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                 TextInputEditText itMessage = myView.findViewById(R.id.itMessage);
                 TextInputEditText itMovieLink = myView.findViewById(R.id.itMovieLink);
                 TextInputEditText itButton = myView.findViewById(R.id.itButton);
+                TextInputEditText itImg = myView.findViewById(R.id.itImg);
                 Button submit = myView.findViewById(R.id.addSubmit);
                 Button delete = myView.findViewById(R.id.delete);
                 ImageView more = myView.findViewById(R.id.more);
@@ -85,6 +94,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                 itMovieName.setText(model.getName());
                 itMessage.setText(model.getMessage());
                 itMovieLink.setText(model.getLink());
+                itImg.setText(model.getImg());
                 itButton.setText(model.getButton());
 
                 dialogPlus.show();
@@ -97,8 +107,9 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                         map.put("message",itMessage.getText().toString());
                         map.put("link",itMovieLink.getText().toString());
                         map.put("button", itButton.getText().toString());
+                        map.put("img", itImg.getText().toString());
 
-                        String timeStamp = new SimpleDateFormat("dd MMM, yyyy | HH:mm a", Locale.getDefault()).format(new Date());
+                        String timeStamp = new SimpleDateFormat("dd MMM, yyyy | hh:mm a", Locale.getDefault()).format(new Date());
                         map.put("date", timeStamp);
 
                         SharedPreferences sp = context.getSharedPreferences("credentials", Context.MODE_PRIVATE);
@@ -235,11 +246,12 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
     public class myViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvAdmin,tvMovieName, tvMessage, tvDate, tvLink, buttonText;
-        ImageView imgEditBtn, imgShareBtn;
+        ImageView imgMovie, imgShareBtn, imgEditBtn;
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            imgMovie = itemView.findViewById(R.id.imgMovie);
             imgEditBtn = itemView.findViewById(R.id.imgEditBtn);
             tvAdmin = itemView.findViewById(R.id.tvAdmin);
             tvMovieName = itemView.findViewById(R.id.tvMovieName);

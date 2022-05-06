@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imgLogout;
     TextView tvUsername;
     FloatingActionButton fbAdd;
+    SearchView searchView;
 
     adapter adapter;
     DatabaseReference databaseReference;
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         imgLogout = findViewById(R.id.imgLogout);
         tvUsername = findViewById(R.id.tvUsername);
         fbAdd = findViewById(R.id.fbAdd);
+        searchView = (SearchView) findViewById(R.id.searchView);
+
 
         SharedPreferences sp = getSharedPreferences("credentials", MODE_PRIVATE);
         String spText = sp.getString("username", "");
@@ -72,6 +76,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getMovieCount(username);
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                processSearch(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                processSearch(query);
+                return false;
             }
         });
 
@@ -127,5 +145,16 @@ public class MainActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         adapter.stopListening();
+    }
+
+    private void processSearch(String query) {
+        FirebaseRecyclerOptions<model> options
+                = new FirebaseRecyclerOptions.Builder<model>()
+                .setQuery(databaseReference.orderByChild("name").startAt(query).endAt(query+"\uf8ff"), model.class)
+                .build();
+
+        adapter = new adapter(options);
+        adapter.startListening();
+        recyclerView.setAdapter(adapter);
     }
 }

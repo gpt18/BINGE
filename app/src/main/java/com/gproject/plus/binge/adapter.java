@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,7 +38,7 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder> {
 
     Context context;
-    private static final String AD_UNIT_ID = "ca-app-pub-8445679544199474/6562295887";
+    private static final String AD_UNIT_ID = "ca-app-pub-8445679544199474/4683072154";
     private static final String TAG = "MyActivity";
     private InterstitialAd mInterstitialAd;
 
@@ -53,13 +54,19 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
     @Override
     protected void onBindViewHolder(@NonNull myViewHolder holder, int position, @NonNull model model) {
 
-//        Glide.with(holder.imageView.getContext()).load(model.getImg()).into(holder.imageView);
+
         holder.tvAdmin.setText(model.getAdmin());
         holder.tvMovieName.setText(model.getName());
         holder.tvMessage.setText(model.getMessage());
         holder.tvDate.setText(model.getDate());
         holder.tvLink.setText(model.getButton());
 
+        if (model.getImg()==null){
+            holder.imgMovie.setImageResource(R.mipmap.ic_logo_round);
+
+        }else {
+            Glide.with(holder.imgMovie.getContext()).load(model.getImg()).into(holder.imgMovie);
+        }
 
 
         holder.tvLink.setOnClickListener(new View.OnClickListener() {
@@ -132,12 +139,12 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
     public class myViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvAdmin,tvMovieName, tvMessage, tvDate, tvLink;
-        ImageView  imgCopyBtn, imgShareBtn;
+        ImageView  imgMovie, imgShareBtn;
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
 
-//            imgCopyBtn = itemView.findViewById(R.id.imgCopyBtn);
+            imgMovie = itemView.findViewById(R.id.imgMovie);
             tvAdmin = itemView.findViewById(R.id.tvAdmin);
             tvMovieName = itemView.findViewById(R.id.tvMovieName);
             tvMessage = itemView.findViewById(R.id.tvMessage);
@@ -151,7 +158,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         AdRequest adRequest = new AdRequest.Builder().build();
 
         InterstitialAd.load(context,
-                "ca-app-pub-3940256099942544/1033173712",
+                "ca-app-pub-8445679544199474/4683072154",
                 adRequest,
                 new InterstitialAdLoadCallback() {
                     @Override

@@ -49,6 +49,15 @@
 
         </LinearLayout>
 
+        <SearchView
+            android:id="@+id/searchView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:closeIcon="@drawable/ic_outline_cancel_24"
+            android:queryHint="Search in CAPS Letter..."
+            android:searchIcon="@drawable/ic_baseline_search_24" />
+
         <ImageView
             android:id="@+id/imgLogout"
             android:layout_width="wrap_content"

@@ -10,6 +10,7 @@
     tools:context=".MainActivity">
 
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,13 +50,16 @@
 
         </LinearLayout>
 
+
         <SearchView
-            android:id="@+id/action_search"
+            android:id="@+id/searchView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/card_bg_dark"
-            android:foregroundTint="#ECE2E2"
-            android:queryHint="Search Here....." />
+            android:layout_alignParentTop="true"
+            android:closeIcon="@drawable/admob_close_button_white_circle_black_cross"
+            android:queryHint="Search in CAPS Letter..."
+            android:searchIcon="@drawable/ic_baseline_search_24" />
+
 
         <ImageView
             android:id="@+id/more"
@@ -69,8 +73,17 @@
             android:src="@drawable/ic_baseline_more_vert_24" />
 
 
-    </LinearLayout>
 
+
+    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/card_bg_dark">
+
+
+
+</LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -86,6 +99,6 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+        ads:adUnitId="ca-app-pub-8445679544199474/9375327336">
     </com.google.android.gms.ads.AdView>
 </LinearLayout>

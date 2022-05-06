@@ -3,6 +3,7 @@ package com.gproject.plus.binge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import android.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,10 +18,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.ads.AdError;
@@ -62,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
     ImageView more;
+    SearchView searchView;
     TextView tvUsername;
 
     private static final String AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";
@@ -84,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
         more = findViewById(R.id.more);
         tvUsername = findViewById(R.id.tvUsername);
+        searchView = (SearchView) findViewById(R.id.searchView);
 
         //-------------------admob initialization----------------------
         // Initialize the Mobile Ads SDK.
@@ -122,6 +128,20 @@ public class MainActivity extends AppCompatActivity {
                             }
                         })
                         .show();
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                processSearch(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                processSearch(query);
+                return false;
             }
         });
 
@@ -257,5 +277,17 @@ public class MainActivity extends AppCompatActivity {
 
     //****************************Checking In-AppUpdate using Firebase************************//
 
+
+
+    private void processSearch(String query) {
+        FirebaseRecyclerOptions<model> options
+                = new FirebaseRecyclerOptions.Builder<model>()
+                .setQuery(databaseReference.orderByChild("name").startAt(query).endAt(query+"\uf8ff"), model.class)
+                .build();
+
+        adapter = new adapter(options);
+        adapter.startListening();
+        recyclerView.setAdapter(adapter);
+    }
 
 }

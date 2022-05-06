@@ -25,7 +25,7 @@ import java.util.Map;
 public class add extends AppCompatActivity {
 
     ImageView imgBack;
-    TextInputEditText itMovieName, itMessage, itMovieLink, itButton;
+    TextInputEditText itMovieName, itMessage, itMovieLink, itButton, itImg;
     Button btnPublish;
 
     @Override
@@ -39,6 +39,7 @@ public class add extends AppCompatActivity {
         itMovieLink = findViewById(R.id.itMovieLink);
         btnPublish = findViewById(R.id.btnPublish);
         itButton = findViewById(R.id.itButton);
+        itImg = findViewById(R.id.itImg);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,8 +63,9 @@ public class add extends AppCompatActivity {
         map.put("message",itMessage.getText().toString());
         map.put("link",itMovieLink.getText().toString());
         map.put("button", itButton.getText().toString());
+        map.put("img", itImg.getText().toString());
 
-        String timeStamp = new SimpleDateFormat("dd MMM, yyyy | HH:mm a", Locale.getDefault()).format(new Date());
+        String timeStamp = new SimpleDateFormat("dd MMM, yyyy | hh:mm a", Locale.getDefault()).format(new Date());
         map.put("date", timeStamp);
 
         SharedPreferences sp = getSharedPreferences("credentials", Context.MODE_PRIVATE);

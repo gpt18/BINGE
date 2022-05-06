@@ -1,11 +1,13 @@
 package com.gproject.plus.binge;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +18,28 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.OnPaidEventListener;
+import com.google.android.gms.ads.ResponseInfo;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder> {
 
     Context context;
+    private static final String AD_UNIT_ID = "ca-app-pub-8445679544199474/6562295887";
+    private static final String TAG = "MyActivity";
+    private InterstitialAd mInterstitialAd;
 
     public adapter(@NonNull FirebaseRecyclerOptions<model> options, Context context) {
         super(options);
@@ -45,13 +60,25 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         holder.tvDate.setText(model.getDate());
         holder.tvLink.setText(model.getButton());
 
+
+
         holder.tvLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String download_link  = model.getLink();
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse(download_link));
-                v.getContext().startActivity(intent);
+                loadAd();
+                showInterstitial();
+                try {
+
+                    String download_link  = model.getLink();
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(download_link));
+                    v.getContext().startActivity(intent);
+                }
+                catch (Exception e) {
+                    Toast.makeText(context.getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         });
 
@@ -72,6 +99,8 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         });
 
         holder.imgShareBtn.setOnClickListener(v -> {
+            loadAd();
+            showInterstitial();
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             String body = "Watch Latest Movies and WebSeries on BINGE+ App for Free. Download Now! "
@@ -85,6 +114,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             intent.putExtra(Intent.EXTRA_SUBJECT,sub);
             intent.putExtra(Intent.EXTRA_TEXT,body);
             v.getContext().startActivity(Intent.createChooser(intent, "Share Using"));
+
         });
 
     }
@@ -92,6 +122,9 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
     @NonNull
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+        context = parent.getContext();
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post,parent, false);
         return new myViewHolder(view);
     }
@@ -113,4 +146,38 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             tvLink = itemView.findViewById(R.id.tvLink);
         }
     }
+
+    public void loadAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(context,
+                "ca-app-pub-3940256099942544/1033173712",
+                adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i(TAG, "onAdLoaded");
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.i(TAG, loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+    }
+
+    private void showInterstitial() {
+        // Show the ad if it's ready. Otherwise toast and restart the game.
+        if (mInterstitialAd != null) {
+            mInterstitialAd.show((Activity) context);
+        } else {
+            Log.i(TAG, "Ad did not load");
+        }
+    }
+
 }

@@ -137,7 +137,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:gravity="center_vertical|end"
+                    android:gravity="center_vertical|end|bottom"
                     android:paddingBottom="8dp"
                     android:paddingRight="8dp"
                     android:text="May 1, 2022 9:15 PM"

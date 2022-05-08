@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,6 +65,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         holder.tvLink.setText(model.getLink());
         holder.buttonText.setText(model.getButton());
 
+
         if (model.getImg()==null){
             holder.imgMovie.setImageResource(R.mipmap.ic_logo1);
 
@@ -82,6 +84,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
 
                 View myView = dialogPlus.getHolderView();
 
+                TextView itemId = myView.findViewById(R.id.itemId);
                 TextInputEditText itMovieName = myView.findViewById(R.id.itMovieName);
                 TextInputEditText itMessage = myView.findViewById(R.id.itMessage);
                 TextInputEditText itMovieLink = myView.findViewById(R.id.itMovieLink);
@@ -96,6 +99,21 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                 itMovieLink.setText(model.getLink());
                 itImg.setText(model.getImg());
                 itButton.setText(model.getButton());
+
+                FirebaseDatabase.getInstance().getReference("movies")
+                        .child(getRef(holder.getLayoutPosition()).getKey())
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String id = "Item Id: "+snapshot.getKey();
+                        itemId.setText(id);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
                 dialogPlus.show();
 

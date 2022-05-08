@@ -65,6 +65,15 @@
 
     </LinearLayout>
 
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        ads:adSize="BANNER"
+        ads:adUnitId="ca-app-pub-8445679544199474/9375327336">
+    </com.google.android.gms.ads.AdView>
+
 
 
     <ScrollView
@@ -134,9 +143,8 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/itButton"
-                    android:hint="Button Text"
-                    android:text="Open Link"
+                    android:id="@+id/itImg"
+                    android:hint="Movie Image Link"
                     android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -151,8 +159,9 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/itImg"
-                    android:hint="Movie Image Link"
+                    android:id="@+id/itButton"
+                    android:hint="Button Text"
+                    android:text="Download Here"
                     android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -168,5 +177,7 @@
         </LinearLayout>
 
     </ScrollView>
+
+
 
 </LinearLayout>

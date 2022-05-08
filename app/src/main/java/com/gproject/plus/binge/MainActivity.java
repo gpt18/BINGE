@@ -3,6 +3,8 @@ package com.gproject.plus.binge;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
@@ -55,6 +58,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.ViewHolder;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -68,10 +73,6 @@ public class MainActivity extends AppCompatActivity {
     ImageView more;
     SearchView searchView;
     TextView tvUsername;
-
-    private static final String AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";
-    private static final String TAG = "MyActivity";
-    private InterstitialAd interstitialAd;
 
     FirebaseRemoteConfig remoteConfig;
 
@@ -115,19 +116,45 @@ public class MainActivity extends AppCompatActivity {
                 getMovieCount();
             }
         });
+
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this)
-                        .setTitle("Developer")
-                        .setMessage("BINGE+ App is Created by G. Prajapati.")
-                        .setPositiveButton("Thanks", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MainActivity.this, "Your Welcome", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .show();
+                final DialogPlus dialogPlus = DialogPlus.newDialog(MainActivity.this)
+                        .setContentHolder(new ViewHolder(R.layout.dialog_more))
+                        .setExpanded(true,750)
+                        .create();
+
+                View myView = dialogPlus.getHolderView();
+
+                ImageView imgTelegram = myView.findViewById(R.id.imgTelegram);
+                ImageView imgRequest = myView.findViewById(R.id.imgRequest);
+                TextView version = myView.findViewById(R.id.version);
+
+                Glide.with(MainActivity.this).load("https://i.ibb.co/YPK0gHb/bing-admin.jpg").into(imgRequest);
+                Glide.with(MainActivity.this)
+                        .load("https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/182px-Telegram_2019_Logo.svg.png")
+                        .into(imgTelegram);
+
+                version.setText("Version: "+getCurrentVersionName());
+
+                dialogPlus.show();
+
+                imgTelegram.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://t.me/+B8DH6ow_6OE4NWNl")));
+                    }
+                });
+
+                imgRequest.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://t.me/bingerequest")));
+                    }
+                });
+
             }
         });
 
@@ -171,11 +198,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMovieCount() {
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int childCount = (int) dataSnapshot.getChildrenCount();
-                String subTitle =  "Total Movies: "+ childCount;
+                String subTitle =  "Total Items: "+ childCount;
                 tvUsername.setText(subTitle);
             }
 
@@ -183,8 +210,9 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-
         });
+
+
     }
 
     @Override
@@ -248,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse(download_link));
                             startActivity(intent);
+                            finish();
 
                         }
                         catch (Exception e) {

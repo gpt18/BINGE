@@ -119,11 +119,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMovieCount(String username) {
 
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int childCount = (int) dataSnapshot.getChildrenCount();
-                String subTitle = username+" | "+"Total Movies: "+ childCount;
+                String subTitle = username+" | "+"Total Items: "+ childCount;
                 tvUsername.setText(subTitle);
             }
 
@@ -134,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+
+
 
     @Override
     public void onStart() {

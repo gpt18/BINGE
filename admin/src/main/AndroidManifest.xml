@@ -15,6 +15,12 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8445679544199474~3706399380" />
+
         <activity
             android:name=".login"
             android:exported="true">

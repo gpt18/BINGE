@@ -35,11 +35,13 @@
                 android:textColor="@color/white"
                 android:layout_gravity="center_vertical"/>
             <TextView
+                android:id="@+id/itemId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="BINGE+"
                 android:layout_marginLeft="10dp"
                 android:textColor="@color/teal_200"
+                android:textIsSelectable="true"
                 android:layout_gravity="center_vertical"/>
 
         </LinearLayout>

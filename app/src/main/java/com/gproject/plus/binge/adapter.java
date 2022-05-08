@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.net.Uri;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,7 +60,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         holder.tvMovieName.setText(model.getName());
         holder.tvMessage.setText(model.getMessage());
         holder.tvDate.setText(model.getDate());
-        holder.tvLink.setText(model.getButton());
+        holder.tvLink.setText(Html.fromHtml("<u>"+model.getButton()+"</u>"));
 
         if (model.getImg()==null){
             holder.imgMovie.setImageResource(R.mipmap.ic_logo_round);

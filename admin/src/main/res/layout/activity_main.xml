@@ -19,7 +19,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="75dp"
             android:layout_height="75dp"
-            android:padding="8dp"
+            android:padding="12dp"
             android:src="@mipmap/ic_logo1" />
 
         <LinearLayout

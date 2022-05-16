@@ -32,7 +32,7 @@ import java.util.Map;
 public class add extends AppCompatActivity {
 
     ImageView imgBack;
-    TextInputEditText itMovieName, itMessage, itMovieLink, itButton, itImg;
+    TextInputEditText itMovieName, itMessage, itMovieLink, itImg, itVid;
     Button btnPublish;
 
     @Override
@@ -61,8 +61,8 @@ public class add extends AppCompatActivity {
         itMessage = findViewById(R.id.itMessage);
         itMovieLink = findViewById(R.id.itMovieLink);
         btnPublish = findViewById(R.id.btnPublish);
-        itButton = findViewById(R.id.itButton);
         itImg = findViewById(R.id.itImg);
+        itVid = findViewById(R.id.itVid);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,10 +85,10 @@ public class add extends AppCompatActivity {
         map.put("name",itMovieName.getText().toString());
         map.put("message",itMessage.getText().toString());
         map.put("link",itMovieLink.getText().toString());
-        map.put("button", itButton.getText().toString());
         map.put("img", itImg.getText().toString());
+        map.put("vid", itVid.getText().toString());
 
-        String timeStamp = new SimpleDateFormat("dd MMM, yyyy | hh:mm a", Locale.getDefault()).format(new Date());
+        String timeStamp = new SimpleDateFormat("dd MMM, yyyy • hh:mm a", Locale.getDefault()).format(new Date());
         map.put("date", timeStamp);
 
         SharedPreferences sp = getSharedPreferences("credentials", Context.MODE_PRIVATE);

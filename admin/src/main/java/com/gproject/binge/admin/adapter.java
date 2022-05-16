@@ -63,7 +63,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         holder.tvMessage.setText(model.getMessage());
         holder.tvDate.setText(model.getDate());
         holder.tvLink.setText(model.getLink());
-        holder.buttonText.setText(model.getButton());
+        holder.tvVid.setText(model.getVid());
 
 
         if (model.getImg()==null){
@@ -88,8 +88,8 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                 TextInputEditText itMovieName = myView.findViewById(R.id.itMovieName);
                 TextInputEditText itMessage = myView.findViewById(R.id.itMessage);
                 TextInputEditText itMovieLink = myView.findViewById(R.id.itMovieLink);
-                TextInputEditText itButton = myView.findViewById(R.id.itButton);
                 TextInputEditText itImg = myView.findViewById(R.id.itImg);
+                TextInputEditText itVid = myView.findViewById(R.id.itVid);
                 Button submit = myView.findViewById(R.id.addSubmit);
                 Button delete = myView.findViewById(R.id.delete);
                 ImageView more = myView.findViewById(R.id.more);
@@ -98,7 +98,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                 itMessage.setText(model.getMessage());
                 itMovieLink.setText(model.getLink());
                 itImg.setText(model.getImg());
-                itButton.setText(model.getButton());
+                itVid.setText(model.getVid());
 
                 FirebaseDatabase.getInstance().getReference("movies")
                         .child(getRef(holder.getLayoutPosition()).getKey())
@@ -124,15 +124,11 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                         map.put("name",itMovieName.getText().toString());
                         map.put("message",itMessage.getText().toString());
                         map.put("link",itMovieLink.getText().toString());
-                        map.put("button", itButton.getText().toString());
                         map.put("img", itImg.getText().toString());
+                        map.put("vid", itVid.getText().toString());
 
-                        String timeStamp = new SimpleDateFormat("dd MMM, yyyy | hh:mm a", Locale.getDefault()).format(new Date());
+                        String timeStamp = new SimpleDateFormat("dd MMM, yyyy • hh:mm a", Locale.getDefault()).format(new Date());
                         map.put("date", timeStamp);
-
-                        SharedPreferences sp = context.getSharedPreferences("credentials", Context.MODE_PRIVATE);
-                        String username = sp.getString("username", "");
-                        map.put("admin",username);
 
                         FirebaseDatabase.getInstance().getReference().child("movies")
                                 .child(getRef(holder.getLayoutPosition()).getKey()).updateChildren(map)
@@ -263,7 +259,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
 
     public class myViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvAdmin,tvMovieName, tvMessage, tvDate, tvLink, buttonText;
+        TextView tvAdmin,tvMovieName, tvMessage, tvDate, tvLink, tvVid;
         ImageView imgMovie, imgShareBtn, imgEditBtn;
 
         public myViewHolder(@NonNull View itemView) {
@@ -277,7 +273,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             tvDate = itemView.findViewById(R.id.tvDate);
             imgShareBtn = itemView.findViewById(R.id.imgShareBtn);
             tvLink = itemView.findViewById(R.id.tvLink);
-            buttonText = itemView.findViewById(R.id.buttonText);
+            tvVid = itemView.findViewById(R.id.tvVid);
         }
     }
 }

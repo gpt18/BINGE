@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gproject.plus.binge">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <queries>
+        <intent>
+            <action android:name="com.google.android.youtube.api.service.START" />
+        </intent>
+    </queries>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo"
@@ -10,9 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Binge">
         <activity
-            android:name=".MainActivity"
+            android:name=".download"
             android:exported="false" />
-        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" /> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8445679544199474~3706399380" />

@@ -4,10 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -50,6 +57,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -67,12 +75,13 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
-    adapter adapter;
+    adapter adapter, adapter1;
     DatabaseReference databaseReference;
-    RecyclerView recyclerView;
+    RecyclerView recyclerView, recyclerView1;
     ImageView more;
     SearchView searchView;
     TextView tvUsername;
+    MaterialToolbar toolbar;
 
     FirebaseRemoteConfig remoteConfig;
 
@@ -88,9 +97,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         checkForUpdate();
 
-        more = findViewById(R.id.more);
+
         tvUsername = findViewById(R.id.tvUsername);
-        searchView = (SearchView) findViewById(R.id.searchView);
+        toolbar = findViewById(R.id.topAppBar);
 
         //-------------------admob initialization----------------------
         // Initialize the Mobile Ads SDK.
@@ -106,93 +115,134 @@ public class MainActivity extends AppCompatActivity {
         AdView adView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
-        //--------------------------------------------
 
+        //=-------------------
 
+      toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
+          @Override
+          public boolean onMenuItemClick(MenuItem item) {
+              switch (item.getItemId()) {
 
-        tvUsername.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getMovieCount();
-            }
-        });
+                  case R.id.searchView:
 
-        more.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                      androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) item.getActionView();
+                      searchView.setQueryHint("Type here in CAPS to Search...");
+                      searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+                          @Override
+                          public boolean onQueryTextSubmit(String query) {
+                              processSearch(query);
+                              return false;
+                          }
 
-                final DialogPlus dialogPlus = DialogPlus.newDialog(MainActivity.this)
-                        .setContentHolder(new ViewHolder(R.layout.dialog_more))
-                        .setExpanded(true,750)
-                        .create();
+                          @Override
+                          public boolean onQueryTextChange(String query) {
+                              processSearch(query);
+                              return false;
+                          }
+                      });
 
-                View myView = dialogPlus.getHolderView();
+                      break;
 
-                ImageView imgTelegram = myView.findViewById(R.id.imgTelegram);
-                ImageView imgRequest = myView.findViewById(R.id.imgRequest);
-                TextView version = myView.findViewById(R.id.version);
+                  case R.id.more:
 
-                Glide.with(MainActivity.this).load("https://i.ibb.co/YPK0gHb/bing-admin.jpg").into(imgRequest);
-                Glide.with(MainActivity.this)
-                        .load("https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/182px-Telegram_2019_Logo.svg.png")
-                        .into(imgTelegram);
+                      moreDialog();
 
-                version.setText("Version: "+getCurrentVersionName());
+                      break;
 
-                dialogPlus.show();
+              }
 
-                imgTelegram.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://t.me/+B8DH6ow_6OE4NWNl")));
-                    }
-                });
+              return true;
+          }
 
-                imgRequest.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://t.me/bingerequest")));
-                    }
-                });
+      });
 
-            }
-        });
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                processSearch(query);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String query) {
-                processSearch(query);
-                return false;
-            }
-        });
-
-        recyclerView = findViewById(R.id.recyclerView);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("movies");
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-        mLayoutManager.setReverseLayout(true);
-        mLayoutManager.setStackFromEnd(true);
+        //--------------------------------//
+
+        recyclerView1 = findViewById(R.id.recyclerView1);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+        layoutManager.setReverseLayout(true);
+        layoutManager.setStackFromEnd(true);
+        recyclerView1.setLayoutManager(layoutManager);
+        recyclerView1.setItemAnimator(null);
+
+        FirebaseRecyclerOptions<model> options1
+                = new FirebaseRecyclerOptions.Builder<model>()
+                .setQuery(databaseReference.limitToLast(10), model.class)
+                .build();
+
+        //---------------------------------//
+
+        recyclerView = findViewById(R.id.recyclerView);
+
+
+//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+//        mLayoutManager.setReverseLayout(true);
+//        mLayoutManager.setStackFromEnd(true);
+//        recyclerView.setItemAnimator(null);
+//        recyclerView.setLayoutManager(mLayoutManager);
+
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+//        recyclerView.setLayoutManager(gridLayoutManager);
+//        recyclerView.setItemAnimator(null);
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.scrollToPosition(10);
+        recyclerView.setLayoutManager(staggeredGridLayoutManager);
         recyclerView.setItemAnimator(null);
-        recyclerView.setLayoutManager(mLayoutManager);
 
 
         FirebaseRecyclerOptions<model> options
                 = new FirebaseRecyclerOptions.Builder<model>()
-                .setQuery(databaseReference, model.class)
+                .setQuery(databaseReference.orderByChild("name"), model.class)
                 .build();
 
 
         adapter = new adapter(options, getApplicationContext());
+        adapter1 = new adapter(options1, getApplicationContext());
         recyclerView.setAdapter(adapter);
-
+        recyclerView1.setAdapter(adapter1);
         getMovieCount();
+
+
+    }
+
+    private void moreDialog() {
+        final DialogPlus dialogPlus = DialogPlus.newDialog(MainActivity.this)
+                .setContentHolder(new ViewHolder(R.layout.dialog_more))
+                .setExpanded(true, 800)
+                .create();
+
+        View myView = dialogPlus.getHolderView();
+
+        ImageView imgTelegram = myView.findViewById(R.id.imgTelegram);
+        ImageView imgRequest = myView.findViewById(R.id.imgRequest);
+        TextView version = myView.findViewById(R.id.version);
+
+        Glide.with(MainActivity.this).load("https://i.ibb.co/YPK0gHb/bing-admin.jpg").into(imgRequest);
+        Glide.with(MainActivity.this)
+                .load("https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/182px-Telegram_2019_Logo.svg.png")
+                .into(imgTelegram);
+
+        version.setText("Version: " + getCurrentVersionName());
+
+        dialogPlus.show();
+
+        imgTelegram.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://t.me/+B8DH6ow_6OE4NWNl")));
+            }
+        });
+
+        imgRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://t.me/bingerequest")));
+            }
+        });
 
     }
 
@@ -219,12 +269,14 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         adapter.startListening();
+        adapter1.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         adapter.stopListening();
+        adapter1.stopListening();
     }
 
     //****************************Checking In-AppUpdate using Firebase************************//
@@ -307,6 +359,15 @@ public class MainActivity extends AppCompatActivity {
     //****************************Checking In-AppUpdate using Firebase************************//
 
 
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+
+
+        return super.onCreateOptionsMenu(menu);
+    }
 
     private void processSearch(String query) {
         FirebaseRecyclerOptions<model> options

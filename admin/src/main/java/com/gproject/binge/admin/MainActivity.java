@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -67,8 +68,7 @@ public class MainActivity extends AppCompatActivity {
         fbAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), add.class);
-                startActivity(intent);
+                Toast.makeText(MainActivity.this, "Access Denied", Toast.LENGTH_SHORT).show();
             }
         });
 

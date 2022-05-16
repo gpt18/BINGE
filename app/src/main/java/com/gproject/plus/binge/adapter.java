@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -39,9 +40,6 @@ import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder> {
 
     Context context;
-    private static final String AD_UNIT_ID = "ca-app-pub-8445679544199474/4683072154";
-    private static final String TAG = "MyActivity";
-    private InterstitialAd mInterstitialAd;
 
     public adapter(@NonNull FirebaseRecyclerOptions<model> options, Context context) {
         super(options);
@@ -56,11 +54,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
     protected void onBindViewHolder(@NonNull myViewHolder holder, int position, @NonNull model model) {
 
 
-        holder.tvAdmin.setText(model.getAdmin());
         holder.tvMovieName.setText(model.getName());
-        holder.tvMessage.setText(model.getMessage());
-        holder.tvDate.setText(model.getDate());
-        holder.tvLink.setText(Html.fromHtml("<u>"+model.getButton()+"</u>"));
 
         if (model.getImg()==null){
             holder.imgMovie.setImageResource(R.mipmap.ic_logo_round);
@@ -69,61 +63,74 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             Glide.with(holder.imgMovie.getContext()).load(model.getImg()).into(holder.imgMovie);
         }
 
-
-        holder.tvLink.setOnClickListener(new View.OnClickListener() {
+        holder.c_movie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadAd();
-                showInterstitial();
-                try {
-
-                    String download_link  = model.getLink();
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(download_link));
-                    v.getContext().startActivity(intent);
-                }
-                catch (Exception e) {
-                    Toast.makeText(context.getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
-                }
-
-
+                Intent i = new Intent(v.getContext(),download.class);
+                i.putExtra("name", model.getName());
+                i.putExtra("img", model.getImg());
+                i.putExtra("date", model.getDate());
+                i.putExtra("des", model.getMessage());
+                i.putExtra("link", model.getLink());
+                i.putExtra("vid",model.getVid());
+                v.getContext().startActivity(i);
             }
         });
 
-
-        holder.tvLink.setOnLongClickListener(new View.OnLongClickListener() {
-
-            final ClipData[] myClip = new ClipData[1];
-            final ClipboardManager clipboard = (ClipboardManager)
-                    context.getSystemService(Context.CLIPBOARD_SERVICE);
-
-            @Override
-            public boolean onLongClick(View v) {
-                myClip[0] = ClipData.newPlainText("text", model.getLink());
-                clipboard.setPrimaryClip(myClip[0]);
-                Toast.makeText(context, "Link Copied", Toast.LENGTH_SHORT).show();
-                return true;
-            }
-        });
-
-        holder.imgShareBtn.setOnClickListener(v -> {
-            loadAd();
-            showInterstitial();
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            String body = "Watch Latest Movies and WebSeries on BINGE+ App for Free. Download Now! "
-                    + "\n\n➖➖➖➖➖➖➖➖➖➖➖➖\n" +
-                    model.getName()
-                    + "\n" +
-                    model.getMessage()
-                    + "\n\n➖➖➖➖➖➖➖➖➖➖➖➖\n" +
-                    model.getLink();
-            String sub = "Sharing Link! Download BINGE+";
-            intent.putExtra(Intent.EXTRA_SUBJECT,sub);
-            intent.putExtra(Intent.EXTRA_TEXT,body);
-            v.getContext().startActivity(Intent.createChooser(intent, "Share Using"));
-
-        });
+//        holder.tvLink.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                loadAd();
+//                showInterstitial();
+//                try {
+//
+//                    String download_link  = model.getLink();
+//                    Intent intent = new Intent(Intent.ACTION_VIEW);
+//                    intent.setData(Uri.parse(download_link));
+//                    v.getContext().startActivity(intent);
+//                }
+//                catch (Exception e) {
+//                    Toast.makeText(context.getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
+//                }
+//
+//
+//            }
+//        });
+//
+//
+//        holder.tvLink.setOnLongClickListener(new View.OnLongClickListener() {
+//
+//            final ClipData[] myClip = new ClipData[1];
+//            final ClipboardManager clipboard = (ClipboardManager)
+//                    context.getSystemService(Context.CLIPBOARD_SERVICE);
+//
+//            @Override
+//            public boolean onLongClick(View v) {
+//                myClip[0] = ClipData.newPlainText("text", model.getLink());
+//                clipboard.setPrimaryClip(myClip[0]);
+//                Toast.makeText(context, "Link Copied", Toast.LENGTH_SHORT).show();
+//                return true;
+//            }
+//        });
+//
+//        holder.imgShareBtn.setOnClickListener(v -> {
+//            loadAd();
+//            showInterstitial();
+//            Intent intent = new Intent(Intent.ACTION_SEND);
+//            intent.setType("text/plain");
+//            String body = "Watch Latest Movies and WebSeries on BINGE+ App for Free. Download Now! "
+//                    + "\n\n➖➖➖➖➖➖➖➖➖➖➖➖\n" +
+//                    model.getName()
+//                    + "\n" +
+//                    model.getMessage()
+//                    + "\n\n➖➖➖➖➖➖➖➖➖➖➖➖\n" +
+//                    model.getLink();
+//            String sub = "Sharing Link! Download BINGE+";
+//            intent.putExtra(Intent.EXTRA_SUBJECT,sub);
+//            intent.putExtra(Intent.EXTRA_TEXT,body);
+//            v.getContext().startActivity(Intent.createChooser(intent, "Share Using"));
+//
+//        });
 
     }
 
@@ -133,7 +140,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
 
         context = parent.getContext();
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post,parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_post_new,parent, false);
         return new myViewHolder(view);
     }
 
@@ -141,6 +148,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
 
         TextView tvAdmin,tvMovieName, tvMessage, tvDate, tvLink;
         ImageView  imgMovie, imgShareBtn;
+        CardView c_movie;
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -152,40 +160,9 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             tvDate = itemView.findViewById(R.id.tvDate);
             imgShareBtn = itemView.findViewById(R.id.imgShareBtn);
             tvLink = itemView.findViewById(R.id.tvLink);
+            c_movie = itemView.findViewById(R.id.c_movie);
         }
     }
 
-    public void loadAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        InterstitialAd.load(context,
-                "ca-app-pub-8445679544199474/4683072154",
-                adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        // The mInterstitialAd reference will be null until
-                        // an ad is loaded.
-                        mInterstitialAd = interstitialAd;
-                        Log.i(TAG, "onAdLoaded");
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
-                        Log.i(TAG, loadAdError.getMessage());
-                        mInterstitialAd = null;
-                    }
-                });
-    }
-
-    private void showInterstitial() {
-        // Show the ad if it's ready. Otherwise toast and restart the game.
-        if (mInterstitialAd != null) {
-            mInterstitialAd.show((Activity) context);
-        } else {
-            Log.i(TAG, "Ad did not load");
-        }
-    }
 
 }

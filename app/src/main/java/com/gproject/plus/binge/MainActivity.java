@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -297,6 +298,12 @@ public class MainActivity extends AppCompatActivity {
 
                     final double app_version = getCurrentVersionCode();
                     Log.d("current value: ", String.valueOf(app_version));
+
+                    String api_key = remoteConfig.getString("api_key");
+                    SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("api_key", api_key);
+                    editor.apply();
 
                     final double new_version_code = remoteConfig.getDouble("versionCode");
                     Log.d("final value: ", String.valueOf(new_version_code));

@@ -11,6 +11,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -38,7 +39,6 @@ import java.util.Arrays;
 
 public class download extends YouTubeBaseActivity{
     YouTubePlayerView youTubePlayerView;
-    String api_key = "AIzaSyBJyxUt1re44TLcGgnX5qcq2DFp4JsnagI";
 
     ImageView back, imgMovie;
     TextView tvMovieName, tvDate, tvDes;
@@ -74,6 +74,9 @@ public class download extends YouTubeBaseActivity{
         String link = i.getStringExtra("link");
         String vid = i.getStringExtra("vid");
 
+        SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
+        String API_KEY = sp.getString("api_key", "");
+
         YouTubePlayer.OnInitializedListener listener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
@@ -87,7 +90,7 @@ public class download extends YouTubeBaseActivity{
             }
         };
 
-        youTubePlayerView.initialize(api_key,listener);
+        youTubePlayerView.initialize(API_KEY,listener);
 
         tvMovieName.setText(name);
         tvDate.setText(date);

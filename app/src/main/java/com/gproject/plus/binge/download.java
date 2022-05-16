@@ -41,7 +41,7 @@ public class download extends YouTubeBaseActivity{
     YouTubePlayerView youTubePlayerView;
 
     ImageView back, imgMovie;
-    TextView tvMovieName, tvDate, tvDes;
+    TextView tvMovieName, tvDate, tvDes, tvAdmin;
     CardView c_shareBtn, c_downloadBtn;
 
     private static final String AD_UNIT_ID = "ca-app-pub-8445679544199474/4683072154";
@@ -63,6 +63,7 @@ public class download extends YouTubeBaseActivity{
         tvMovieName = findViewById(R.id.tvMovieName);
         tvDate = findViewById(R.id.tvDate);
         tvDes = findViewById(R.id.tvDes);
+        tvAdmin = findViewById(R.id.tvAdmin);
         c_shareBtn = findViewById(R.id.c_shareBtn);
         c_downloadBtn = findViewById(R.id.c_downloadBtn);
 
@@ -73,6 +74,7 @@ public class download extends YouTubeBaseActivity{
         String des = i.getStringExtra("des");
         String link = i.getStringExtra("link");
         String vid = i.getStringExtra("vid");
+        String admin = i.getStringExtra("admin");
 
         SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
         String API_KEY = sp.getString("api_key", "");
@@ -86,15 +88,16 @@ public class download extends YouTubeBaseActivity{
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-                Toast.makeText(download.this, "video error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(download.this, "Error: Clear App Data", Toast.LENGTH_SHORT).show();
             }
         };
-
+        
         youTubePlayerView.initialize(API_KEY,listener);
 
         tvMovieName.setText(name);
         tvDate.setText(date);
         tvDes.setText(des);
+        tvAdmin.setText(admin);
         Glide.with(this).load(img).into(imgMovie);
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -107,8 +110,9 @@ public class download extends YouTubeBaseActivity{
         c_downloadBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadAd();
+
                 try {
+                    loadAd();
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(link));
                     startActivity(intent);
@@ -138,11 +142,11 @@ public class download extends YouTubeBaseActivity{
         c_shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
+                loadAd();
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             String body = "Watch Latest Movies and WebSeries on BINGE+ App for Free. Download Now! "
+                    +"\n👉 https://bit.ly/3P5PvJd"
                     + "\n\n➖➖➖➖➖➖➖➖➖➖➖➖\n" +
                     name
                     + "\n" +

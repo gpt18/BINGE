@@ -73,6 +73,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                 i.putExtra("des", model.getMessage());
                 i.putExtra("link", model.getLink());
                 i.putExtra("vid",model.getVid());
+                i.putExtra("admin",model.getAdmin());
                 v.getContext().startActivity(i);
             }
         });
@@ -156,10 +157,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             imgMovie = itemView.findViewById(R.id.imgMovie);
             tvAdmin = itemView.findViewById(R.id.tvAdmin);
             tvMovieName = itemView.findViewById(R.id.tvMovieName);
-            tvMessage = itemView.findViewById(R.id.tvMessage);
             tvDate = itemView.findViewById(R.id.tvDate);
-            imgShareBtn = itemView.findViewById(R.id.imgShareBtn);
-            tvLink = itemView.findViewById(R.id.tvLink);
             c_movie = itemView.findViewById(R.id.c_movie);
         }
     }

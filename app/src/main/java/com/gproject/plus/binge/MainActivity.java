@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -127,7 +129,8 @@ public class MainActivity extends AppCompatActivity {
                   case R.id.searchView:
 
                       androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) item.getActionView();
-                      searchView.setQueryHint("Type here in CAPS to Search...");
+                      searchView.setQueryHint("Type here to Search...");
+                      searchView.setBackground(new ColorDrawable(getResources().getColor(R.color.card_bg_dark)));
                       searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
                           @Override
                           public boolean onQueryTextSubmit(String query) {
@@ -367,19 +370,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
     private void processSearch(String query) {
         FirebaseRecyclerOptions<model> options
                 = new FirebaseRecyclerOptions.Builder<model>()
-                .setQuery(databaseReference.orderByChild("name").startAt(query).endAt(query+"\uf8ff"), model.class)
+                .setQuery(databaseReference.orderByChild("name").startAt(query.toUpperCase()).endAt(query.toUpperCase()+"\uf8ff"), model.class)
                 .build();
 
         adapter = new adapter(options);

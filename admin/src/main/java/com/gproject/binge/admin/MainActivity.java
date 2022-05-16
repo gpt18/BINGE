@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
 
+    LinearLayoutManager mLayoutManager;
+
     //offline data storage
     static {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -68,7 +70,8 @@ public class MainActivity extends AppCompatActivity {
         fbAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Access Denied", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(MainActivity.this, add.class);
+                startActivity(i);
             }
         });
 
@@ -97,11 +100,11 @@ public class MainActivity extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("movies");
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new LinearLayoutManager(this);
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
-        recyclerView.setItemAnimator(null);
         recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(null);
 
 
         FirebaseRecyclerOptions<model> options
@@ -150,9 +153,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void processSearch(String query) {
+
         FirebaseRecyclerOptions<model> options
                 = new FirebaseRecyclerOptions.Builder<model>()
-                .setQuery(databaseReference.orderByChild("name").startAt(query).endAt(query+"\uf8ff"), model.class)
+                .setQuery(databaseReference.orderByChild("name").startAt(query.toUpperCase()).endAt(query.toUpperCase()+"\uf8ff"), model.class)
                 .build();
 
         adapter = new adapter(options);

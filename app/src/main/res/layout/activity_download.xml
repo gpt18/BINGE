@@ -97,19 +97,44 @@
                      android:textSize="24sp" />
 
                  <TextView
-                     android:paddingStart="28dp"
+                     android:layout_marginStart="20dp"
+                     android:paddingStart="8dp"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
-                     android:text="Last Updated:"
+                     android:text="Last updated on:"
                      android:textColor="@color/teal_700"/>
 
                  <TextView
                      android:id="@+id/tvDate"
-                     android:paddingStart="28dp"
+                     android:layout_marginStart="20dp"
+                     android:paddingStart="8dp"
                      android:layout_width="wrap_content"
                      android:layout_height="wrap_content"
                      android:text="22-05-2022 19:96 PM"
                      android:textColor="@color/teal_200"/>
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginStart="20dp"
+                     android:paddingTop="8dp">
+
+                     <TextView
+                         android:paddingStart="8dp"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="Posted by:"
+                         android:textColor="@color/teal_700"/>
+
+                     <TextView
+                         android:id="@+id/tvAdmin"
+                         android:paddingStart="8dp"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:text="G Prajapati"
+                         android:textColor="#FFFF8D"/>
+
+                 </LinearLayout>
 
              </LinearLayout>
 

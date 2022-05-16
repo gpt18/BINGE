@@ -231,7 +231,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String body = "Watch Latest Movies and WebSeries on BINGE+ App for Free. Download Now! "
+                String body = "Watch Latest Movies and WebSeries on BINGE+ App for Free. Download Now! https://bit.ly/3P5PvJd "
                         + "\n\n📽️📽️📽️📽️📽️📽️📽️\n" +
                         model.getName()
                         + "\n\n🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬\n" +

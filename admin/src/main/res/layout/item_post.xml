@@ -62,13 +62,85 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/c_movie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/card_bg_dark"
+                    app:cardCornerRadius="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_margin="10dp"
+                    android:foreground="?attr/selectableItemBackground">
 
-                <ImageView
-                    android:id="@+id/imgMovie"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:scaleType="centerCrop"
-                    tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                    <ImageView
+                        android:id="@+id/imgMovie"
+                        android:layout_width="118dp"
+                        android:layout_height="170dp"
+                        android:scaleType="centerCrop"
+                        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+                </androidx.cardview.widget.CardView>
+
+               <LinearLayout
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:orientation="vertical">
+
+                   <TextView
+                       android:id="@+id/tvMovieName"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:padding="8dp"
+                       android:text="Title of the Movies  will  came here"
+                       android:textColor="@color/white"
+                       android:textSize="20dp"
+                       android:textStyle="bold" />
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       android:layout_weight="1"
+                       android:gravity="center_vertical|end"
+                       android:paddingHorizontal="8dp"
+                       android:text="Last Updated on:"
+                       android:textColor="@color/teal_700" />
+
+                   <TextView
+                       android:id="@+id/tvDate"
+                       android:layout_width="wrap_content"
+                       android:layout_height="match_parent"
+                       android:layout_weight="1"
+                       android:gravity="center_vertical|end"
+                       android:paddingHorizontal="8dp"
+                       android:text="May 1, 2022 9:15 PM"
+                       android:textColor="@color/teal_200" />
+
+
+                   <LinearLayout
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"
+                       android:layout_marginTop="8dp">
+
+                       <TextView
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:paddingLeft="8dp"
+                           android:text="VideoID: "
+                           android:textColor="@color/teal_200" />
+                       <TextView
+                           android:id="@+id/tvVid"
+                           android:layout_width="wrap_content"
+                           android:layout_height="wrap_content"
+                           android:layout_weight="1"
+                           android:paddingLeft="8dp"
+                           android:text="LKFuXETZUsI"
+                           android:textColor="@color/white" />
+
+                   </LinearLayout>
+
+               </LinearLayout>
+
 
             </LinearLayout>
 
@@ -77,24 +149,13 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
-                    <TextView
-                        android:id="@+id/tvMovieName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="Title of the Movies  will  came here"
-                        android:textColor="@color/white"
-                        android:textSize="20dp"
-                        android:textStyle="bold" />
-
-                    <View
-                        android:id="@+id/divider"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="8dp"
-                        android:background="@color/black" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="8dp"
+                    android:textIsSelectable="true"
+                    android:text="Description"
+                    android:textColor="@color/teal_200" />
 
                     <TextView
                         android:id="@+id/tvMessage"
@@ -102,7 +163,7 @@
                         android:layout_height="wrap_content"
                         android:padding="8dp"
                         android:textIsSelectable="true"
-                        android:text="Title of the Movies  will  came hereTitle of the Movies  will  came hereTitle of the Movies  will  came here Title of the Movies  will  came here"
+                        android:text="Oh! Description of the Post not available."
                         android:textColor="@color/white" />
 
                 <TextView
@@ -113,29 +174,10 @@
                     android:focusable="true"
                     android:foreground="?attr/selectableItemBackground"
                     android:padding="8dp"
-                    android:text="Title of the Movies  will  came hereTitle of the Movies  will  came hereTitle of the Movies  will  came here Title of the Movies  will  came here"
+                    android:text="Downloadable link will shown here."
                     android:textColor="@android:color/holo_blue_bright" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="8dp"
-                        android:text="VideoID: "
-                        android:textColor="@color/teal_200" />
-                    <TextView
-                        android:id="@+id/tvVid"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:paddingLeft="8dp"
-                        android:text="LKFuXETZUsI"
-                        android:textColor="@color/white" />
-
-                </LinearLayout>
 
 
             </LinearLayout>
@@ -149,7 +191,7 @@
 
                 <ImageView
                     android:id="@+id/imgEditBtn"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:srcCompat="@drawable/ic_round_edit_24"
                     android:padding="16dp"
@@ -169,15 +211,7 @@
 <!--                    android:foreground="?attr/selectableItemBackground" />-->
 
 
-                <TextView
-                    android:id="@+id/tvDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center_vertical|end"
-                    android:padding="8dp"
-                    android:text="May 1, 2022 9:15 PM"
-                    android:textColor="@color/teal_200" />
+
             </LinearLayout>
 
 

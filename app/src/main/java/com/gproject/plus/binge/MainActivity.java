@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
         tvUsername = findViewById(R.id.tvUsername);
         toolbar = findViewById(R.id.topAppBar);
 
+
         //-------------------admob initialization----------------------
         // Initialize the Mobile Ads SDK.
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
@@ -159,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
           }
 
       });
+
 
 
         databaseReference = FirebaseDatabase.getInstance().getReference("movies");
@@ -303,9 +305,11 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("current value: ", String.valueOf(app_version));
 
                     String api_key = remoteConfig.getString("api_key");
+                    String appLink = remoteConfig.getString("appLink");
                     SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("api_key", api_key);
+                    editor.putString("app_link", appLink);
                     editor.apply();
 
                     final double new_version_code = remoteConfig.getDouble("versionCode");

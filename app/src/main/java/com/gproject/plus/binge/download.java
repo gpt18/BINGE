@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentManager;
 
 
 import android.app.Activity;
@@ -12,6 +14,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +23,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
@@ -37,12 +42,13 @@ import com.google.android.youtube.player.YouTubePlayerView;
 
 import java.util.Arrays;
 
-public class download extends YouTubeBaseActivity{
+public class download extends YouTubeBaseActivity  {
     YouTubePlayerView youTubePlayerView;
 
     ImageView back, imgMovie;
     TextView tvMovieName, tvDate, tvDes, tvAdmin;
     CardView c_shareBtn, c_downloadBtn;
+
 
     private static final String AD_UNIT_ID = "ca-app-pub-8445679544199474/4683072154";
     private static final String TAG = "MyActivity";
@@ -78,21 +84,37 @@ public class download extends YouTubeBaseActivity{
 
         SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
         String API_KEY = sp.getString("api_key", "");
+        String APP_LINK = sp.getString("app_link", "");
 
-        YouTubePlayer.OnInitializedListener listener = new YouTubePlayer.OnInitializedListener() {
-            @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                youTubePlayer.loadVideo(vid);
-                youTubePlayer.play();
-            }
+//        YouTubePlayer.OnInitializedListener listener = new YouTubePlayer.OnInitializedListener() {
+//            @Override
+//            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+//                youTubePlayer.loadVideo(vid);
+//                youTubePlayer.play();
+//            }
+//
+//            @Override
+//            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+//                Toast.makeText(download.this, "Error: Clear App Data", Toast.LENGTH_SHORT).show();
+//            }
+//        };
 
-            @Override
-            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
-                Toast.makeText(download.this, "Error: Clear App Data", Toast.LENGTH_SHORT).show();
-            }
-        };
+        youTubePlayerView.initialize("SOME KEY",
+                new YouTubePlayer.OnInitializedListener() {
+                    @Override
+                    public void onInitializationSuccess(YouTubePlayer.Provider provider,
+                                                        YouTubePlayer youTubePlayer, boolean b) {
+
+                        youTubePlayer.cueVideo(vid);
+                    }
+                    @Override
+                    public void onInitializationFailure(YouTubePlayer.Provider provider,
+                                                        YouTubeInitializationResult youTubeInitializationResult) {
+
+                    }
+                });
         
-        youTubePlayerView.initialize(API_KEY,listener);
+//        youTubePlayerView.initialize(API_KEY,listener);
 
         tvMovieName.setText(name);
         tvDate.setText(date);
@@ -112,15 +134,13 @@ public class download extends YouTubeBaseActivity{
             public void onClick(View v) {
 
                 try {
-                    loadAd();
+
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(link));
                     startActivity(intent);
-                    showInterstitial();
                 }
                 catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
-                    showInterstitial();
                 }
 
             }
@@ -143,10 +163,11 @@ public class download extends YouTubeBaseActivity{
             @Override
             public void onClick(View v) {
                 loadAd();
+                showInterstitial();
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.setType("text/plain");
             String body = "Watch Latest Movies and WebSeries on BINGE+ App for Free. Download Now! "
-                    +"\n👉 https://bit.ly/3P5PvJd"
+                    +"\n👉 "+APP_LINK
                     + "\n\n➖➖➖➖➖➖➖➖➖➖➖➖\n" +
                     name
                     + "\n" +
@@ -157,12 +178,18 @@ public class download extends YouTubeBaseActivity{
             intent.putExtra(Intent.EXTRA_SUBJECT,sub);
             intent.putExtra(Intent.EXTRA_TEXT,body);
             startActivity(Intent.createChooser(intent, "Share Using"));
-
-                showInterstitial();
             }
         });
 
+        imgMovie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                imgDialogFragment cdd = new imgDialogFragment(download.this, img);
+                cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                cdd.show();
+            }
+            });
 
     }
 
@@ -214,4 +241,7 @@ public class download extends YouTubeBaseActivity{
         }
     }
 
+    public static class YouTubeBaseActivity extends DialogFragment {
+
+    }
 }

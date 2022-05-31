@@ -10,11 +10,13 @@
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/card_bg_dark"
         android:text="👨‍💻 Developer"
         android:textSize="24sp"
-        android:padding="8dp"
+        android:padding="10dp"
+        android:background="@drawable/bg_dialog_header"
         android:textColor="#FFFFFF" />
+
+
 
    <ScrollView
        android:layout_width="match_parent"
@@ -48,60 +50,88 @@
                android:id="@+id/textView4"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:paddingLeft="16dp"
-               android:paddingRight="16dp"
-               android:paddingBottom="16dp"
+               android:padding="16dp"
                android:text="@string/app_bio"
                android:textColor="@color/teal_700"
                android:textSize="14sp" />
 
-           <LinearLayout
-               android:id="@+id/telegram"
+           <androidx.cardview.widget.CardView
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:gravity="center_vertical"
-               android:padding="16dp">
+               android:layout_marginHorizontal="10dp"
+               android:backgroundTint="@color/black"
+               app:cardCornerRadius="10dp">
 
-
-               <ImageView
-                   android:id="@+id/imgTelegram"
-                   android:layout_width="50dp"
-                   android:layout_height="50dp"
-                   app:srcCompat="@drawable/ic_baseline_search_24" />
-
-               <TextView
-                   android:id="@+id/textView"
-                   android:layout_width="wrap_content"
+               <LinearLayout
+                   android:id="@+id/telegram"
+                   android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:layout_marginLeft="16dp"
-                   android:layout_weight="1"
-                   android:text="Telegram"
-                   android:textColor="@color/teal_200" />
-           </LinearLayout>
+                   android:gravity="center_vertical"
+                   android:padding="16dp"
+                   android:background="#5602655B">
 
-           <LinearLayout
-               android:id="@+id/request"
+
+                   <ImageView
+                       android:id="@+id/imgTelegram"
+                       android:layout_width="50dp"
+                       android:layout_height="50dp"
+                       app:srcCompat="@drawable/ic_baseline_search_24" />
+
+                   <TextView
+                       android:id="@+id/textView"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginStart="16dp"
+                       android:text="Telegram"
+                       android:textColor="@color/teal_200" />
+               </LinearLayout>
+
+           </androidx.cardview.widget.CardView>
+
+
+
+           <TextView
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:gravity="center_vertical"
-               android:padding="16dp">
+               android:padding="16dp"
+               android:text="@string/app_bio1"
+               android:textColor="@color/teal_700"
+               android:textSize="14sp" />
 
+           <androidx.cardview.widget.CardView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginHorizontal="10dp"
+               android:backgroundTint="@color/black"
+               app:cardCornerRadius="10dp">
 
-               <de.hdodenhof.circleimageview.CircleImageView
-                   android:id="@+id/imgRequest"
-                   android:layout_width="50dp"
-                   android:layout_height="50dp"
-                   app:srcCompat="@drawable/ic_baseline_search_24" />
-
-               <TextView
-                   android:id="@+id/textView5"
-                   android:layout_width="wrap_content"
+               <LinearLayout
+                   android:id="@+id/request"
+                   android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:layout_marginLeft="16dp"
-                   android:layout_weight="1"
-                   android:text="Request"
-                   android:textColor="@color/teal_200" />
-           </LinearLayout>
+                   android:gravity="center_vertical"
+                   android:padding="16dp"
+                   android:background="#5602655B">
+
+
+                   <de.hdodenhof.circleimageview.CircleImageView
+                       android:id="@+id/imgRequest"
+                       android:layout_width="50dp"
+                       android:layout_height="50dp"
+                       app:srcCompat="@drawable/ic_baseline_search_24" />
+
+                   <TextView
+                       android:id="@+id/textView5"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:layout_marginStart="16dp"
+                       android:text="Request"
+                       android:textColor="@color/teal_200" />
+               </LinearLayout>
+
+           </androidx.cardview.widget.CardView>
+
+
 
            <TextView
                android:id="@+id/textView6"

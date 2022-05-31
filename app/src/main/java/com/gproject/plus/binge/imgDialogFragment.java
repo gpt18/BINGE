@@ -19,12 +19,11 @@ import com.bumptech.glide.Glide;
 public class imgDialogFragment extends Dialog {
 
     public Activity c;
-  public Dialog d;
-  public String bImg;
+    public Dialog d;
+    public String bImg;
 
   public imgDialogFragment(Activity a, String img) {
     super(a);
-    // TODO Auto-generated constructor stub
     this.c = a;
     this.bImg = img;
   }

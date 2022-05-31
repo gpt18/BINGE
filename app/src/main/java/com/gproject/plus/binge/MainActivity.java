@@ -132,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
                       androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) item.getActionView();
                       searchView.setQueryHint("Type here to Search...");
                       searchView.setBackground(new ColorDrawable(getResources().getColor(R.color.card_bg_dark)));
+//                      toolbar.setBackgroundColor(Color.BLACK);
                       searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
                           @Override
                           public boolean onQueryTextSubmit(String query) {
@@ -218,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
     private void moreDialog() {
         final DialogPlus dialogPlus = DialogPlus.newDialog(MainActivity.this)
                 .setContentHolder(new ViewHolder(R.layout.dialog_more))
-                .setExpanded(true, 800)
+                .setExpanded(true, 900)
                 .create();
 
         View myView = dialogPlus.getHolderView();
@@ -226,6 +227,8 @@ public class MainActivity extends AppCompatActivity {
         ImageView imgTelegram = myView.findViewById(R.id.imgTelegram);
         ImageView imgRequest = myView.findViewById(R.id.imgRequest);
         TextView version = myView.findViewById(R.id.version);
+        LinearLayout telegram = myView.findViewById(R.id.telegram);
+        LinearLayout request = myView.findViewById(R.id.request);
 
         Glide.with(MainActivity.this).load("https://i.ibb.co/YPK0gHb/bing-admin.jpg").into(imgRequest);
         Glide.with(MainActivity.this)
@@ -236,14 +239,14 @@ public class MainActivity extends AppCompatActivity {
 
         dialogPlus.show();
 
-        imgTelegram.setOnClickListener(new View.OnClickListener() {
+        telegram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://t.me/+B8DH6ow_6OE4NWNl")));
             }
         });
 
-        imgRequest.setOnClickListener(new View.OnClickListener() {
+        request.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://t.me/bingerequest")));

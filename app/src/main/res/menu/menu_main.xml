@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/watchList"
+        android:title="Search"
+        android:icon="@drawable/ic_baseline_playlist_add_check_circle_24"
+        app:showAsAction="ifRoom|collapseActionView"/>
+
+    <item
         android:id="@+id/searchView"
         android:title="Search"
         android:icon="@drawable/ic_baseline_search_24"

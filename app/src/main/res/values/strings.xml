@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">BINGE+</string>
-    <string name="app_bio">Find latest films and TV shows right here. \nRequest films and web series here.</string>
+    <string name="app_bio">Find latest films and TV shows right here.</string>
+    <string name="app_bio1">Request films and web series here.</string>
     <string name="bug">Bug Report at: edutechnical2018@gmail.com</string>
     <string name="guide_download">1. Click on the download here button. \n2. You will be directed to the Google Drive on your phone. \n3. Tap on 3 dots of the episode/quality of the content you wanna download. \n4. Click on download. \n5. It will start downloading. You can see in the notifications.\n\nNote: You can copy link simply by long press on Download here button.</string>
+    <string name="latest_uploads">Latest Uploads</string>
 </resources>

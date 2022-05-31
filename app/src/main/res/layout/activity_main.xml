@@ -22,7 +22,7 @@
             app:contentScrim="@color/card_bg_dark"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:expandedTitleTextAppearance="@style/expandedBarTextStyle"
-            ads:title="All uploads in alphabetical order"
+            ads:title="All Uploads"
             app:collapsedTitleTextColor="@color/white">
 
 <!--            <androidx.appcompat.widget.Toolbar-->
@@ -101,7 +101,7 @@
                         android:paddingStart="30dp"
                         android:paddingTop="8dp"
                         android:paddingBottom="10dp"
-                        android:text="Latest top 10 uploads"
+                        android:text="@string/latest_uploads"
                         android:textColor="@color/white"
                         android:textSize="16sp"
                         android:textStyle="bold"/>

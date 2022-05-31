@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Binge">
         <activity
+            android:name=".watchList"
+            android:exported="false" />
+        <activity
             android:name=".download"
             android:exported="false" />
         <activity
@@ -26,6 +29,9 @@
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8445679544199474~3706399380" />
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
         <activity
             android:name=".splash"

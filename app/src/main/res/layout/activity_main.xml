@@ -25,15 +25,6 @@
             ads:title="All Uploads"
             app:collapsedTitleTextColor="@color/white">
 
-<!--            <androidx.appcompat.widget.Toolbar-->
-<!--                android:id="@+id/toolbar"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="?attr/actionBarSize"-->
-<!--                app:layout_scrollFlags="scroll|enterAlways"-->
-<!--                ads:menu="@menu/menu_main">-->
-
-<!--            </androidx.appcompat.widget.Toolbar>-->
-
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -106,12 +97,34 @@
                         android:textSize="16sp"
                         android:textStyle="bold"/>
 
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmer1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="24dp"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="30dp">
+
+                            <include layout="@layout/item_shimmer"/>
+                            <include layout="@layout/item_shimmer"/>
+                            <include layout="@layout/item_shimmer"/>
+
+                        </LinearLayout>
+
+
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/recyclerView1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:paddingHorizontal="24dp"
+                        android:visibility="gone"
                         android:clipToPadding = "false"/>
 
                 </LinearLayout>
@@ -146,28 +159,93 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmer2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="30dp">
+
+                        <include layout="@layout/item_shimmer"/>
+                        <include layout="@layout/item_shimmer"/>
+                        <include layout="@layout/item_shimmer"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="30dp">
+
+                        <include layout="@layout/item_shimmer"/>
+                        <include layout="@layout/item_shimmer"/>
+                        <include layout="@layout/item_shimmer"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="30dp">
+
+                        <include layout="@layout/item_shimmer"/>
+                        <include layout="@layout/item_shimmer"/>
+                        <include layout="@layout/item_shimmer"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="24dp"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="30dp">
+
+                        <include layout="@layout/item_shimmer"/>
+                        <include layout="@layout/item_shimmer"/>
+                        <include layout="@layout/item_shimmer"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:paddingVertical="24dp" />
+                android:paddingVertical="24dp"
+                android:visibility="invisible"/>
 
 
 
-            <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+            <com.google.android.gms.ads.AdView
                 android:id="@+id/adView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
                 ads:adSize="BANNER"
                 ads:adUnitId="ca-app-pub-8445679544199474/9375327336"/>
 
-
-
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
 
 

@@ -110,6 +110,7 @@ public class download extends YouTubeBaseActivity  {
                     @Override
                     public void onInitializationFailure(YouTubePlayer.Provider provider,
                                                         YouTubeInitializationResult youTubeInitializationResult) {
+                        Toast.makeText(download.this, "Video load error! Clear App data", Toast.LENGTH_SHORT).show();
 
                     }
                 });
@@ -134,7 +135,6 @@ public class download extends YouTubeBaseActivity  {
             public void onClick(View v) {
 
                 try {
-
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(link));
                     startActivity(intent);

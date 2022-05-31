@@ -8,6 +8,7 @@ import android.app.ActionBar;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.CountDownTimer;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
@@ -39,6 +40,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.ads.AdError;
 import com.google.android.gms.ads.AdListener;
@@ -81,12 +83,12 @@ public class MainActivity extends AppCompatActivity {
     adapter adapter, adapter1;
     DatabaseReference databaseReference;
     RecyclerView recyclerView, recyclerView1;
-    ImageView more;
-    SearchView searchView;
     TextView tvUsername;
     MaterialToolbar toolbar;
 
     FirebaseRemoteConfig remoteConfig;
+
+    ShimmerFrameLayout shimmer1, shimmer2;
 
 
     //offline data storage
@@ -98,31 +100,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        hooks();
         checkForUpdate();
+        admobInit();
+        loading();
 
 
-        tvUsername = findViewById(R.id.tvUsername);
-        toolbar = findViewById(R.id.topAppBar);
-
-
-        //-------------------admob initialization----------------------
-        // Initialize the Mobile Ads SDK.
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {}
-        });
-
-        MobileAds.setRequestConfiguration(
-                new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
-                        .build());
-
-        AdView adView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
-
-        //=-------------------
-
-      toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
+        toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
           @Override
           public boolean onMenuItemClick(MenuItem item) {
               switch (item.getItemId()) {
@@ -150,9 +134,12 @@ public class MainActivity extends AppCompatActivity {
                       break;
 
                   case R.id.more:
-
                       moreDialog();
+                      break;
 
+                  case R.id.watchList:
+                      Intent i = new Intent(MainActivity.this, watchList.class);
+                      startActivity(i);
                       break;
 
               }
@@ -162,13 +149,10 @@ public class MainActivity extends AppCompatActivity {
 
       });
 
-
-
         databaseReference = FirebaseDatabase.getInstance().getReference("movies");
 
-        //--------------------------------//
+        //--------------Header------------------//
 
-        recyclerView1 = findViewById(R.id.recyclerView1);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
         layoutManager.setReverseLayout(true);
         layoutManager.setStackFromEnd(true);
@@ -180,9 +164,9 @@ public class MainActivity extends AppCompatActivity {
                 .setQuery(databaseReference.limitToLast(10), model.class)
                 .build();
 
-        //---------------------------------//
+        //----------------Header-----------------//
 
-        recyclerView = findViewById(R.id.recyclerView);
+
 
 
 //        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -211,8 +195,62 @@ public class MainActivity extends AppCompatActivity {
         adapter1 = new adapter(options1, getApplicationContext());
         recyclerView.setAdapter(adapter);
         recyclerView1.setAdapter(adapter1);
-        getMovieCount();
 
+
+
+    }
+
+    private void loading() {
+
+        new CountDownTimer(4000, 1000){
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                shimmer1.startShimmer();
+                shimmer2.startShimmer();
+                String subTitle = "⏳ Fetching all items for you...";
+                tvUsername.setText(subTitle);
+            }
+
+            @Override
+            public void onFinish() {
+                getMovieCount();
+                shimmer1.stopShimmer();
+                shimmer2.stopShimmer();
+                shimmer1.setVisibility(View.GONE);
+                shimmer2.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerView1.setVisibility(View.VISIBLE);
+            }
+        }.start();
+
+    }
+
+    private void admobInit() {
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+        });
+
+        MobileAds.setRequestConfiguration(
+                new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+                        .build());
+
+        AdView adView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+
+    }
+
+    private void hooks() {
+
+        tvUsername = findViewById(R.id.tvUsername);
+        toolbar = findViewById(R.id.topAppBar);
+        recyclerView1 = findViewById(R.id.recyclerView1);
+        recyclerView = findViewById(R.id.recyclerView);
+        shimmer1 = findViewById(R.id.shimmer1);
+        shimmer2 = findViewById(R.id.shimmer2);
 
     }
 
@@ -263,6 +301,7 @@ public class MainActivity extends AppCompatActivity {
                 int childCount = (int) dataSnapshot.getChildrenCount();
                 String subTitle =  "Total Items: "+ childCount;
                 tvUsername.setText(subTitle);
+
             }
 
             @Override
@@ -272,6 +311,17 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void processSearch(String query) {
+        FirebaseRecyclerOptions<model> options
+                = new FirebaseRecyclerOptions.Builder<model>()
+                .setQuery(databaseReference.orderByChild("name").startAt(query.toUpperCase()).endAt(query.toUpperCase()+"\uf8ff"), model.class)
+                .build();
+
+        adapter = new adapter(options);
+        adapter.startListening();
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -287,6 +337,7 @@ public class MainActivity extends AppCompatActivity {
         adapter.stopListening();
         adapter1.stopListening();
     }
+
 
     //****************************Checking In-AppUpdate using Firebase************************//
 
@@ -375,17 +426,5 @@ public class MainActivity extends AppCompatActivity {
 
     //****************************Checking In-AppUpdate using Firebase************************//
 
-
-
-    private void processSearch(String query) {
-        FirebaseRecyclerOptions<model> options
-                = new FirebaseRecyclerOptions.Builder<model>()
-                .setQuery(databaseReference.orderByChild("name").startAt(query.toUpperCase()).endAt(query.toUpperCase()+"\uf8ff"), model.class)
-                .build();
-
-        adapter = new adapter(options);
-        adapter.startListening();
-        recyclerView.setAdapter(adapter);
-    }
 
 }

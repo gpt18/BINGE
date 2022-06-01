@@ -47,7 +47,7 @@
             android:foreground="?attr/selectableItemBackground">
 
             <ImageView
-               android:id="@+id/imgWL"
+                android:id="@+id/imgWL"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:src="@drawable/ic_round_playlist_add_circle_24"/>
@@ -67,228 +67,228 @@
 
 
     <ScrollView
-     android:layout_width="match_parent"
-     android:layout_height="match_parent"
-     android:layout_weight="1">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
 
 
-     <LinearLayout
-         android:layout_width="match_parent"
-         android:layout_height="match_parent"
-         android:orientation="vertical">
-
-
-
-         <com.google.android.youtube.player.YouTubePlayerView
-             android:id="@+id/youtubePlayer"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content" />
-
-         <LinearLayout
-             android:id="@+id/llmovie"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_marginVertical="20dp"
-             android:orientation="horizontal"
-             app:layout_constraintEnd_toEndOf="parent"
-             app:layout_constraintStart_toStartOf="parent"
-             app:layout_constraintTop_toBottomOf="@+id/youtubePlayer">
-
-             <androidx.cardview.widget.CardView
-                 android:id="@+id/c_movie"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:background="@color/card_bg_dark"
-                 android:layout_marginStart="20dp"
-                 app:cardCornerRadius="10dp">
-
-                 <ImageView
-                     android:id="@+id/imgMovie"
-                     android:layout_width="118dp"
-                     android:layout_height="170dp"
-                     android:scaleType="centerCrop"
-                     tools:srcCompat="@tools:sample/backgrounds/scenic" />
-
-             </androidx.cardview.widget.CardView>
-
-             <LinearLayout
-                 android:layout_width="wrap_content"
-                 android:layout_height="match_parent"
-                 android:orientation="vertical">
-
-                 <TextView
-                     android:id="@+id/tvMovieName"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_marginStart="20dp"
-                     android:ellipsize="end"
-                     android:padding="8dp"
-                     android:text="This is hre title of newfadffadsfadffadfadfa movies"
-                     android:textColor="@color/white"
-                     android:textSize="24sp" />
-
-                 <TextView
-                     android:layout_marginStart="20dp"
-                     android:paddingStart="8dp"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="Last updated on:"
-                     android:textColor="@color/teal_700"/>
-
-                 <TextView
-                     android:id="@+id/tvDate"
-                     android:layout_marginStart="20dp"
-                     android:paddingStart="8dp"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="22-05-2022 19:96 PM"
-                     android:textColor="@color/teal_200"/>
-
-                 <LinearLayout
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_marginStart="20dp"
-                     android:paddingTop="8dp">
-
-                     <TextView
-                         android:paddingStart="8dp"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="Posted by:"
-                         android:textColor="@color/teal_700"/>
-
-                     <TextView
-                         android:id="@+id/tvAdmin"
-                         android:paddingStart="8dp"
-                         android:layout_width="wrap_content"
-                         android:layout_height="wrap_content"
-                         android:text="G Prajapati"
-                         android:textColor="#FFFF8D"/>
-
-                 </LinearLayout>
-
-             </LinearLayout>
-
-         </LinearLayout>
-
-         <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             app:layout_constraintTop_toBottomOf="@id/llmovie"
-             android:orientation="vertical"
-             android:layout_margin="20dp">
-
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="Description "
-                 android:textColor="@color/teal_200"
-                 android:textSize="20dp"
-                 />
-
-             <TextView
-                 android:id="@+id/tvDes"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="movir frdsjskfg gsfjgs "
-                 android:textColor="@color/white"
-                 android:textSize="16dp"
-                 />
-
-             <LinearLayout
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:orientation="horizontal"
-                 android:layout_marginTop="40dp">
-
-                 <com.google.android.material.card.MaterialCardView
-                     android:id="@+id/c_shareBtn"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_weight="1"
-                     app:cardCornerRadius="10dp"
-                     app:strokeColor="@color/card_bg_dark"
-                     app:strokeWidth="1dp"
-                     android:layout_marginEnd="10dp"
-                     android:clickable="true"
-                     android:focusable="true"
-                     android:foreground="?attr/selectableItemBackground">
-
-                     <RelativeLayout
-                         android:layout_width="match_parent"
-                         android:layout_height="match_parent"
-                         android:background="@color/black"
-                         android:gravity="center"
-                         android:padding="10dp">
-
-                         <TextView
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:text="Share"
-                             android:textColor="@color/teal_200"
-                             android:textSize="16sp" />
-
-                     </RelativeLayout>
-
-                 </com.google.android.material.card.MaterialCardView>
-
-                 <com.google.android.material.card.MaterialCardView
-                     android:id="@+id/c_downloadBtn"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content"
-                     android:layout_weight="1"
-                     app:cardCornerRadius="10dp"
-                     android:layout_marginStart="10dp"
-                     android:clickable="true"
-                     android:focusable="true"
-                     android:foreground="?attr/selectableItemBackground">
-
-                     <RelativeLayout
-                         android:layout_width="match_parent"
-                         android:layout_height="match_parent"
-                         android:background="@color/card_bg_dark"
-                         android:gravity="center"
-                         android:padding="10dp">
-
-                         <TextView
-                             android:id="@+id/btnDownload"
-                             android:layout_width="wrap_content"
-                             android:layout_height="wrap_content"
-                             android:text="Download Here"
-                             android:textColor="@color/white"
-                             android:textSize="16sp" />
-
-                     </RelativeLayout>
-
-                 </com.google.android.material.card.MaterialCardView>
-
-             </LinearLayout>
-
-             <TextView
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="20dp"
-                 android:text="Q. How to watch or download movies? "
-                 android:textColor="@color/white"
-                 android:textSize="20dp"
-                 />
-
-             <TextView
-                 android:paddingTop="8dp"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:text="@string/guide_download"
-                 android:textColor="@color/teal_200"
-                 android:textSize="16dp"
-                 />
-
-         </LinearLayout>
-
-     </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
 
 
- </ScrollView>
+            <com.google.android.youtube.player.YouTubePlayerView
+                android:id="@+id/youtubePlayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/llmovie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="20dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/youtubePlayer">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/c_movie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/card_bg_dark"
+                    android:layout_marginStart="20dp"
+                    app:cardCornerRadius="10dp">
+
+                    <ImageView
+                        android:id="@+id/imgMovie"
+                        android:layout_width="118dp"
+                        android:layout_height="170dp"
+                        android:scaleType="centerCrop"
+                        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+                </androidx.cardview.widget.CardView>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvMovieName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:ellipsize="end"
+                        android:padding="8dp"
+                        android:text="This is hre title of newfadffadsfadffadfadfa movies"
+                        android:textColor="@color/white"
+                        android:textSize="24sp" />
+
+                    <TextView
+                        android:layout_marginStart="20dp"
+                        android:paddingStart="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Last updated on:"
+                        android:textColor="@color/teal_700"/>
+
+                    <TextView
+                        android:id="@+id/tvDate"
+                        android:layout_marginStart="20dp"
+                        android:paddingStart="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="22-05-2022 19:96 PM"
+                        android:textColor="@color/teal_200"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:paddingTop="8dp">
+
+                        <TextView
+                            android:paddingStart="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Posted by:"
+                            android:textColor="@color/teal_700"/>
+
+                        <TextView
+                            android:id="@+id/tvAdmin"
+                            android:paddingStart="8dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="G Prajapati"
+                            android:textColor="#FFFF8D"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/llmovie"
+                android:orientation="vertical"
+                android:layout_margin="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Description "
+                    android:textColor="@color/teal_200"
+                    android:textSize="20dp"
+                    />
+
+                <TextView
+                    android:id="@+id/tvDes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="movir frdsjskfg gsfjgs "
+                    android:textColor="@color/white"
+                    android:textSize="16dp"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="40dp">
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/c_shareBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="10dp"
+                        app:strokeColor="@color/card_bg_dark"
+                        app:strokeWidth="1dp"
+                        android:layout_marginEnd="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/black"
+                            android:gravity="center"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Share"
+                                android:textColor="@color/teal_200"
+                                android:textSize="16sp" />
+
+                        </RelativeLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/c_downloadBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        app:cardCornerRadius="10dp"
+                        android:layout_marginStart="10dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?attr/selectableItemBackground">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/card_bg_dark"
+                            android:gravity="center"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/btnDownload"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Download Here"
+                                android:textColor="@color/white"
+                                android:textSize="16sp" />
+
+                        </RelativeLayout>
+
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Q. How to watch or download movies? "
+                    android:textColor="@color/white"
+                    android:textSize="20dp"
+                    />
+
+                <TextView
+                    android:paddingTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/guide_download"
+                    android:textColor="@color/teal_200"
+                    android:textSize="16dp"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"

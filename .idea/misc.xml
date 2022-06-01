@@ -18,9 +18,12 @@
         <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/drawable/bg_header.xml" value="0.121" />
         <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/drawable/ic_baseline_downloading_24.xml" value="0.2195" />
         <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/drawable/ic_baseline_file_copy_24.xml" value="0.2065" />
+        <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/drawable/ic_outline_cancel_24.xml" value="0.2895" />
+        <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/drawable/ic_round_minimize_24.xml" value="0.2895" />
+        <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/drawable/ic_round_playlist_add_circle_24.xml" value="0.2895" />
         <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/font/.xml" value="0.3927083333333333" />
-        <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/layout/activity_download.xml" value="0.2427536231884058" />
-        <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/layout/activity_download.xml" value="0.25" />
+        <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/layout/activity_main.xml" value="0.16" />
         <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/layout/activity_splash.xml" value="0.2427536231884058" />
         <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/layout/activity_watch_list.xml" value="0.3625" />
         <entry key="..\:/Users/guddu/AndroidStudioProjects/Binge2/app/src/main/res/layout/dialog1_img.xml" value="0.2441123188405797" />

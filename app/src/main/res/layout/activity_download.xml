@@ -86,7 +86,7 @@
 
             <LinearLayout
                 android:id="@+id/llmovie"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="20dp"
                 android:orientation="horizontal"
@@ -112,8 +112,8 @@
                 </androidx.cardview.widget.CardView>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical">
 
                     <TextView
@@ -123,7 +123,8 @@
                         android:layout_marginStart="20dp"
                         android:ellipsize="end"
                         android:padding="8dp"
-                        android:text="This is hre title of newfadffadsfadffadfadfa movies"
+                        android:maxLines="4"
+                        android:text="@string/dummy"
                         android:textColor="@color/white"
                         android:textSize="24sp" />
 
@@ -165,7 +166,28 @@
                             android:text="G Prajapati"
                             android:textColor="#FFFF8D"/>
 
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="10dp"
+                            android:src="@drawable/ic_baseline_downloading_24" />
+
+                        <TextView
+                            android:id="@+id/tvViews"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="0 Downloads"
+                            android:textColor="@color/white"
+                            android:singleLine="true"
+                            android:ellipsize="marquee"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:scrollHorizontally="true" />
+
                     </LinearLayout>
+
 
                 </LinearLayout>
 

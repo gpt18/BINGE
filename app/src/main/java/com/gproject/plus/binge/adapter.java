@@ -6,6 +6,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.net.Uri;
 import android.text.Html;
@@ -36,6 +37,10 @@ import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.ResponseInfo;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder> {
 
@@ -63,18 +68,41 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             Glide.with(holder.imgMovie.getContext()).load(model.getImg()).into(holder.imgMovie);
         }
 
+
         holder.c_movie.setOnClickListener(new View.OnClickListener() {
+            String id;
+
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(v.getContext(),download.class);
-                i.putExtra("name", model.getName());
-                i.putExtra("img", model.getImg());
-                i.putExtra("date", model.getDate());
-                i.putExtra("des", model.getMessage());
-                i.putExtra("link", model.getLink());
-                i.putExtra("vid",model.getVid());
-                i.putExtra("admin",model.getAdmin());
-                v.getContext().startActivity(i);
+
+                FirebaseDatabase.getInstance().getReference("movies")
+                        .child(getRef(holder.getLayoutPosition()).getKey())
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                id = snapshot.getKey();
+                                Log.d("key", "onDataChange: "+id);
+                                Intent i = new Intent(v.getContext(),download.class);
+                                i.putExtra("name", model.getName());
+                                i.putExtra("img", model.getImg());
+                                i.putExtra("date", model.getDate());
+                                i.putExtra("des", model.getMessage());
+                                i.putExtra("link", model.getLink());
+                                i.putExtra("vid",model.getVid());
+                                i.putExtra("admin",model.getAdmin());
+                                i.putExtra("id", id);
+                                Log.d("key", "onDataChange2: "+id);
+                                v.getContext().startActivity(i);
+
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+
             }
         });
 

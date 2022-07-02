@@ -1,69 +1,43 @@
 package com.gproject.plus.binge;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.ActionBar;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdLoader;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import com.google.android.gms.ads.nativead.NativeAd;
-import com.google.android.gms.ads.nativead.NativeAdOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -75,8 +49,6 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -90,11 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
     ShimmerFrameLayout shimmer1, shimmer2;
 
-
-    //offline data storage
-    static {
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
       });
 
         databaseReference = FirebaseDatabase.getInstance().getReference("movies");
+        databaseReference.keepSynced(true);
 
         //--------------Header------------------//
 
@@ -187,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseRecyclerOptions<model> options
                 = new FirebaseRecyclerOptions.Builder<model>()
-                .setQuery(databaseReference.orderByChild("name"), model.class)
+                .setQuery(databaseReference.orderByChild("name").limitToFirst(51), model.class)
                 .build();
 
 
@@ -196,7 +164,44 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView1.setAdapter(adapter1);
 
+        deviceID();
 
+    }
+
+    private void deviceID(){
+
+        String android_id = Settings.Secure.getString(this.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
+        Log.d("Android123","Android ID : "+android_id);
+
+        FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String server_data_User = dataSnapshot.child("users").getKey();
+                    Log.d("PWActivity", "ValueEventListener : " + server_data_User);
+
+                    String server_data_PW = dataSnapshot.child("users").child(android_id).getValue(String.class);
+                    Log.d("PWActivity", "ValueEventListener : " + server_data_PW);
+
+                    if(dataSnapshot.hasChild(android_id))
+                    {
+                        Toast.makeText(MainActivity.this, "ID verified", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(MainActivity.this, "Not verified", Toast.LENGTH_SHORT).show();
+                        FirebaseDatabase.getInstance().getReference().child("users").child(android_id).setValue("online");
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
 
     }
 
@@ -314,11 +319,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void processSearch(String query) {
-        FirebaseRecyclerOptions<model> options
-                = new FirebaseRecyclerOptions.Builder<model>()
-                .setQuery(databaseReference.orderByChild("name").startAt(query.toUpperCase()).endAt(query.toUpperCase()+"\uf8ff"), model.class)
-                .build();
 
+        FirebaseRecyclerOptions<model> options;
+        if(query.equals("")){
+            options = new FirebaseRecyclerOptions.Builder<model>()
+                    .setQuery(databaseReference.orderByChild("name").limitToFirst(51), model.class)
+                    .build();
+        }
+        else {
+            options = new FirebaseRecyclerOptions.Builder<model>()
+                    .setQuery(databaseReference.orderByChild("name").startAt(query.toUpperCase()).endAt(query.toUpperCase() + "\uf8ff"), model.class)
+                    .build();
+
+        }
         adapter = new adapter(options);
         adapter.startListening();
         recyclerView.setAdapter(adapter);

@@ -34,10 +34,12 @@ public class imgDialogFragment extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.dialog1_img);
         ImageView imageView = findViewById(R.id.bigImg);
-        ImageView watchList = findViewById(R.id.watchList);
+
         Glide.with(getContext()).load(bImg).into(imageView);
 
-       watchList.setImageResource(R.drawable.ic_round_playlist_add_circle_24);
+
+
+
 
 //        Glide.with(getContext()).load("https://img.icons8.com/cotton/344/clock--v3.png").into(watchList);
     }

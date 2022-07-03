@@ -21,7 +21,8 @@
         android:theme="@style/Theme.Binge">
         <activity
             android:name=".watchList"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".download"
             android:exported="false" />

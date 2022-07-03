@@ -2,11 +2,14 @@ package com.gproject.plus.binge;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.room.Room;
 
 
+import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -16,6 +19,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,17 +47,25 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.gproject.plus.binge.room.mDao;
+import com.gproject.plus.binge.room.mDatabase;
+import com.gproject.plus.binge.room.mEntity;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class download extends YouTubeBaseActivity  {
     YouTubePlayerView youTubePlayerView;
 
-    ImageView back, imgMovie;
-    TextView tvMovieName, tvDate, tvDes, tvAdmin, tvViews;
+    ImageView back, imgMovie, imgWL;
+    TextView tvMovieName, tvDate, tvDes, tvAdmin, tvViews, tvWl;
     CardView c_shareBtn, c_downloadBtn;
+    LinearLayout watchList;
+
 
 
     private static final String AD_UNIT_ID = "ca-app-pub-8445679544199474/4683072154";
@@ -91,8 +103,7 @@ public class download extends YouTubeBaseActivity  {
 
 
 
-        youTubePlayerView.initialize("SOME KEY",
-                new YouTubePlayer.OnInitializedListener() {
+        youTubePlayerView.initialize("SOME KEY", new YouTubePlayer.OnInitializedListener() {
                     @Override
                     public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                                         YouTubePlayer youTubePlayer, boolean b) {
@@ -107,7 +118,7 @@ public class download extends YouTubeBaseActivity  {
                     }
                 });
         
-//        youTubePlayerView.initialize(API_KEY,listener);
+        //youTubePlayerView.initialize(API_KEY,listener);
 
         tvMovieName.setText(name);
         tvDate.setText(date);
@@ -130,48 +141,38 @@ public class download extends YouTubeBaseActivity  {
             @Override
             public void onClick(View v) {
 
-                Boolean verify = spCheck(id);
-
-                if(verify.equals(false)){
-
-                    databaseReference.child(id).child("views").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            if (!task.isSuccessful()) {
-                                Log.e("firebase", "Error getting data", task.getException());
-                            }
-                            else {
-                                String views = String.valueOf(task.getResult().getValue());
-                                Integer add = Integer.parseInt(views)+1;
-                                String update = String.valueOf(add);
-                                Map<String,Object> map = new HashMap<>();
-                                map.put("views",update);
-                                FirebaseDatabase.getInstance().getReference().child("movies")
-                                        .child(id).updateChildren(map)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                SharedPreferences sp = getSharedPreferences("downloads", MODE_PRIVATE);
-                                                SharedPreferences.Editor editor = sp.edit();
-                                                editor.putString(id, "true");
-                                                editor.apply();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-
-                                            }
-                                        });
-                            }
+                databaseReference.child(id).child("views").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e("firebase", "Error getting data", task.getException());
                         }
-                    });
+                        else {
+                            String views = String.valueOf(task.getResult().getValue());
+                            Integer add = Integer.parseInt(views)+1;
+                            String update = String.valueOf(add);
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("views",update);
+                            FirebaseDatabase.getInstance().getReference().child("movies")
+                                    .child(id).updateChildren(map)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            SharedPreferences sp = getSharedPreferences("downloads", MODE_PRIVATE);
+                                            SharedPreferences.Editor editor = sp.edit();
+                                            editor.putString(id, "true");
+                                            editor.apply();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
 
-                }
-
-
-
-
+                                        }
+                                    });
+                        }
+                    }
+                });
 
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -228,14 +229,94 @@ public class download extends YouTubeBaseActivity  {
             }
             });
 
+        watchList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDatabase db = Room.databaseBuilder(getApplicationContext(),
+                        mDatabase.class, "room_db").allowMainThreadQueries().build();
+                mDao moviesDao = db.moviesDao();
+                int check = moviesDao.isDataExist(id);
+
+
+                if (check == 0) {
+
+                    String timeStamp = new SimpleDateFormat("dd MMM, yyyy • hh:mm a", Locale.getDefault()).format(new Date());
+                    // data not exist.
+                    moviesDao.insertRecord(new
+                            mEntity(0, id, date, admin, name, img, des, link, vid, tvViews.getText().toString(), timeStamp));
+
+
+                    tvWl.setText("Watchlist Added");
+                    imgWL.setImageResource(R.drawable.ic_baseline_bookmark_added_24);
+                    Toast.makeText(download.this, "Adding to watchlist...", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    deleteDialog(id);
+                }
+
+            }
+
+
+        });
+
+
+
+        watchListCheck(id);
+
     }
 
-    private boolean spCheck(String id) {
+    private void deleteDialog(String key) {
+        AlertDialog dialog = new AlertDialog.Builder(download.this)
+                .setTitle("Delete entry")
+                .setMessage("Are you sure you want to delete this entry?")
 
-        SharedPreferences sp = getSharedPreferences("downloads", MODE_PRIVATE);
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Continue with delete operation
+                        mDatabase db = Room.databaseBuilder(getApplicationContext(),
+                                mDatabase.class, "room_db").allowMainThreadQueries().build();
+                        mDao moviesDao = db.moviesDao();
 
-        return sp.contains(id);
+                        //delete from room_db
+                        moviesDao.deleteByKey(key);
+
+                        tvWl.setText("Add to watchlist");
+                        imgWL.setImageResource(R.drawable.ic_baseline_bookmark_add_24);
+                        Toast.makeText(download.this, "Removing from watchlist...", Toast.LENGTH_SHORT).show();
+
+                    }
+
+
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton(android.R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
+
+
+    private void watchListCheck(String id) {
+        mDatabase db = Room.databaseBuilder(getApplicationContext(),
+                mDatabase.class, "room_db").allowMainThreadQueries().build();
+        mDao moviesDao = db.moviesDao();
+        int check = moviesDao.isDataExist(id);
+
+        if (check == 0) {
+            // data not exist.
+            tvWl.setText("Add to Watch list");
+            imgWL.setImageResource(R.drawable.ic_baseline_bookmark_add_24);
+
+        } else {
+            // data exist.
+            tvWl.setText("Remove from watchlist");
+            imgWL.setImageResource(R.drawable.ic_baseline_bookmark_added_24);
+
+        }
+    }
+
 
     private void hooker() {
         youTubePlayerView = findViewById(R.id.youtubePlayer);
@@ -248,6 +329,9 @@ public class download extends YouTubeBaseActivity  {
         c_shareBtn = findViewById(R.id.c_shareBtn);
         c_downloadBtn = findViewById(R.id.c_downloadBtn);
         tvViews = findViewById(R.id.tvViews);
+        watchList = findViewById(R.id.watchList);
+        tvWl = findViewById(R.id.tvWl);
+        imgWL = findViewById(R.id.imgWL);
     }
 
     private void views(String id) {

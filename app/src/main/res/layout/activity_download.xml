@@ -50,14 +50,16 @@
                 android:id="@+id/imgWL"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:src="@drawable/ic_round_playlist_add_circle_24"/>
+                android:layout_gravity="center"
+                android:src="@drawable/ic_baseline_bookmark_add_24"/>
 
             <TextView
+                android:id="@+id/tvWl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Watch List"
+                android:text="Add to Watch list"
                 android:textSize="11sp"
-                android:textAlignment="textEnd"
+                android:textAlignment="center"
                 android:textColor="@color/white"/>
 
         </LinearLayout>
@@ -108,6 +110,7 @@
                         android:layout_height="170dp"
                         android:scaleType="centerCrop"
                         tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
 
                 </androidx.cardview.widget.CardView>
 

@@ -8,6 +8,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
 import android.widget.LinearLayout;
 
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     FirebaseRemoteConfig remoteConfig;
 
     ShimmerFrameLayout shimmer1, shimmer2;
-
+    int page=1, limit=10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,47 +75,47 @@ public class MainActivity extends AppCompatActivity {
 
 
         toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
-          @Override
-          public boolean onMenuItemClick(MenuItem item) {
-              switch (item.getItemId()) {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
 
-                  case R.id.searchView:
+                    case R.id.searchView:
 
-                      androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) item.getActionView();
-                      searchView.setQueryHint("Type here to Search...");
-                      searchView.setBackground(new ColorDrawable(getResources().getColor(R.color.card_bg_dark)));
+                        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) item.getActionView();
+                        searchView.setQueryHint("Type here to Search...");
+                        searchView.setBackground(new ColorDrawable(getResources().getColor(R.color.card_bg_dark)));
 //                      toolbar.setBackgroundColor(Color.BLACK);
-                      searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-                          @Override
-                          public boolean onQueryTextSubmit(String query) {
-                              processSearch(query);
-                              return false;
-                          }
+                        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+                            @Override
+                            public boolean onQueryTextSubmit(String query) {
+                                processSearch(query);
+                                return false;
+                            }
 
-                          @Override
-                          public boolean onQueryTextChange(String query) {
-                              processSearch(query);
-                              return false;
-                          }
-                      });
+                            @Override
+                            public boolean onQueryTextChange(String query) {
+                                processSearch(query);
+                                return false;
+                            }
+                        });
 
-                      break;
+                        break;
 
-                  case R.id.more:
-                      moreDialog();
-                      break;
+                    case R.id.more:
+                        moreDialog();
+                        break;
 
-                  case R.id.watchList:
-                      Intent i = new Intent(MainActivity.this, watchList.class);
-                      startActivity(i);
-                      break;
+                    case R.id.watchList:
+                        Intent i = new Intent(MainActivity.this, watchList.class);
+                        startActivity(i);
+                        break;
 
-              }
+                }
 
-              return true;
-          }
+                return true;
+            }
 
-      });
+        });
 
         databaseReference = FirebaseDatabase.getInstance().getReference("movies");
         databaseReference.keepSynced(true);
@@ -143,14 +144,14 @@ public class MainActivity extends AppCompatActivity {
 //        recyclerView.setItemAnimator(null);
 //        recyclerView.setLayoutManager(mLayoutManager);
 
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-//        recyclerView.setLayoutManager(gridLayoutManager);
-//        recyclerView.setItemAnimator(null);
-
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        staggeredGridLayoutManager.scrollToPosition(10);
-        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(null);
+
+//        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
+//        staggeredGridLayoutManager.scrollToPosition(10);
+//        recyclerView.setLayoutManager(staggeredGridLayoutManager);
+//        recyclerView.setItemAnimator(null);
 
 
         FirebaseRecyclerOptions<model> options
@@ -165,6 +166,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView1.setAdapter(adapter1);
 
         deviceID();
+        getData(page, limit);
+
+    }
+
+    private void getData(int page, int limit) {
 
     }
 
@@ -187,10 +193,10 @@ public class MainActivity extends AppCompatActivity {
 
                     if(dataSnapshot.hasChild(android_id))
                     {
-                        Toast.makeText(MainActivity.this, "ID verified", Toast.LENGTH_SHORT).show();
+                        Log.d("deviceID", "ID verified");
 
                     } else {
-                        Toast.makeText(MainActivity.this, "Not verified", Toast.LENGTH_SHORT).show();
+                        Log.d("deviceID", "ID Not verified");
                         FirebaseDatabase.getInstance().getReference().child("users").child(android_id).setValue("online");
                     }
 
@@ -272,6 +278,7 @@ public class MainActivity extends AppCompatActivity {
         TextView version = myView.findViewById(R.id.version);
         LinearLayout telegram = myView.findViewById(R.id.telegram);
         LinearLayout request = myView.findViewById(R.id.request);
+        LinearLayout share = myView.findViewById(R.id.share);
 
         Glide.with(MainActivity.this).load("https://i.ibb.co/YPK0gHb/bing-admin.jpg").into(imgRequest);
         Glide.with(MainActivity.this)
@@ -293,6 +300,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(Intent.ACTION_VIEW).setData(Uri.parse("https://t.me/bingerequest")));
+            }
+        });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
+                String APP_LINK = sp.getString("app_link", "");
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String body = "Watch Latest Movies and WebSeries on BINGE+ App for Free. Download Now! "
+                        +"\n👉 "+APP_LINK
+                        +"\n\n"+"Telegram channel"+"\n"+"Find latest films and TV shows right here. https://t.me/+B8DH6ow_6OE4NWNl"
+                        +"\n\n"+"Telegram group"+"\n"+"Request films and web series here. https://t.me/bingerequest";
+                String sub = "Sharing Link! Download BINGE+";
+                intent.putExtra(Intent.EXTRA_SUBJECT,sub);
+                intent.putExtra(Intent.EXTRA_TEXT,body);
+                startActivity(Intent.createChooser(intent, "Share Using"));
             }
         });
 

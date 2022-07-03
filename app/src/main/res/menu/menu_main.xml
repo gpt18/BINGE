@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/watchList"
-        android:title="Search"
-        android:icon="@drawable/ic_baseline_playlist_add_check_circle_24"
+        android:title="Watch lists"
+        android:icon="@drawable/ic_outline_bookmarks_24"
         app:showAsAction="ifRoom|collapseActionView"/>
 
     <item
@@ -17,7 +17,7 @@
 
     <item
         android:id="@+id/more"
-        android:title="Search"
+        android:title="More"
         android:icon="@drawable/ic_baseline_more_vert_24"
         app:showAsAction="ifRoom|collapseActionView"/>
 

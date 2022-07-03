@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="#121212"
     tools:context=".watchList">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -33,6 +33,7 @@
 
 
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
@@ -55,13 +56,11 @@
            android:layout_height="match_parent"
            android:orientation="vertical">
 
-           <include layout="@layout/item_watch_list"/>
-           <include layout="@layout/item_watch_list"/>
-           <include layout="@layout/item_watch_list"/>
-
            <androidx.recyclerview.widget.RecyclerView
+               android:id="@+id/recView"
                android:layout_width="match_parent"
-               android:layout_height="match_parent" />
+               android:layout_height="match_parent"
+               />
 
        </LinearLayout>
 

@@ -7,6 +7,8 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.Image;
 import android.net.Uri;
 import android.text.Html;
@@ -69,7 +71,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         }
 
 
-        holder.c_movie.setOnClickListener(new View.OnClickListener() {
+        holder.imgMovie.setOnClickListener(new View.OnClickListener() {
             String id;
 
             @Override
@@ -103,6 +105,16 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                         });
 
 
+            }
+        });
+
+        holder.imgMovie.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                imgDialogFragment cdd = new imgDialogFragment((Activity) context, model.getImg());
+                cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                cdd.show();
+                return true;
             }
         });
 

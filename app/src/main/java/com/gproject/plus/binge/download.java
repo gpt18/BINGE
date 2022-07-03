@@ -251,7 +251,7 @@ public class download extends YouTubeBaseActivity  {
                     Toast.makeText(download.this, "Adding to watchlist...", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    deleteDialog(id);
+                    deleteDialog(id, name);
                 }
 
             }
@@ -265,10 +265,10 @@ public class download extends YouTubeBaseActivity  {
 
     }
 
-    private void deleteDialog(String key) {
+    private void deleteDialog(String key, String name) {
         AlertDialog dialog = new AlertDialog.Builder(download.this)
-                .setTitle("Delete entry")
-                .setMessage("Are you sure you want to delete this entry?")
+                .setTitle("Remove from watchlist")
+                .setMessage("Are you sure you want to remove: "+name+" from watchlist?"+"\n\n"+"delete_id: "+key)
 
                 // Specifying a listener allows you to take an action before dismissing the dialog.
                 // The dialog is automatically dismissed when a dialog button is clicked.

@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseRecyclerOptions<model> options
                 = new FirebaseRecyclerOptions.Builder<model>()
-                .setQuery(databaseReference.orderByChild("name").limitToFirst(51), model.class)
+                .setQuery(databaseReference.orderByChild("date").limitToFirst(51), model.class)
                 .build();
 
 

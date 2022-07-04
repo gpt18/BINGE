@@ -24,8 +24,19 @@
     </style>
 
 
-    <style name="toolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <style name="toolbar" parent="Theme.Material3.Dark">
+<!--    ThemeOverlay.AppCompat.Dark.ActionBar-->
 
+    </style>
 
+    <style name="Theme.MyTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:actionBarWidgetTheme">@style/Theme.MyTheme.Widget</item>
+        <!-- your other custom styles -->
+    </style>
+
+    <style name="Theme.MyTheme.Widget" parent="@android:style/Theme.Holo">
+        <item name="android:textColorHint">@android:color/white</item>
+        <item name="android:textColor">@android:color/black</item>
+        <!-- your other custom widget styles -->
     </style>
 </resources>

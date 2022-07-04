@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     FirebaseRemoteConfig remoteConfig;
 
     ShimmerFrameLayout shimmer1, shimmer2;
-    int page=1, limit=10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +83,6 @@ public class MainActivity extends AppCompatActivity {
                         androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) item.getActionView();
                         searchView.setQueryHint("Type here to Search...");
                         searchView.setBackground(new ColorDrawable(getResources().getColor(R.color.card_bg_dark)));
-//                      toolbar.setBackgroundColor(Color.BLACK);
                         searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
                             @Override
                             public boolean onQueryTextSubmit(String query) {
@@ -108,6 +106,10 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.watchList:
                         Intent i = new Intent(MainActivity.this, watchList.class);
                         startActivity(i);
+                        break;
+
+                    case R.id.search:
+                        startActivity(new Intent(MainActivity.this, Search.class));
                         break;
 
                 }
@@ -166,13 +168,9 @@ public class MainActivity extends AppCompatActivity {
         recyclerView1.setAdapter(adapter1);
 
         deviceID();
-        getData(page, limit);
 
     }
 
-    private void getData(int page, int limit) {
-
-    }
 
     private void deviceID(){
 

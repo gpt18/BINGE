@@ -14,14 +14,6 @@
         android:icon="@drawable/ic_baseline_search_24"
         app:showAsAction="ifRoom|collapseActionView"/>
 
-    <item
-        android:id="@+id/searchView"
-        android:title="Search"
-        android:icon="@drawable/ic_baseline_search_24"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="ifRoom|collapseActionView"/>
-
-
 
     <item
         android:id="@+id/more"

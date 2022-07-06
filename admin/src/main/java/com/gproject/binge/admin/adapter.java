@@ -64,6 +64,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         holder.tvDate.setText(model.getDate());
         holder.tvLink.setText(model.getLink());
         holder.tvVid.setText(model.getVid());
+        holder.tvViews.setText(model.getViews());
 
 
         if (model.getImg()==null){
@@ -259,7 +260,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
 
     public class myViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvAdmin,tvMovieName, tvMessage, tvDate, tvLink, tvVid;
+        TextView tvAdmin,tvMovieName, tvMessage, tvDate, tvLink, tvVid, tvViews;
         ImageView imgMovie, imgShareBtn, imgEditBtn;
 
         public myViewHolder(@NonNull View itemView) {
@@ -274,6 +275,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             imgShareBtn = itemView.findViewById(R.id.imgShareBtn);
             tvLink = itemView.findViewById(R.id.tvLink);
             tvVid = itemView.findViewById(R.id.tvVid);
+            tvViews = itemView.findViewById(R.id.tvViews);
         }
     }
 }

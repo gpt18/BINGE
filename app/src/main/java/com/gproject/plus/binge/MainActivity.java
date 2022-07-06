@@ -70,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
 
     ShimmerFrameLayout shimmer1, shimmer2;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,26 +87,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
 
-                    case R.id.searchView:
-
-                        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) item.getActionView();
-                        searchView.setQueryHint("Type here to Search...");
-                        searchView.setBackground(new ColorDrawable(getResources().getColor(R.color.card_bg_dark)));
-                        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
-                            @Override
-                            public boolean onQueryTextSubmit(String query) {
-                                processSearch(query);
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onQueryTextChange(String query) {
-                                processSearch(query);
-                                return false;
-                            }
-                        });
-
-                        break;
 
                     case R.id.more:
                         moreDialog();
@@ -145,22 +127,9 @@ public class MainActivity extends AppCompatActivity {
         //----------------Header-----------------//
 
 
-
-
-//        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
-//        mLayoutManager.setReverseLayout(true);
-//        mLayoutManager.setStackFromEnd(true);
-//        recyclerView.setItemAnimator(null);
-//        recyclerView.setLayoutManager(mLayoutManager);
-
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setItemAnimator(null);
-
-//        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-//        staggeredGridLayoutManager.scrollToPosition(10);
-//        recyclerView.setLayoutManager(staggeredGridLayoutManager);
-//        recyclerView.setItemAnimator(null);
 
 
         FirebaseRecyclerOptions<model> options
@@ -174,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView1.setAdapter(adapter1);
 
-        deviceID();
 
         shortName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,29 +230,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void deviceID(){
+    private void userCurrentStatus(String state){
 
-        String android_id = Settings.Secure.getString(this.getContentResolver(),
-                Settings.Secure.ANDROID_ID);
+        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
 
-        FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-
-
-                    if (!dataSnapshot.hasChild(android_id)) {
-                        FirebaseDatabase.getInstance().getReference().child("users").child(android_id).setValue("online");
-                    }
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+        FirebaseDatabase.getInstance().getReference().child("users").child(android_id).setValue(state);
 
     }
 
@@ -431,30 +381,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void processSearch(String query) {
-
-        FirebaseRecyclerOptions<model> options;
-        if(query.equals("")){
-            options = new FirebaseRecyclerOptions.Builder<model>()
-                    .setQuery(databaseReference.orderByChild("name").limitToFirst(51), model.class)
-                    .build();
-        }
-        else {
-            options = new FirebaseRecyclerOptions.Builder<model>()
-                    .setQuery(databaseReference.orderByChild("name").startAt(query.toUpperCase()).endAt(query.toUpperCase() + "\uf8ff"), model.class)
-                    .build();
-
-        }
-        adapter = new adapter(options);
-        adapter.startListening();
-        recyclerView.setAdapter(adapter);
-    }
 
     @Override
     public void onStart() {
         super.onStart();
         adapter.startListening();
         adapter1.startListening();
+
+        userCurrentStatus("online");
+
     }
 
     @Override
@@ -464,6 +399,13 @@ public class MainActivity extends AppCompatActivity {
         adapter1.stopListening();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        userCurrentStatus("offline");
+
+    }
 
     //****************************Checking In-AppUpdate using Firebase************************//
 

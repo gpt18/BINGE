@@ -1,5 +1,6 @@
 package com.gproject.binge.admin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,10 +22,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     ImageView imgLogout;
-    TextView tvUsername, tvUser;
+    TextView tvUsername, tvUser, tvUserOnline, tvUserOffline;
     FloatingActionButton fbAdd;
     SearchView searchView;
 
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         imgLogout = findViewById(R.id.imgLogout);
         tvUsername = findViewById(R.id.tvUsername);
         tvUser = findViewById(R.id.tvUser);
+        tvUserOnline = findViewById(R.id.tvUserOnline);
+        tvUserOffline = findViewById(R.id.tvUserOffline);
         fbAdd = findViewById(R.id.fbAdd);
         searchView = (SearchView) findViewById(R.id.searchView);
 
@@ -123,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMovieCount(String username) {
 
+        final int[] childCount = {0};
+        final int[] onlineCount = {0};
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -138,12 +145,41 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        FirebaseDatabase.getInstance().getReference("users").addValueEventListener(new ValueEventListener() {
+        DatabaseReference dbRefUser = FirebaseDatabase.getInstance().getReference("users");
+
+        dbRefUser.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                onlineCount[0] = 0;
+                for (DataSnapshot data : snapshot.getChildren()) {
+
+                    if (Objects.equals(data.getValue(), "online")){
+                        onlineCount[0]++;
+                    }
+                }
+                String online = "Online: "+ onlineCount[0];
+                tvUserOnline.setText(online);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        dbRefUser.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                int childCount = (int) dataSnapshot.getChildrenCount()-1;
-                String users = "Total Users: "+ childCount;
+                childCount[0] = (int) dataSnapshot.getChildrenCount()-1;
+
+                String users = "Total Users: "+ childCount[0];
                 tvUser.setText(users);
+
+
+
+                int offlineCount = childCount[0]-onlineCount[0];
+                String offline = "Offline: "+ offlineCount;
+                tvUserOffline.setText(offline);
             }
 
             @Override
@@ -152,6 +188,12 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+
+
+
+
+
+
     }
 
 

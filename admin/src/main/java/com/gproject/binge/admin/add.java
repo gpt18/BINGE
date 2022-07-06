@@ -93,6 +93,7 @@ public class add extends AppCompatActivity {
         map.put("link",itMovieLink.getText().toString());
         map.put("img", itImg.getText().toString());
         map.put("vid", itVid.getText().toString());
+        map.put("views", "0");
 
         String timeStamp = new SimpleDateFormat("dd MMM, yyyy • hh:mm a", Locale.getDefault()).format(new Date());
         map.put("date", timeStamp);

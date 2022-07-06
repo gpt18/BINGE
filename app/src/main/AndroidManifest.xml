@@ -23,8 +23,7 @@
             android:exported="false" />
         <activity
             android:name=".watchList"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
+            android:exported="false" />
         <activity
             android:name=".download"
             android:exported="false" />

@@ -20,6 +20,7 @@ import com.google.android.gms.ads.initialization.OnInitializationCompleteListene
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.SimpleDateFormat;
@@ -34,6 +35,7 @@ public class add extends AppCompatActivity {
     ImageView imgBack;
     TextInputEditText itMovieName, itMessage, itMovieLink, itImg, itVid;
     Button btnPublish;
+    DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("movies");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +83,11 @@ public class add extends AppCompatActivity {
     }
 
     private void insert() {
+
+        String key = dbRef.push().getKey();
+
         Map<String,Object> map = new HashMap<>();
+        map.put("id", key);
         map.put("name",itMovieName.getText().toString());
         map.put("message",itMessage.getText().toString());
         map.put("link",itMovieLink.getText().toString());
@@ -95,8 +101,7 @@ public class add extends AppCompatActivity {
         String username = sp.getString("username", "");
         map.put("admin",username);
 
-        FirebaseDatabase.getInstance().getReference().child("movies").push()
-                .setValue(map)
+        dbRef.child(key).setValue(map)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

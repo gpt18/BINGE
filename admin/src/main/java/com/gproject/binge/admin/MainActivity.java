@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 public class MainActivity extends AppCompatActivity {
 
     ImageView imgLogout;
-    TextView tvUsername;
+    TextView tvUsername, tvUser;
     FloatingActionButton fbAdd;
     SearchView searchView;
 
@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
         imgLogout = findViewById(R.id.imgLogout);
         tvUsername = findViewById(R.id.tvUsername);
+        tvUser = findViewById(R.id.tvUser);
         fbAdd = findViewById(R.id.fbAdd);
         searchView = (SearchView) findViewById(R.id.searchView);
 
@@ -128,6 +129,21 @@ public class MainActivity extends AppCompatActivity {
                 int childCount = (int) dataSnapshot.getChildrenCount();
                 String subTitle = username+" | "+"Total Items: "+ childCount;
                 tvUsername.setText(subTitle);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+        FirebaseDatabase.getInstance().getReference("users").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int childCount = (int) dataSnapshot.getChildrenCount()-1;
+                String users = "Total Users: "+ childCount;
+                tvUser.setText(users);
             }
 
             @Override

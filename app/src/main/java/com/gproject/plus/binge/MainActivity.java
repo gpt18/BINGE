@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -24,6 +26,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,8 +59,12 @@ public class MainActivity extends AppCompatActivity {
     adapter adapter, adapter1;
     DatabaseReference databaseReference;
     RecyclerView recyclerView, recyclerView1;
-    TextView tvUsername;
+    TextView tvUsername, tvShortName, tvShortDate, tvShortViews;
     MaterialToolbar toolbar;
+    RelativeLayout shortName, shortDate, shortViews;
+    LinearLayout svSort;
+    ImageView imgSort;
+    String sortChild = "Name";
 
     FirebaseRemoteConfig remoteConfig;
 
@@ -158,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseRecyclerOptions<model> options
                 = new FirebaseRecyclerOptions.Builder<model>()
-                .setQuery(databaseReference.orderByChild("date").limitToFirst(51), model.class)
+                .setQuery(databaseReference.orderByChild("name").limitToFirst(51), model.class)
                 .build();
 
 
@@ -169,32 +176,104 @@ public class MainActivity extends AppCompatActivity {
 
         deviceID();
 
+        shortName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortChild = "name";
+                sortColor();
+                shortName.setBackgroundColor(getResources().getColor(R.color.teal_700));
+                tvShortName.setTextColor(getResources().getColor(R.color.white));
+                FirebaseRecyclerOptions<model> options
+                        = new FirebaseRecyclerOptions.Builder<model>()
+                        .setQuery(databaseReference.orderByChild("name").limitToFirst(51), model.class)
+                        .build();
+
+                adapter = new adapter(options, getApplicationContext());
+                recyclerView.setAdapter(adapter);
+                adapter.startListening();
+
+            }
+        });
+
+        shortDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortChild = "date";
+                sortColor();
+                shortDate.setBackgroundColor(getResources().getColor(R.color.teal_700));
+                tvShortDate.setTextColor(getResources().getColor(R.color.white));
+                FirebaseRecyclerOptions<model> options
+                        = new FirebaseRecyclerOptions.Builder<model>()
+                        .setQuery(databaseReference.orderByChild("date").limitToFirst(51), model.class)
+                        .build();
+
+                adapter = new adapter(options, getApplicationContext());
+                recyclerView.setAdapter(adapter);
+                adapter.startListening();
+
+            }
+        });
+
+        shortViews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sortChild = "views";
+                sortColor();
+                shortViews.setBackgroundColor(getResources().getColor(R.color.teal_700));
+                tvShortViews.setTextColor(getResources().getColor(R.color.white));
+                FirebaseRecyclerOptions<model> options
+                        = new FirebaseRecyclerOptions.Builder<model>()
+                        .setQuery(databaseReference.orderByChild("views").limitToFirst(51), model.class)
+                        .build();
+
+                adapter = new adapter(options, getApplicationContext());
+                recyclerView.setAdapter(adapter);
+                adapter.startListening();
+
+            }
+        });
+
+        imgSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseRecyclerOptions<model> options
+                        = new FirebaseRecyclerOptions.Builder<model>()
+                        .setQuery(databaseReference.orderByChild(sortChild).limitToLast(51), model.class)
+                        .build();
+
+                adapter = new adapter(options, getApplicationContext());
+                recyclerView.setAdapter(adapter);
+                adapter.startListening();
+
+            }
+        });
+
+
+
     }
 
+    public void sortColor(){
+        tvShortName.setTextColor(getResources().getColor(R.color.teal_200));
+        tvShortDate.setTextColor(getResources().getColor(R.color.teal_200));
+        tvShortViews.setTextColor(getResources().getColor(R.color.teal_200));
+        shortName.setBackgroundColor(getResources().getColor(R.color.black));
+        shortDate.setBackgroundColor(getResources().getColor(R.color.black));
+        shortViews.setBackgroundColor(getResources().getColor(R.color.black));
+
+    }
 
     private void deviceID(){
 
         String android_id = Settings.Secure.getString(this.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
-        Log.d("Android123","Android ID : "+android_id);
-
         FirebaseDatabase.getInstance().getReference().child("users").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    String server_data_User = dataSnapshot.child("users").getKey();
-                    Log.d("PWActivity", "ValueEventListener : " + server_data_User);
 
-                    String server_data_PW = dataSnapshot.child("users").child(android_id).getValue(String.class);
-                    Log.d("PWActivity", "ValueEventListener : " + server_data_PW);
 
-                    if(dataSnapshot.hasChild(android_id))
-                    {
-                        Log.d("deviceID", "ID verified");
-
-                    } else {
-                        Log.d("deviceID", "ID Not verified");
+                    if (!dataSnapshot.hasChild(android_id)) {
                         FirebaseDatabase.getInstance().getReference().child("users").child(android_id).setValue("online");
                     }
 
@@ -230,6 +309,7 @@ public class MainActivity extends AppCompatActivity {
                 shimmer2.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 recyclerView1.setVisibility(View.VISIBLE);
+                svSort.setVisibility(View.VISIBLE);
             }
         }.start();
 
@@ -260,6 +340,14 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         shimmer1 = findViewById(R.id.shimmer1);
         shimmer2 = findViewById(R.id.shimmer2);
+        shortName = findViewById(R.id.shortName);
+        shortDate = findViewById(R.id.shortDate);
+        shortViews = findViewById(R.id.shortViews);
+        tvShortName = findViewById(R.id.tvShortName);
+        tvShortDate = findViewById(R.id.tvShortDate);
+        tvShortViews = findViewById(R.id.tvShortViews);
+        svSort = findViewById(R.id.svSort);
+        imgSort = findViewById(R.id.imgSort);
 
     }
 

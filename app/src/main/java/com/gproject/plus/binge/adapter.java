@@ -39,10 +39,15 @@ import com.google.android.gms.ads.OnPaidEventListener;
 import com.google.android.gms.ads.ResponseInfo;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder> {
 
@@ -71,38 +76,107 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         }
 
 
+
+
+//        FirebaseDatabase.getInstance().getReference("movies")
+//                .child(getRef(holder.getLayoutPosition()).getKey())
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        int i = 0;
+//                        for (DataSnapshot data : snapshot.getChildren()) {
+//
+//                        }
+//
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
+
+
+//        FirebaseDatabase.getInstance().getReference().child("movies")
+//                .child(id).updateChildren(map)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                    @Override
+//                    public void onSuccess(Void unused) {
+//
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//
+//                    }
+//                });
+
+//        if(model.getId().equals("null")){
+//            Map<String,Object> map = new HashMap<>();
+//            map.put("id","0");
+//            FirebaseDatabase.getInstance().getReference().child("movies")
+//                    .child(id).updateChildren(map)
+//                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+//                        @Override
+//                        public void onSuccess(Void unused) {
+//
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//
+//                        }
+//                    });
+//        }
+
+
         holder.imgMovie.setOnClickListener(new View.OnClickListener() {
-            String id;
 
             @Override
             public void onClick(View v) {
 
-                FirebaseDatabase.getInstance().getReference("movies")
-                        .child(getRef(holder.getLayoutPosition()).getKey())
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                id = snapshot.getKey();
-                                Log.d("key", "onDataChange: "+id);
-                                Intent i = new Intent(v.getContext(),download.class);
-                                i.putExtra("name", model.getName());
-                                i.putExtra("img", model.getImg());
-                                i.putExtra("date", model.getDate());
-                                i.putExtra("des", model.getMessage());
-                                i.putExtra("link", model.getLink());
-                                i.putExtra("vid",model.getVid());
-                                i.putExtra("admin",model.getAdmin());
-                                i.putExtra("id", id);
-                                Log.d("key", "onDataChange2: "+id);
-                                v.getContext().startActivity(i);
+                Intent i = new Intent(v.getContext(),download.class);
+                i.putExtra("name", model.getName());
+                i.putExtra("img", model.getImg());
+                i.putExtra("date", model.getDate());
+                i.putExtra("des", model.getMessage());
+                i.putExtra("link", model.getLink());
+                i.putExtra("vid",model.getVid());
+                i.putExtra("admin",model.getAdmin());
+                i.putExtra("id", model.getId());
+                v.getContext().startActivity(i);
 
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
+//
+//                FirebaseDatabase.getInstance().getReference("movies")
+//                        .child(getRef(holder.getLayoutPosition()).getKey())
+//                        .addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                id = snapshot.getKey();
+//                                Log.d("key", "onDataChange: "+id);
+//                                Intent i = new Intent(v.getContext(),download.class);
+//                                i.putExtra("name", model.getName());
+//                                i.putExtra("img", model.getImg());
+//                                i.putExtra("date", model.getDate());
+//                                i.putExtra("des", model.getMessage());
+//                                i.putExtra("link", model.getLink());
+//                                i.putExtra("vid",model.getVid());
+//                                i.putExtra("admin",model.getAdmin());
+//                                i.putExtra("id", id);
+//                                Log.d("key", "onDataChange2: "+id);
+//                                v.getContext().startActivity(i);
+//
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                            }
+//                        });
 
 
             }

@@ -66,6 +66,8 @@ public class download extends YouTubeBaseActivity  {
     CardView c_shareBtn, c_downloadBtn;
     LinearLayout watchList;
 
+    mDatabase db;
+
 
 
     private static final String AD_UNIT_ID = "ca-app-pub-8445679544199474/4683072154";
@@ -158,10 +160,7 @@ public class download extends YouTubeBaseActivity  {
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
-                                            SharedPreferences sp = getSharedPreferences("downloads", MODE_PRIVATE);
-                                            SharedPreferences.Editor editor = sp.edit();
-                                            editor.putString(id, "true");
-                                            editor.apply();
+
                                         }
                                     })
                                     .addOnFailureListener(new OnFailureListener() {
@@ -335,6 +334,7 @@ public class download extends YouTubeBaseActivity  {
     }
 
     private void views(String id) {
+
         databaseReference.child(id).child("views").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -366,8 +366,8 @@ public class download extends YouTubeBaseActivity  {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 String views = (String) dataSnapshot.getValue();
-                                String subTitle =  views + " Downloads";
-                                tvViews.setText(subTitle);
+                                String download =  views + " Downloads";
+                                tvViews.setText(download);
 
                             }
 
@@ -438,4 +438,6 @@ public class download extends YouTubeBaseActivity  {
 
         showInterstitial();
     }
+
+
 }

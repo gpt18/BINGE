@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ClipData;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,8 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class Search extends AppCompatActivity {
 
@@ -34,7 +39,7 @@ public class Search extends AppCompatActivity {
     FirebaseRecyclerOptions<model> options;
     SearchAdapter SearchAdapter;
 
-    TextView not_found;
+    TextView not_found, tvInfo;
 
     private  List<model> itemList;
 
@@ -46,6 +51,7 @@ public class Search extends AppCompatActivity {
         imageView = findViewById(R.id.imageView4);
         recyclerView = findViewById(R.id.recyclerView);
         not_found = findViewById(R.id.not_found);
+        tvInfo = findViewById(R.id.tvInfo);
         searchView = findViewById(R.id.searchView);
         searchView.requestFocus();
 
@@ -54,7 +60,7 @@ public class Search extends AppCompatActivity {
 
 
         Glide.with(this)
-                .load(R.drawable.not_found_box)
+                .load(R.drawable.searching)
                 .into(imageView);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
@@ -62,6 +68,7 @@ public class Search extends AppCompatActivity {
         recyclerView.setItemAnimator(null);
 
         databaseReference = FirebaseDatabase.getInstance().getReference("movies");
+
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -101,6 +108,7 @@ public class Search extends AppCompatActivity {
     private void filterList(String text) {
         List<model> filteredList = new ArrayList<>();
         String notFound = "No results for: "+text;
+
         for (model item : itemList){
             if (item.getName().toLowerCase().contains(text.toLowerCase())){
                 filteredList.add(item);
@@ -123,6 +131,7 @@ public class Search extends AppCompatActivity {
             else {
                 imageView.setVisibility(View.GONE);
                 not_found.setVisibility(View.GONE);
+                tvInfo.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 recyclerView.setAdapter(SearchAdapter);
                 SearchAdapter.setFilteredList(filteredList);

@@ -27,6 +27,16 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search_info"
+        android:textColor="@color/teal_200"
+        android:textAlignment="center"
+        android:padding="10dp"/>
+
+
+    <TextView
         android:id="@+id/not_found"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,15 +44,14 @@
         android:text="Ready to Search... 🔍"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="60dp"
         android:textStyle="bold" />
 
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="300dp"
         android:layout_height="300dp"
-        android:layout_marginTop="30dp"
-        app:srcCompat="@drawable/not_found_box" />
+        app:srcCompat="@drawable/searching" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

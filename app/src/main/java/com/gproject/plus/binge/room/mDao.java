@@ -20,4 +20,6 @@ public interface mDao {
 
     @Query("DELETE FROM mEntity WHERE m_key = :key")
     void deleteByKey(String key);
+
+
 }

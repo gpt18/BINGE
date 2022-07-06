@@ -23,6 +23,7 @@ public class watchList extends AppCompatActivity {
     ImageView imgHeader;
     RecyclerView recView;
     Toolbar toolbar;
+    mDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +52,19 @@ public class watchList extends AppCompatActivity {
         recView = findViewById(R.id.recView);
         recView.setLayoutManager(new LinearLayoutManager(this));
 
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+//        layoutManager.setReverseLayout(true);
+//        layoutManager.setStackFromEnd(true);
+//        recView.setLayoutManager(layoutManager);
+//        recView.setItemAnimator(null);
+
         List<mEntity> moviesTable =  moviesDao.getAllMovies();
 
         mAdapter adapter = new mAdapter(moviesTable);
         recView.setAdapter(adapter);
+
+
+
     }
+
 }

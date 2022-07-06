@@ -84,29 +84,31 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewHold
             @Override
             public void onClick(View v) {
 
-                FirebaseDatabase.getInstance().getReference("movies").child(getRef(holder.getLayoutPosition()).getKey())
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                id = snapshot.getKey();
-                                Intent i = new Intent(v.getContext(),download.class);
-                                i.putExtra("name", itemList.get(position).getName());
-                                i.putExtra("img", itemList.get(position).getImg());
-                                i.putExtra("date", itemList.get(position).getDate());
-                                i.putExtra("des", itemList.get(position).getMessage());
-                                i.putExtra("link", itemList.get(position).getLink());
-                                i.putExtra("vid",itemList.get(position).getVid());
-                                i.putExtra("admin",itemList.get(position).getAdmin());
-                                i.putExtra("id", id);
-                                v.getContext().startActivity(i);
+                Intent i = new Intent(v.getContext(),download.class);
+                i.putExtra("name", itemList.get(position).getName());
+                i.putExtra("img", itemList.get(position).getImg());
+                i.putExtra("date", itemList.get(position).getDate());
+                i.putExtra("des", itemList.get(position).getMessage());
+                i.putExtra("link", itemList.get(position).getLink());
+                i.putExtra("vid",itemList.get(position).getVid());
+                i.putExtra("admin",itemList.get(position).getAdmin());
+                i.putExtra("id", itemList.get(position).getId());
+                v.getContext().startActivity(i);
 
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-
-                            }
-                        });
+//                FirebaseDatabase.getInstance().getReference("movies").child(getRef(position).getKey())
+//                        .addListenerForSingleValueEvent(new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                id = snapshot.getKey();
+//
+//
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(@NonNull DatabaseError error) {
+//
+//                            }
+//                        });
 
 
             }
@@ -124,6 +126,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewHold
 
 
     }
+
+//    private DatabaseReference getRef(int position) {
+//
+//        return key;
+//    }
 
     @Override
     public int getItemCount() {

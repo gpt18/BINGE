@@ -166,115 +166,136 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="10dp">
+         <LinearLayout
+             android:id="@+id/svSort"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:padding="10dp"
+             android:gravity="center_vertical"
+             android:visibility="gone">
+
+             <TextView
+                 android:id="@+id/textView10"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:text="Sort by: "
+                 android:layout_marginStart="16dp"
+                 android:textColor="@color/teal_700"/>
+
+             <ImageView
+                 android:id="@+id/imgSort"
+                 android:layout_width="wrap_content"
+                 android:layout_height="match_parent"
+                 ads:srcCompat="@drawable/ic_baseline_sort_24" />
+
+             <HorizontalScrollView
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content">
+
+                 <LinearLayout
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:gravity="center_vertical">
 
 
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sort by: "
-                    android:layout_marginStart="16dp"
-                    android:textColor="@color/teal_700"/>
+                     <com.google.android.material.card.MaterialCardView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         app:cardCornerRadius="20dp"
+                         app:strokeColor="@color/card_bg_dark"
+                         app:strokeWidth="1dp"
+                         android:layout_marginStart="10dp"
+                         android:clickable="true"
+                         android:focusable="true"
+                         android:foreground="?attr/selectableItemBackground">
 
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    ads:srcCompat="@drawable/ic_baseline_sort_24" />
+                         <RelativeLayout
+                             android:id="@+id/shortName"
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"
+                             android:background="@color/teal_700"
+                             android:gravity="center"
+                             android:padding="10dp">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp"
-                    app:strokeColor="@color/card_bg_dark"
-                    app:strokeWidth="1dp"
-                    android:layout_marginStart="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground">
+                             <TextView
+                                 android:id="@+id/tvShortName"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:text="Name"
+                                 android:textColor="@color/white"
+                                 android:textSize="16sp" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/black"
-                        android:gravity="center"
-                        android:padding="10dp">
+                         </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Name"
-                            android:textColor="@color/teal_200"
-                            android:textSize="16sp" />
+                     </com.google.android.material.card.MaterialCardView>
 
-                    </RelativeLayout>
+                     <com.google.android.material.card.MaterialCardView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         app:cardCornerRadius="20dp"
+                         app:strokeColor="@color/card_bg_dark"
+                         app:strokeWidth="1dp"
+                         android:layout_marginStart="10dp"
+                         android:clickable="true"
+                         android:focusable="true"
+                         android:foreground="?attr/selectableItemBackground">
 
-                </com.google.android.material.card.MaterialCardView>
+                         <RelativeLayout
+                             android:id="@+id/shortDate"
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"
+                             android:background="@color/black"
+                             android:gravity="center"
+                             android:padding="10dp">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp"
-                    app:strokeColor="@color/card_bg_dark"
-                    app:strokeWidth="1dp"
-                    android:layout_marginStart="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground">
+                             <TextView
+                                 android:id="@+id/tvShortDate"
+                                 android:layout_width="wrap_content"
+                                 android:layout_height="wrap_content"
+                                 android:text="Upload Date"
+                                 android:textColor="@color/teal_200"
+                                 android:textSize="16sp" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/black"
-                        android:gravity="center"
-                        android:padding="10dp">
+                         </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Date"
-                            android:textColor="@color/teal_200"
-                            android:textSize="16sp" />
+                     </com.google.android.material.card.MaterialCardView>
 
-                    </RelativeLayout>
+                     <com.google.android.material.card.MaterialCardView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         app:cardCornerRadius="20dp"
+                         app:strokeColor="@color/card_bg_dark"
+                         app:strokeWidth="1dp"
+                         android:layout_marginStart="10dp"
+                         android:clickable="true"
+                         android:focusable="true"
+                         android:foreground="?attr/selectableItemBackground">
 
-                </com.google.android.material.card.MaterialCardView>
+                         <RelativeLayout
+                             android:id="@+id/shortViews"
+                             android:layout_width="match_parent"
+                             android:layout_height="match_parent"
+                             android:background="@color/black"
+                             android:gravity="center"
+                             android:padding="10dp">
 
-                <com.google.android.material.card.MaterialCardView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:cardCornerRadius="20dp"
-                    app:strokeColor="@color/card_bg_dark"
-                    app:strokeWidth="1dp"
-                    android:layout_marginStart="10dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground">
+                             <TextView
+                                 android:id="@+id/tvShortViews"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="match_parent"
+                                 android:text="Downloads"
+                                 android:textColor="@color/teal_200"
+                                 android:textSize="16sp" />
 
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/black"
-                        android:gravity="center"
-                        android:padding="10dp">
+                         </RelativeLayout>
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Downloads"
-                            android:textColor="@color/teal_200"
-                            android:textSize="16sp" />
+                     </com.google.android.material.card.MaterialCardView>
 
-                    </RelativeLayout>
+                 </LinearLayout>
 
-                </com.google.android.material.card.MaterialCardView>
+             </HorizontalScrollView>
 
-            </LinearLayout>
+         </LinearLayout>
 
             <com.facebook.shimmer.ShimmerFrameLayout
                 android:id="@+id/shimmer2"
@@ -354,6 +375,15 @@
 
             </androidx.recyclerview.widget.RecyclerView>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/pagination"
+                android:textColor="@color/teal_200"
+                android:padding="10dp"
+                android:textAlignment="center"/>
+
+
 
             <ProgressBar
                 android:id="@+id/progressBar2"
@@ -361,6 +391,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"/>
+
+
+
 
             <com.google.android.gms.ads.AdView
                 android:id="@+id/adView"

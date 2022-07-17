@@ -397,13 +397,13 @@ public class MainActivity extends AppCompatActivity {
         super.onStop();
         adapter.stopListening();
         adapter1.stopListening();
+        userCurrentStatus("offline");
     }
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-
         userCurrentStatus("offline");
+        super.onDestroy();
 
     }
 

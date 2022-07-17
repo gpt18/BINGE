@@ -19,6 +19,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Binge">
         <activity
+            android:name=".webPlayer"
+            android:exported="true"
+            android:screenOrientation="sensor"
+            android:configChanges="orientation|screenSize"/>
+        <activity
+            android:name=".firebaseDb.pagination"
+            android:exported="false" />
+        <activity
             android:name=".Search"
             android:exported="false" />
         <activity
@@ -29,7 +37,8 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false" /> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+            android:exported="false"
+            android:screenOrientation="portrait"/> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
             android:value="ca-app-pub-8445679544199474~3706399380" />

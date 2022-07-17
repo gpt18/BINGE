@@ -174,9 +174,10 @@ public class download extends YouTubeBaseActivity  {
                 });
 
                 try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(link));
-                    startActivity(intent);
+
+                    Intent i = new Intent(download.this, webPlayer.class);
+                    i.putExtra("url", link);
+                    startActivity(i);
                 }
                 catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
@@ -188,12 +189,22 @@ public class download extends YouTubeBaseActivity  {
         c_downloadBtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                final ClipData[] myClip = new ClipData[1];
-                final ClipboardManager clipboard = (ClipboardManager)
-                        getSystemService(Context.CLIPBOARD_SERVICE);
-                myClip[0] = ClipData.newPlainText("text", link);
-                clipboard.setPrimaryClip(myClip[0]);
-                Toast.makeText(download.this, "Link Copied", Toast.LENGTH_SHORT).show();
+//                final ClipData[] myClip = new ClipData[1];
+//                final ClipboardManager clipboard = (ClipboardManager)
+//                        getSystemService(Context.CLIPBOARD_SERVICE);
+//                myClip[0] = ClipData.newPlainText("text", link);
+//                clipboard.setPrimaryClip(myClip[0]);
+//                Toast.makeText(download.this, "Link Copied", Toast.LENGTH_SHORT).show();
+
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(link));
+                    startActivity(intent);
+                }
+                catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
+                }
+
                 return true;
             }
         });

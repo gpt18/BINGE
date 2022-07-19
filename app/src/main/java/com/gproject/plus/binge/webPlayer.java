@@ -3,6 +3,8 @@ package com.gproject.plus.binge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -11,14 +13,21 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
 
 import im.delight.android.webview.AdvancedWebView;
 
@@ -26,6 +35,10 @@ public class webPlayer extends AppCompatActivity {
 
     AdvancedWebView mWebView;
     SwipeRefreshLayout mySwipeRefreshLayout;
+    TextView tvUrl;
+    String url;
+    ImageView errorImg;
+    LinearLayout llError, llWebview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +46,17 @@ public class webPlayer extends AppCompatActivity {
         setContentView(R.layout.activity_web_player);
 
         mWebView = findViewById(R.id.webview);
+        tvUrl = findViewById(R.id.tvUrl);
+        errorImg = findViewById(R.id.errorImg);
+        llError = findViewById(R.id.llError);
+        llWebview = findViewById(R.id.llWebview);
         mySwipeRefreshLayout = findViewById(R.id.swipeContainer);
+
+        tvUrl.setSelected(true);
+
+        Glide.with(this)
+                .load(R.drawable.error)
+                .into(errorImg);
 
         mWebView.setMixedContentAllowed(false);
 
@@ -55,6 +78,8 @@ public class webPlayer extends AppCompatActivity {
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
+                        mWebView.clearHistory();
+                        mWebView.clearCache(true);
                         startWebView(url);
                         mySwipeRefreshLayout.setRefreshing(false);
                     }
@@ -66,6 +91,7 @@ public class webPlayer extends AppCompatActivity {
     private void startWebView(String url) {
 
         WebSettings settings = mWebView.getSettings();
+
 
         //Make sure No cookies are created
         CookieManager.getInstance().setAcceptCookie(false);
@@ -81,7 +107,19 @@ public class webPlayer extends AppCompatActivity {
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
+        llError.setVisibility(View.VISIBLE);
+        llWebview.setVisibility(View.GONE);
+
         mWebView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                super.onPageStarted(view, url, favicon);
+                url = mWebView.getUrl();
+                tvUrl.setText(url);
+                trimurl(url);
+
+            }
+
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 view.loadUrl(url);
@@ -90,9 +128,13 @@ public class webPlayer extends AppCompatActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
+                llError.setVisibility(View.GONE);
+                llWebview.setVisibility(View.VISIBLE);
+
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
                 }
+
             }
 
             @Override
@@ -105,6 +147,76 @@ public class webPlayer extends AppCompatActivity {
         mWebView.setWebChromeClient(new MyChrome());
         mWebView.loadUrl(url);
     }
+
+    private void trimurl(String url) {
+        if(url.contains("drive.google.com/uc?id=")){
+
+            llWebview.setVisibility(View.GONE);
+            llError.setVisibility(View.VISIBLE);
+            ViewDialog alertDialoge = new ViewDialog();
+            alertDialoge.showDialog(this, "PUT DIALOG TITLE");
+
+
+        }
+    }
+
+    public class ViewDialog {
+
+        public void showDialog(Activity activity, String msg) {
+
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.custom_dialog);
+
+
+            Button download = (Button) dialog.findViewById(R.id.btnDownload);
+            Button play = (Button) dialog.findViewById(R.id.btnPlay);
+            ImageView close = dialog.findViewById(R.id.close);
+
+
+            play.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    //Perfome Action
+
+                    String url1 = mWebView.getUrl();
+                    String s1 = url1.substring(url1.indexOf("=") + 1).trim();
+                    String[] s2 = s1.split("&");
+                    tvUrl.setText(s2[0]);
+                    String playerUrl = "https://gdriveplayer.us/embed2.php?link=https://drive.google.com/file/d/"+s2[0];
+                    mWebView.getSettings().setSupportMultipleWindows(true);
+                    mWebView.loadUrl(playerUrl);
+                    dialog.dismiss();
+
+                }
+            });
+            download.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.dismiss();
+                    mWebView.getSettings().setSupportMultipleWindows(false);
+                    llError.setVisibility(View.GONE);
+                    llWebview.setVisibility(View.VISIBLE);
+                }
+            });
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mWebView.getSettings().setSupportMultipleWindows(false);
+                    dialog.dismiss();
+                    llError.setVisibility(View.GONE);
+                    llWebview.setVisibility(View.VISIBLE);
+
+                }
+            });
+
+            dialog.show();
+
+        }
+    }
+
 
     private class MyChrome extends WebChromeClient {
         private View mCustomView;
@@ -150,6 +262,13 @@ public class webPlayer extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+    }
+
+
+    @Override
     public void onBackPressed() {
         if(mWebView.canGoBack()){
             mWebView.goBack();
@@ -161,10 +280,8 @@ public class webPlayer extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        mWebView.clearHistory();
-        mWebView.clearCache(true);
-        mWebView.clearFormData();
         super.onStop();
+
     }
 
     @Override

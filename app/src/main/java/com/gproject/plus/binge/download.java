@@ -63,7 +63,7 @@ public class download extends YouTubeBaseActivity  {
 
     ImageView back, imgMovie, imgWL;
     TextView tvMovieName, tvDate, tvDes, tvAdmin, tvViews, tvWl;
-    CardView c_shareBtn, c_downloadBtn;
+    CardView c_shareBtn, c_downloadBtn, c_openDrive;
     LinearLayout watchList;
 
     mDatabase db;
@@ -186,16 +186,9 @@ public class download extends YouTubeBaseActivity  {
             }
         });
 
-        c_downloadBtn.setOnLongClickListener(new View.OnLongClickListener() {
+        c_openDrive.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-//                final ClipData[] myClip = new ClipData[1];
-//                final ClipboardManager clipboard = (ClipboardManager)
-//                        getSystemService(Context.CLIPBOARD_SERVICE);
-//                myClip[0] = ClipData.newPlainText("text", link);
-//                clipboard.setPrimaryClip(myClip[0]);
-//                Toast.makeText(download.this, "Link Copied", Toast.LENGTH_SHORT).show();
-
+            public void onClick(View v) {
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(link));
@@ -204,10 +197,9 @@ public class download extends YouTubeBaseActivity  {
                 catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
                 }
-
-                return true;
             }
         });
+
 
         c_shareBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -342,6 +334,7 @@ public class download extends YouTubeBaseActivity  {
         watchList = findViewById(R.id.watchList);
         tvWl = findViewById(R.id.tvWl);
         imgWL = findViewById(R.id.imgWL);
+        c_openDrive = findViewById(R.id.c_openDrive);
     }
 
     private void views(String id) {

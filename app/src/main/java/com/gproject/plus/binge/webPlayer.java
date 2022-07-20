@@ -35,8 +35,7 @@ public class webPlayer extends AppCompatActivity {
 
     AdvancedWebView mWebView;
     SwipeRefreshLayout mySwipeRefreshLayout;
-    TextView tvUrl;
-    String url;
+    TextView tvUrl, tvError;
     ImageView errorImg;
     LinearLayout llError, llWebview;
 
@@ -48,6 +47,7 @@ public class webPlayer extends AppCompatActivity {
         mWebView = findViewById(R.id.webview);
         tvUrl = findViewById(R.id.tvUrl);
         errorImg = findViewById(R.id.errorImg);
+        tvError = findViewById(R.id.tvError);
         llError = findViewById(R.id.llError);
         llWebview = findViewById(R.id.llWebview);
         mySwipeRefreshLayout = findViewById(R.id.swipeContainer);
@@ -107,8 +107,6 @@ public class webPlayer extends AppCompatActivity {
         progressDialog.setMessage("Loading...");
         progressDialog.show();
 
-        llError.setVisibility(View.VISIBLE);
-        llWebview.setVisibility(View.GONE);
 
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
@@ -128,8 +126,7 @@ public class webPlayer extends AppCompatActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
-                llError.setVisibility(View.GONE);
-                llWebview.setVisibility(View.VISIBLE);
+
 
                 if (progressDialog.isShowing()) {
                     progressDialog.dismiss();
@@ -139,6 +136,9 @@ public class webPlayer extends AppCompatActivity {
 
             @Override
             public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                llWebview.setVisibility(View.GONE);
+                llError.setVisibility(View.VISIBLE);
+                tvError.setText("Error: "+description);
                 Toast.makeText(webPlayer.this, "Error:" + description, Toast.LENGTH_SHORT).show();
 
             }
@@ -149,6 +149,7 @@ public class webPlayer extends AppCompatActivity {
     }
 
     private void trimurl(String url) {
+
         if(url.contains("drive.google.com/uc?id=")){
 
             llWebview.setVisibility(View.GONE);
@@ -157,6 +158,9 @@ public class webPlayer extends AppCompatActivity {
             alertDialoge.showDialog(this, "PUT DIALOG TITLE");
 
 
+        }else{
+            llError.setVisibility(View.GONE);
+            llWebview.setVisibility(View.VISIBLE);
         }
     }
 

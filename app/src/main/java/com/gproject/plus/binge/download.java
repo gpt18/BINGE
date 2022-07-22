@@ -177,6 +177,7 @@ public class download extends YouTubeBaseActivity  {
 
                     Intent i = new Intent(download.this, webPlayer.class);
                     i.putExtra("url", link);
+                    i.putExtra("title", name);
                     startActivity(i);
                 }
                 catch (Exception e) {

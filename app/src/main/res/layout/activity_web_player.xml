@@ -17,7 +17,7 @@
         android:padding="8dp"
         android:textSize="18sp"
         android:ellipsize="marquee"
-        android:text="url"
+        android:text="BINGE+ Player"
         android:singleLine="true" />
 
 
@@ -38,13 +38,14 @@
                android:orientation="vertical">
 
                <LinearLayout
-                   android:id="@+id/llWebview"
+                   android:id="@+id/llWebView"
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
-                   android:orientation="vertical">
+                   android:orientation="vertical"
+                   android:visibility="gone">
 
                    <im.delight.android.webview.AdvancedWebView
-                       android:id="@+id/webview"
+                       android:id="@+id/webView"
                        android:layout_width="match_parent"
                        android:layout_height="match_parent" />
 
@@ -55,12 +56,13 @@
                    android:layout_width="match_parent"
                    android:layout_height="match_parent"
                    android:orientation="vertical"
-                   android:gravity="center_horizontal"
-                   android:visibility="gone">
+                   android:gravity="center">
+
                    <ImageView
                        android:id="@+id/errorImg"
-                       android:layout_width="350dp"
-                       android:layout_height="350dp"
+                       android:layout_width="250dp"
+                       android:layout_height="250dp"
+                       android:scaleType="fitCenter"
                        app:srcCompat="@drawable/error" />
 
                    <TextView

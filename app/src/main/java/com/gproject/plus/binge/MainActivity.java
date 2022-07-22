@@ -7,9 +7,12 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
+import android.text.TextUtils;
+import android.widget.AbsListView;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,6 +29,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,17 +50,22 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.gproject.plus.binge.firebaseDb.NewAdapter;
+import com.gproject.plus.binge.firebaseDb.pagination;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    adapter adapter, adapter1;
+    adapter adapter1;
     DatabaseReference databaseReference;
     RecyclerView recyclerView, recyclerView1;
     TextView tvUsername, tvShortName, tvShortDate, tvShortViews;
@@ -69,6 +78,16 @@ public class MainActivity extends AppCompatActivity {
     FirebaseRemoteConfig remoteConfig;
 
     ShimmerFrameLayout shimmer1, shimmer2;
+
+    //for pagination
+    NestedScrollView nestedScrollView;
+    //   LinearLayoutManager manager;    //for linear layout
+    NewAdapter adapter;
+    String last_key="",last_node="";
+    boolean isMaxData=false,isScrolling=false;
+    int ITEM_LOAD_COUNT= 13, PAGINATION_ITEM_LOAD_COUNT = 10;
+    ProgressBar progressBar;
+    int currentitems,tottalitems,scrolledoutitems;
 
 
 
@@ -124,111 +143,160 @@ public class MainActivity extends AppCompatActivity {
                 .setQuery(databaseReference.limitToLast(10), model.class)
                 .build();
 
+        adapter1 = new adapter(options1, getApplicationContext());
+        recyclerView1.setAdapter(adapter1);
+
         //----------------Header-----------------//
 
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        recyclerView.setItemAnimator(null);
+
+        progressBar= findViewById(R.id.progressBar1);
+        getLastKeyFromFirebase(); //43
+
+        //   manager=new LinearLayoutManager(getContext());
+
+        GridLayoutManager manager = new GridLayoutManager(this,3);   //for grid layout
 
 
-        FirebaseRecyclerOptions<model> options
-                = new FirebaseRecyclerOptions.Builder<model>()
-                .setQuery(databaseReference.orderByChild("name").limitToFirst(51), model.class)
-                .build();
+        adapter =new NewAdapter(getApplicationContext());
 
-
-        adapter = new adapter(options, getApplicationContext());
-        adapter1 = new adapter(options1, getApplicationContext());
         recyclerView.setAdapter(adapter);
-        recyclerView1.setAdapter(adapter1);
+        recyclerView.setLayoutManager(manager);
+        getUsers();
 
+        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener()
+        {
 
-        shortName.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                sortChild = "name";
-                sortColor();
-                shortName.setBackgroundColor(getResources().getColor(R.color.teal_700));
-                tvShortName.setTextColor(getResources().getColor(R.color.white));
-                FirebaseRecyclerOptions<model> options
-                        = new FirebaseRecyclerOptions.Builder<model>()
-                        .setQuery(databaseReference.orderByChild("name").limitToFirst(51), model.class)
-                        .build();
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
+            {
+                if (v.getChildAt(v.getChildCount() - 1) != null)
+                {
+                    if (scrollY > oldScrollY)
+                    {
+                        if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight()))
+                        {
+                            //code to fetch more data for endless scrolling
+                            currentitems=manager.getChildCount();
+                            tottalitems=manager.getItemCount();
+                            scrolledoutitems=manager.findFirstVisibleItemPosition();
 
-                adapter = new adapter(options, getApplicationContext());
-                recyclerView.setAdapter(adapter);
-                adapter.startListening();
+                            if( currentitems + scrolledoutitems == tottalitems)
+                            {
+                                //  Toast.makeText(getContext(), "fetch data", Toast.LENGTH_SHORT).show();
 
+                                //fetch data
+                                progressBar.setVisibility(View.VISIBLE);
+                                getUsers();
+
+                            }
+                        }
+                    }
+                }
             }
         });
-
-        shortDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sortChild = "date";
-                sortColor();
-                shortDate.setBackgroundColor(getResources().getColor(R.color.teal_700));
-                tvShortDate.setTextColor(getResources().getColor(R.color.white));
-                FirebaseRecyclerOptions<model> options
-                        = new FirebaseRecyclerOptions.Builder<model>()
-                        .setQuery(databaseReference.orderByChild("date").limitToFirst(51), model.class)
-                        .build();
-
-                adapter = new adapter(options, getApplicationContext());
-                recyclerView.setAdapter(adapter);
-                adapter.startListening();
-
-            }
-        });
-
-        shortViews.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sortChild = "views";
-                sortColor();
-                shortViews.setBackgroundColor(getResources().getColor(R.color.teal_700));
-                tvShortViews.setTextColor(getResources().getColor(R.color.white));
-                FirebaseRecyclerOptions<model> options
-                        = new FirebaseRecyclerOptions.Builder<model>()
-                        .setQuery(databaseReference.orderByChild("views").limitToFirst(51), model.class)
-                        .build();
-
-                adapter = new adapter(options, getApplicationContext());
-                recyclerView.setAdapter(adapter);
-                adapter.startListening();
-
-            }
-        });
-
-        imgSort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseRecyclerOptions<model> options
-                        = new FirebaseRecyclerOptions.Builder<model>()
-                        .setQuery(databaseReference.orderByChild(sortChild).limitToLast(51), model.class)
-                        .build();
-
-                adapter = new adapter(options, getApplicationContext());
-                recyclerView.setAdapter(adapter);
-                adapter.startListening();
-
-            }
-        });
-
 
 
     }
 
-    public void sortColor(){
-        tvShortName.setTextColor(getResources().getColor(R.color.teal_200));
-        tvShortDate.setTextColor(getResources().getColor(R.color.teal_200));
-        tvShortViews.setTextColor(getResources().getColor(R.color.teal_200));
-        shortName.setBackgroundColor(getResources().getColor(R.color.black));
-        shortDate.setBackgroundColor(getResources().getColor(R.color.black));
-        shortViews.setBackgroundColor(getResources().getColor(R.color.black));
+    private void getUsers()
+    {
+        if(!isMaxData) // 1st fasle
+        {
+            Query query;
+
+            if (TextUtils.isEmpty(last_node))
+                query = FirebaseDatabase.getInstance().getReference()
+                        .child("movies")
+                        .orderByKey()
+                        .limitToFirst(ITEM_LOAD_COUNT);
+            else
+                query = FirebaseDatabase.getInstance().getReference()
+                        .child("movies")
+                        .orderByKey()
+                        .startAt(last_node)
+                        .limitToFirst(PAGINATION_ITEM_LOAD_COUNT);
+
+            query.addListenerForSingleValueEvent(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot)
+                {
+                    if(snapshot.hasChildren())
+                    {
+
+                        List<model> itemList = new ArrayList<>();
+                        for (DataSnapshot userSnapshot : snapshot.getChildren())
+                        {
+                            itemList.add(userSnapshot.getValue(model.class));
+                        }
+
+                        last_node =itemList.get(itemList.size()-1).getId();    //10  if it greater than the toatal items set to visible then fetch data from server
+
+                        if(!last_node.equals(last_key))
+                            itemList.remove(itemList.size()-1);    // 19,19 so to renove duplicate removeone value
+                        else
+                            last_node="end";
+
+                        // Toast.makeText(getContext(), "last_node"+last_node, Toast.LENGTH_SHORT).show();
+
+                        adapter.addAll(itemList);
+                        adapter.notifyDataSetChanged();
+
+
+                    }
+                    else   //reach to end no further child avaialable to show
+                    {
+                        isMaxData=true;
+                    }
+
+                    progressBar.setVisibility(View.GONE);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error)
+                {
+
+                }
+            });
+
+        }
+
+        else
+        {
+            progressBar.setVisibility(View.GONE); //if data end
+        }
+    }
+
+    private void getLastKeyFromFirebase()
+    {
+        Query getLastKey= FirebaseDatabase.getInstance().getReference()
+                .child("movies")
+                .orderByKey()
+                .limitToLast(1);
+
+        getLastKey.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot)
+            {
+                for(DataSnapshot lastkey : snapshot.getChildren())
+                    last_key=lastkey.getKey();
+                //   Toast.makeText(getContext(), "last_key"+last_key, Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error)
+            {
+                Toast.makeText(getApplicationContext(), "can not get last key", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
+
 
     private void userCurrentStatus(String state){
 
@@ -259,7 +327,7 @@ public class MainActivity extends AppCompatActivity {
                 shimmer2.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 recyclerView1.setVisibility(View.VISIBLE);
-                svSort.setVisibility(View.VISIBLE);
+
             }
         }.start();
 
@@ -290,14 +358,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         shimmer1 = findViewById(R.id.shimmer1);
         shimmer2 = findViewById(R.id.shimmer2);
-        shortName = findViewById(R.id.shortName);
-        shortDate = findViewById(R.id.shortDate);
-        shortViews = findViewById(R.id.shortViews);
-        tvShortName = findViewById(R.id.tvShortName);
-        tvShortDate = findViewById(R.id.tvShortDate);
-        tvShortViews = findViewById(R.id.tvShortViews);
-        svSort = findViewById(R.id.svSort);
-        imgSort = findViewById(R.id.imgSort);
+        nestedScrollView = findViewById(R.id.nestedScrollView);
 
     }
 
@@ -385,7 +446,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        adapter.startListening();
         adapter1.startListening();
 
         userCurrentStatus("online");
@@ -395,7 +455,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onStop() {
         super.onStop();
-        adapter.stopListening();
         adapter1.stopListening();
         userCurrentStatus("offline");
     }

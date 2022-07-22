@@ -9,7 +9,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -44,12 +43,12 @@ public class webPlayer extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_player);
 
-        mWebView = findViewById(R.id.webview);
+        mWebView = findViewById(R.id.webView);
         tvUrl = findViewById(R.id.tvUrl);
         errorImg = findViewById(R.id.errorImg);
         tvError = findViewById(R.id.tvError);
         llError = findViewById(R.id.llError);
-        llWebview = findViewById(R.id.llWebview);
+        llWebview = findViewById(R.id.llWebView);
         mySwipeRefreshLayout = findViewById(R.id.swipeContainer);
 
         tvUrl.setSelected(true);
@@ -62,7 +61,9 @@ public class webPlayer extends AppCompatActivity {
 
         Intent i = getIntent();
         String url = i.getStringExtra("url");
+        String title = i.getStringExtra("title");
         startWebView(url);
+        tvUrl.setText(title);
 
         mWebView.setDownloadListener(new DownloadListener() {
             public void onDownloadStart(String url, String userAgent,
@@ -113,7 +114,6 @@ public class webPlayer extends AppCompatActivity {
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
                 url = mWebView.getUrl();
-                tvUrl.setText(url);
                 trimurl(url);
 
             }
@@ -188,7 +188,6 @@ public class webPlayer extends AppCompatActivity {
                     String url1 = mWebView.getUrl();
                     String s1 = url1.substring(url1.indexOf("=") + 1).trim();
                     String[] s2 = s1.split("&");
-                    tvUrl.setText(s2[0]);
                     String playerUrl = "https://gdriveplayer.us/embed2.php?link=https://drive.google.com/file/d/"+s2[0];
                     mWebView.getSettings().setSupportMultipleWindows(true);
                     mWebView.loadUrl(playerUrl);

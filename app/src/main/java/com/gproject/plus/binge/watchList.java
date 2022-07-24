@@ -50,7 +50,8 @@ public class watchList extends AppCompatActivity {
         mDao moviesDao = db.moviesDao();
 
         recView = findViewById(R.id.recView);
-        recView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, true);
+        recView.setLayoutManager(layoutManager);
 
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
 //        layoutManager.setReverseLayout(true);

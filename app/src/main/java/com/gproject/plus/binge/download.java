@@ -143,6 +143,26 @@ public class download extends YouTubeBaseActivity  {
             @Override
             public void onClick(View v) {
 
+                mDatabase db = Room.databaseBuilder(getApplicationContext(),
+                        mDatabase.class, "room_db").allowMainThreadQueries().build();
+                mDao moviesDao = db.moviesDao();
+                int check = moviesDao.isDataExist(id);
+
+
+                if (check == 0) {
+
+                    String timeStamp = new SimpleDateFormat("dd MMM, yyyy • hh:mm a", Locale.getDefault()).format(new Date());
+                    // data not exist.
+                    moviesDao.insertRecord(new
+                            mEntity(0, id, date, admin, name, img, des, link, vid, tvViews.getText().toString(), timeStamp));
+
+
+                    tvWl.setText("Watchlist Added");
+                    imgWL.setImageResource(R.drawable.ic_baseline_bookmark_added_24);
+                    Toast.makeText(download.this, "Adding to watchlist...", Toast.LENGTH_SHORT).show();
+
+                }
+
                 databaseReference.child(id).child("views").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -264,9 +284,13 @@ public class download extends YouTubeBaseActivity  {
 
 
 
+
+
         watchListCheck(id);
 
     }
+
+
 
     private void deleteDialog(String key, String name) {
         AlertDialog dialog = new AlertDialog.Builder(download.this)
@@ -371,7 +395,7 @@ public class download extends YouTubeBaseActivity  {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 String views = (String) dataSnapshot.getValue();
-                                String download =  views + " Downloads";
+                                String download =  views + " Views";
                                 tvViews.setText(download);
 
                             }

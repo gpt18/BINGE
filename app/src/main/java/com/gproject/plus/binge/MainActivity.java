@@ -66,7 +66,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     adapter adapter1;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("movies");
     RecyclerView recyclerView, recyclerView1;
     TextView tvUsername, tvShortName, tvShortDate, tvShortViews;
     MaterialToolbar toolbar;
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         hooks();
         checkForUpdate();
         admobInit();
-        loading();
+        getMovieCount();
 
 
         toolbar.setOnMenuItemClickListener(new MaterialToolbar.OnMenuItemClickListener() {
@@ -127,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
-        databaseReference = FirebaseDatabase.getInstance().getReference("movies");
         databaseReference.keepSynced(true);
 
         //--------------Header------------------//
@@ -153,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
         progressBar= findViewById(R.id.progressBar1);
         getLastKeyFromFirebase(); //43
 
-        //   manager=new LinearLayoutManager(getContext());
 
         GridLayoutManager manager = new GridLayoutManager(this,3);   //for grid layout
 
@@ -164,35 +162,36 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(manager);
         getUsers();
 
-        nestedScrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener()
-        {
+        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+            if (v.getChildAt(v.getChildCount() - 1) != null) {
+                if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+                        scrollY > oldScrollY) {
+                    //code to fetch more data for endless scrolling
 
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
-            {
-                if (v.getChildAt(v.getChildCount() - 1) != null)
-                {
-                    if (scrollY > oldScrollY)
-                    {
-                        if (scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight()))
+
+                    if (!isScrolling) {
+
+
+                        isScrolling = true;
+
+                        //code to fetch more data for endless scrolling
+                        currentitems=manager.getChildCount();
+                        tottalitems=manager.getItemCount();
+                        scrolledoutitems=manager.findFirstVisibleItemPosition();
+
+                        if( currentitems + scrolledoutitems == tottalitems)
                         {
-                            //code to fetch more data for endless scrolling
-                            currentitems=manager.getChildCount();
-                            tottalitems=manager.getItemCount();
-                            scrolledoutitems=manager.findFirstVisibleItemPosition();
+                            //  Toast.makeText(getContext(), "fetch data", Toast.LENGTH_SHORT).show();
 
-                            if( currentitems + scrolledoutitems == tottalitems)
-                            {
-                                //  Toast.makeText(getContext(), "fetch data", Toast.LENGTH_SHORT).show();
+                            //fetch data
+                            progressBar.setVisibility(View.VISIBLE);
+                            getUsers();
 
-                                //fetch data
-                                progressBar.setVisibility(View.VISIBLE);
-                                getUsers();
-
-                            }
                         }
                     }
+
                 }
+
             }
         });
 
@@ -243,11 +242,14 @@ public class MainActivity extends AppCompatActivity {
                         adapter.addAll(itemList);
                         adapter.notifyDataSetChanged();
 
+                        isScrolling = false;
+
 
                     }
                     else   //reach to end no further child avaialable to show
                     {
                         isMaxData=true;
+                        Toast.makeText(MainActivity.this, "You are at the last", Toast.LENGTH_SHORT).show();
                     }
 
                     progressBar.setVisibility(View.GONE);
@@ -306,32 +308,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void loading() {
 
-        new CountDownTimer(4000, 1000){
-
-            @Override
-            public void onTick(long millisUntilFinished) {
-                shimmer1.startShimmer();
-                shimmer2.startShimmer();
-                String subTitle = "⏳ Fetching all items for you...";
-                tvUsername.setText(subTitle);
-            }
-
-            @Override
-            public void onFinish() {
-                getMovieCount();
-                shimmer1.stopShimmer();
-                shimmer2.stopShimmer();
-                shimmer1.setVisibility(View.GONE);
-                shimmer2.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-                recyclerView1.setVisibility(View.VISIBLE);
-
-            }
-        }.start();
-
-    }
 
     private void admobInit() {
 
@@ -424,12 +401,23 @@ public class MainActivity extends AppCompatActivity {
 
     private void getMovieCount() {
 
+        shimmer1.startShimmer();
+        shimmer2.startShimmer();
+        String subTitle = "⏳ Fetching all items for you...";
+        tvUsername.setText(subTitle);
+
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 int childCount = (int) dataSnapshot.getChildrenCount();
                 String subTitle =  "Total Items: "+ childCount;
                 tvUsername.setText(subTitle);
+                shimmer1.stopShimmer();
+                shimmer2.stopShimmer();
+                shimmer1.setVisibility(View.GONE);
+                shimmer2.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                recyclerView1.setVisibility(View.VISIBLE);
 
             }
 

@@ -67,13 +67,13 @@
                         android:id="@+id/tvUsername"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="88dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginBottom="4dp"
                         android:text="Loading.."
                         android:textColor="@color/teal_200"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/textView9"
-                        app:layout_constraintVertical_bias="0.81" />
+                        ads:layout_constraintBottom_toBottomOf="parent"
+                        ads:layout_constraintStart_toEndOf="@+id/circleImageView"
+                        ads:layout_constraintTop_toBottomOf="@+id/textView9" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <LinearLayout
@@ -243,9 +243,8 @@
                 android:paddingRight="20dp"
                 android:paddingVertical="24dp"
                 android:overScrollMode="never"
-                android:visibility="gone">
+                android:visibility="gone"/>
 
-            </androidx.recyclerview.widget.RecyclerView>
 
 
             <ProgressBar
@@ -263,7 +262,12 @@
                 ads:adSize="BANNER"
                 ads:adUnitId="ca-app-pub-8445679544199474/9375327336"/>
 
+
         </LinearLayout>
+
+
+
+
 
     </androidx.core.widget.NestedScrollView>
 

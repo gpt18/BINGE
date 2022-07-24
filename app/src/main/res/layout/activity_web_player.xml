@@ -8,17 +8,37 @@
     android:background="@color/black"
     tools:context=".webPlayer">
 
-    <TextView
-        android:id="@+id/tvUrl"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/card_bg_dark"
-        android:textColor="@color/white"
-        android:padding="8dp"
-        android:textSize="18sp"
-        android:ellipsize="marquee"
-        android:text="BINGE+ Player"
-        android:singleLine="true" />
+        android:background="@color/card_bg_dark">
+        <TextView
+            android:id="@+id/tvUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:padding="8dp"
+            android:textSize="18sp"
+            android:ellipsize="marquee"
+            android:layout_weight="1"
+            android:text="BINGE+ Player"
+            android:singleLine="true" />
+
+        <ImageView
+            android:id="@+id/img_help"
+            android:layout_width="70dp"
+            android:padding="8dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_baseline_help_outline_24" />
+
+
+    </LinearLayout>
+
 
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

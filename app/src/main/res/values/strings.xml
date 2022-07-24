@@ -3,7 +3,21 @@
     <string name="app_bio">Find latest films and TV shows right here.</string>
     <string name="app_bio1">Request films and web series here.</string>
     <string name="bug">Bug Report at: edutechnical2018@gmail.com</string>
-    <string name="guide_download">1. Click on the download here button. \n2. You will be directed to the Google Drive on your phone. \n3. Tap on 3 dots of the episode/quality of the content you wanna download. \n4. Click on download. \n5. It will start downloading. You can see in the notifications.\n\nNote: You can copy link simply by long press on Download here button.</string>
+    <string name="guide_download"> Stream Online: For watch movies online.
+        \n1. Click on the G-Drive button.
+        \n2. You will be directed to the Google Drive on your phone.
+        \n3. Tap on 3 dots of the episode/quality of the content you wanna download.
+        \n4. Click on download.
+        \n5. It will start downloading. You can see in the notifications.
+
+    </string>
+    <string name="guide_truoble">Problem 1:
+        \nUnable to play this video at this time. The number of allowed playbacks has been exceeded. Please try again later.
+        \nProblem 2:
+        \nWe\'re processing this video. Please check back later.
+        \nSolution:
+        \n1) Simple click on Download button.
+        \nIf not resolved: 2) Use G-Drive Button and download and watch locally. (Use VLC player or MX player)</string>
     <string name="latest_uploads">Latest Uploads</string>
     <string name="pagination">Data limit to 51 Movies at a time for better app performance. Use search 🔍 for finding any Movies/WebSeries.</string>
     <string name="search_info"> 🤖 Search engine is now better than before. 🦄 \n(ex: 2022)</string>

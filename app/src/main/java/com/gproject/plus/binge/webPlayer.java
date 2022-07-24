@@ -1,6 +1,7 @@
 package com.gproject.plus.binge;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.Activity;
@@ -9,6 +10,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -35,7 +38,7 @@ public class webPlayer extends AppCompatActivity {
     AdvancedWebView mWebView;
     SwipeRefreshLayout mySwipeRefreshLayout;
     TextView tvUrl, tvError;
-    ImageView errorImg;
+    ImageView errorImg, img_help;
     LinearLayout llError, llWebview;
 
     @Override
@@ -49,6 +52,7 @@ public class webPlayer extends AppCompatActivity {
         tvError = findViewById(R.id.tvError);
         llError = findViewById(R.id.llError);
         llWebview = findViewById(R.id.llWebView);
+        img_help = findViewById(R.id.img_help);
         mySwipeRefreshLayout = findViewById(R.id.swipeContainer);
 
         tvUrl.setSelected(true);
@@ -86,6 +90,29 @@ public class webPlayer extends AppCompatActivity {
                     }
                 }
         );
+
+        img_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Dialog dialog_help = new Dialog(webPlayer.this);
+                dialog_help.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                dialog_help.setCancelable(false);
+                dialog_help.setContentView(R.layout.custom_dialog_help);
+                dialog_help.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                TextView ok = dialog_help.findViewById(R.id.ok);
+
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog_help.dismiss();
+                    }
+                });
+
+                dialog_help.show();
+
+            }
+        });
 
     }
 
@@ -172,10 +199,11 @@ public class webPlayer extends AppCompatActivity {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
             dialog.setContentView(R.layout.custom_dialog);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
 
-            Button download = (Button) dialog.findViewById(R.id.btnDownload);
-            Button play = (Button) dialog.findViewById(R.id.btnPlay);
+            CardView download = (CardView) dialog.findViewById(R.id.btnDownload);
+            CardView play = (CardView) dialog.findViewById(R.id.btnPlay);
             ImageView close = dialog.findViewById(R.id.close);
 
 

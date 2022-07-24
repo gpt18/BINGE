@@ -77,16 +77,10 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.myViewHolder>
     {
         holder.tvMovieName.setText(itemList.get(position).getName());
 
-        if (itemList.get(position).getImg()==null){
-            holder.imgMovie.setImageResource(R.mipmap.ic_logo_round);
-
-        }else {
-            Glide.with(holder.imgMovie.getContext()).load(itemList.get(position).getImg()).into(holder.imgMovie);
-        }
+        Glide.with(holder.imgMovie.getContext()).load(itemList.get(position).getImg()).into(holder.imgMovie);
 
 
         holder.imgMovie.setOnClickListener(new View.OnClickListener() {
-            String id;
 
             @Override
             public void onClick(View v) {

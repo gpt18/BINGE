@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
+import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -147,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
         //----------------Header-----------------//
 
+        recyclerView.setNestedScrollingEnabled(false);
 
 
         progressBar= findViewById(R.id.progressBar1);
@@ -157,17 +159,22 @@ public class MainActivity extends AppCompatActivity {
 
 
         adapter =new NewAdapter(getApplicationContext());
-
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(manager);
         getUsers();
 
-        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
-            if (v.getChildAt(v.getChildCount() - 1) != null) {
-                if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
-                        scrollY > oldScrollY) {
-                    //code to fetch more data for endless scrolling
 
+        nestedScrollView.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+            @Override
+            public void onScrollChanged()
+            {
+                View view = (View)nestedScrollView.getChildAt(nestedScrollView.getChildCount() - 1);
+
+                int diff = (view.getBottom() - (nestedScrollView.getHeight() + nestedScrollView
+                        .getScrollY()));
+
+                if (diff == 0) {
+                    // your pagination code
 
                     if (!isScrolling) {
 
@@ -189,11 +196,42 @@ public class MainActivity extends AppCompatActivity {
 
                         }
                     }
-
                 }
-
             }
         });
+
+//        nestedScrollView.setOnScrollChangeListener((NestedScrollView.OnScrollChangeListener) (v, scrollX, scrollY, oldScrollX, oldScrollY) -> {
+//            if (v.getChildAt(v.getChildCount() - 1) != null) {
+//                if ((scrollY >= (v.getChildAt(v.getChildCount() - 1).getMeasuredHeight() - v.getMeasuredHeight())) &&
+//                        scrollY > oldScrollY) {
+//                    //code to fetch more data for endless scrolling
+//
+//
+//                    if (!isScrolling) {
+//
+//
+//                        isScrolling = true;
+//
+//                        //code to fetch more data for endless scrolling
+//                        currentitems=manager.getChildCount();
+//                        tottalitems=manager.getItemCount();
+//                        scrolledoutitems=manager.findFirstVisibleItemPosition();
+//
+//                        if( currentitems + scrolledoutitems == tottalitems)
+//                        {
+//                            //  Toast.makeText(getContext(), "fetch data", Toast.LENGTH_SHORT).show();
+//
+//                            //fetch data
+//                            progressBar.setVisibility(View.VISIBLE);
+//                            getUsers();
+//
+//                        }
+//                    }
+//
+//                }
+//
+//            }
+//        });
 
 
     }

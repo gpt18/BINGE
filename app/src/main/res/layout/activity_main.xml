@@ -242,6 +242,7 @@
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
                 android:paddingVertical="24dp"
+                android:nestedScrollingEnabled="false"
                 android:overScrollMode="never"
                 android:visibility="gone"/>
 

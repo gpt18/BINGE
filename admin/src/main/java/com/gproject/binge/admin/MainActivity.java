@@ -123,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot data : snapshot.getChildren()) {
                     model item = data.getValue(model.class);
                     itemList.add(item);
+                    adapter = new adapter(itemList, getApplicationContext());
+                    recyclerView.setAdapter(adapter);
                 }
             }
 
@@ -150,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void filterList(String text) {
         List<model> filteredList = new ArrayList<>();
-        String notFound = "No results for: "+text;
 
         for (model item : itemList){
             if (item.getName().toLowerCase().contains(text.toLowerCase()) || item.getMessage().toLowerCase().contains(text.toLowerCase())){

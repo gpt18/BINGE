@@ -10,7 +10,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,12 +37,13 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
 
-    LinearLayoutManager mLayoutManager;
 
     //offline data storage
     static {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
     }
+
+    private List<model> itemList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         fbAdd = findViewById(R.id.fbAdd);
         searchView = (SearchView) findViewById(R.id.searchView);
 
+        //init
+        itemList = new ArrayList<>();
 
         SharedPreferences sp = getSharedPreferences("credentials", MODE_PRIVATE);
         String spText = sp.getString("username", "");
@@ -91,14 +96,13 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                processSearch(query);
                 return false;
             }
 
             @Override
-            public boolean onQueryTextChange(String query) {
-                processSearch(query);
-                return false;
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
             }
         });
 
@@ -106,23 +110,65 @@ public class MainActivity extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("movies");
 
-        mLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(null);
 
 
-        FirebaseRecyclerOptions<model> options
-                = new FirebaseRecyclerOptions.Builder<model>()
-                .setQuery(databaseReference, model.class)
-                .build();
 
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data : snapshot.getChildren()) {
+                    model item = data.getValue(model.class);
+                    itemList.add(item);
+                }
+            }
 
-        adapter = new adapter(options, getApplicationContext());
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+//        FirebaseRecyclerOptions<model> options
+//                = new FirebaseRecyclerOptions.Builder<model>()
+//                .setQuery(databaseReference, model.class)
+//                .build();
+//
+//
+//        adapter = new adapter(options, getApplicationContext());
+//        recyclerView.setAdapter(adapter);
+
+        adapter = new adapter(itemList, getApplicationContext());
         recyclerView.setAdapter(adapter);
 
         getMovieCount(username);
+
+    }
+
+    private void filterList(String text) {
+        List<model> filteredList = new ArrayList<>();
+        String notFound = "No results for: "+text;
+
+        for (model item : itemList){
+            if (item.getName().toLowerCase().contains(text.toLowerCase()) || item.getMessage().toLowerCase().contains(text.toLowerCase())){
+                filteredList.add(item);
+            }
+        }
+
+
+            if (filteredList.isEmpty()){
+                Toast.makeText(this, "Not found", Toast.LENGTH_SHORT).show();
+            }
+            else {
+
+                recyclerView.setAdapter(adapter);
+                adapter.setFilteredList(filteredList);
+
+            }
+
 
     }
 
@@ -153,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
                 onlineCount[0] = 0;
                 for (DataSnapshot data : snapshot.getChildren()) {
 
-                    if (Objects.equals(data.getValue(), "online")){
+                    if (Objects.equals(data.getValue(), "1")){
                         onlineCount[0]++;
                     }
                 }
@@ -198,27 +244,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        adapter.startListening();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        adapter.stopListening();
-    }
 
     private void processSearch(String query) {
 
-        FirebaseRecyclerOptions<model> options
-                = new FirebaseRecyclerOptions.Builder<model>()
-                .setQuery(databaseReference.orderByChild("name").startAt(query.toUpperCase()).endAt(query.toUpperCase()+"\uf8ff"), model.class)
-                .build();
 
-        adapter = new adapter(options);
-        adapter.startListening();
-        recyclerView.setAdapter(adapter);
     }
 }

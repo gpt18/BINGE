@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             app:queryHint="Search Here..."
-            android:focusedByDefault="true"
+            android:focusable="true"
             android:theme="@style/Theme.MyTheme"
             app:iconifiedByDefault="false"/>
 
@@ -41,7 +41,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="8dp"
-        android:text="Ready to Search... 🔍"
+        android:text="@string/ready_to_search"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:layout_marginTop="60dp"
@@ -57,9 +57,10 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingVertical="24dp"
         android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingVertical="24dp" />
+        android:paddingRight="20dp" />
 
 
 

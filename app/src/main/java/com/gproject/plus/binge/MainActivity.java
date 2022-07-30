@@ -4,20 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.CountDownTimer;
+
 import android.text.TextUtils;
 import android.view.ViewTreeObserver;
-import android.widget.AbsListView;
-import android.widget.HorizontalScrollView;
+
 import android.widget.LinearLayout;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -38,12 +35,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -56,12 +47,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.gproject.plus.binge.firebaseDb.NewAdapter;
-import com.gproject.plus.binge.firebaseDb.pagination;
+
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.ViewHolder;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -137,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setStackFromEnd(true);
         recyclerView1.setLayoutManager(layoutManager);
         recyclerView1.setItemAnimator(null);
+        recyclerView1.setNestedScrollingEnabled(false);
+
 
         FirebaseRecyclerOptions<model> options1
                 = new FirebaseRecyclerOptions.Builder<model>()
@@ -148,14 +140,11 @@ public class MainActivity extends AppCompatActivity {
 
         //----------------Header-----------------//
 
-        recyclerView.setNestedScrollingEnabled(false);
-
-
         progressBar= findViewById(R.id.progressBar1);
         getLastKeyFromFirebase(); //43
 
-
         GridLayoutManager manager = new GridLayoutManager(this,3);   //for grid layout
+        recyclerView.setNestedScrollingEnabled(false);
 
 
         adapter =new NewAdapter(getApplicationContext());
@@ -350,18 +339,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void admobInit() {
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {}
-        });
-
-        MobileAds.setRequestConfiguration(
-                new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
-                        .build());
-
-        AdView adView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+//        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+//            @Override
+//            public void onInitializationComplete(InitializationStatus initializationStatus) {}
+//        });
+//
+//        MobileAds.setRequestConfiguration(
+//                new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+//                        .build());
+//
+//        AdView adView = findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        adView.loadAd(adRequest);
 
     }
 
@@ -473,8 +462,7 @@ public class MainActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         adapter1.startListening();
-
-        userCurrentStatus("online");
+        userCurrentStatus("1");
 
     }
 
@@ -482,12 +470,11 @@ public class MainActivity extends AppCompatActivity {
     public void onStop() {
         super.onStop();
         adapter1.stopListening();
-        userCurrentStatus("offline");
+        userCurrentStatus("0");
     }
 
     @Override
     protected void onDestroy() {
-        userCurrentStatus("offline");
         super.onDestroy();
 
     }
@@ -511,13 +498,13 @@ public class MainActivity extends AppCompatActivity {
                     final double app_version = getCurrentVersionCode();
                     Log.d("current value: ", String.valueOf(app_version));
 
-                    String api_key = remoteConfig.getString("api_key");
+                String api_key = remoteConfig.getString("api_key");
                     String appLink = remoteConfig.getString("appLink");
                     SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("api_key", api_key);
                     editor.putString("app_link", appLink);
-                    editor.apply();
+                editor.apply();
 
                     final double new_version_code = remoteConfig.getDouble("versionCode");
                     Log.d("final value: ", String.valueOf(new_version_code));

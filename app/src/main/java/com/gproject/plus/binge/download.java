@@ -4,22 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.room.Room;
 
-
-import android.app.AlertDialog;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
-import android.view.View;
+
+import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,14 +25,8 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.RequestConfiguration;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.google.android.gms.ads.interstitial.InterstitialAd;
 import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
@@ -52,25 +41,21 @@ import com.gproject.plus.binge.room.mDatabase;
 import com.gproject.plus.binge.room.mEntity;
 
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+
 public class download extends YouTubeBaseActivity  {
     YouTubePlayerView youTubePlayerView;
 
     ImageView back, imgMovie, imgWL;
-    TextView tvMovieName, tvDate, tvDes, tvAdmin, tvViews, tvWl;
-    CardView c_shareBtn, c_downloadBtn, c_openDrive;
-    LinearLayout watchList;
+    TextView tvMovieName, tvDate, tvDes, tvAdmin, tvViews, title;
+    CheckBox tvWl;
+    CardView c_shareBtn, c_downloadBtn, c_openDrive, watchList;
 
-    mDatabase db;
-
-
-
-    private static final String AD_UNIT_ID = "ca-app-pub-8445679544199474/4683072154";
     private static final String TAG = "MyActivity";
     private InterstitialAd mInterstitialAd;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("movies");
@@ -98,12 +83,17 @@ public class download extends YouTubeBaseActivity  {
         String admin = i.getStringExtra("admin");
         String id = i.getStringExtra("id");
 
+        //setup SP
         SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
-        String API_KEY = sp.getString("api_key", "");
         String APP_LINK = sp.getString("app_link", "");
-        String downloadCount = sp.getString("download", "");
 
+        //Setup Room Db
+        mDatabase db = Room.databaseBuilder(getApplicationContext(),
+                mDatabase.class, "room_db").allowMainThreadQueries().build();
+        mDao moviesDao = db.moviesDao();
 
+        //checking watchlist
+        watchListCheck(id, moviesDao);
 
         youTubePlayerView.initialize("SOME KEY", new YouTubePlayer.OnInitializedListener() {
                     @Override
@@ -119,227 +109,234 @@ public class download extends YouTubeBaseActivity  {
 
                     }
                 });
-        
-        //youTubePlayerView.initialize(API_KEY,listener);
+
 
         tvMovieName.setText(name);
         tvDate.setText(date);
-        tvDes.setText(des);
+        description_check(des);
         tvAdmin.setText(admin);
         Glide.with(this).load(img).into(imgMovie);
-
         views(id);
 
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
+        sp_wl_checkbox(sp);
+
+
+        tvWl.setOnClickListener(v -> {
+            if (!tvWl.isChecked()){
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("watchlist_check_box", "false");
+                editor.apply();
+
+            }else{
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putString("watchlist_check_box", "true");
+                editor.apply();
 
             }
         });
 
-        c_downloadBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        c_openDrive.setOnClickListener(v -> {
 
-                mDatabase db = Room.databaseBuilder(getApplicationContext(),
-                        mDatabase.class, "room_db").allowMainThreadQueries().build();
-                mDao moviesDao = db.moviesDao();
-                int check = moviesDao.isDataExist(id);
+           if (tvWl.isChecked()){
+               int check = moviesDao.isDataExist(id);
+               if (check == 0) {
 
+                   watchList_add_operation(name, img, date, des, link, vid, admin, id, moviesDao);
+                   Toast.makeText(download.this, "Adding to watchlist...", Toast.LENGTH_SHORT).show();
 
-                if (check == 0) {
+               }
+           }
 
-                    String timeStamp = new SimpleDateFormat("dd MMM, yyyy • hh:mm a", Locale.getDefault()).format(new Date());
-                    // data not exist.
-                    moviesDao.insertRecord(new
-                            mEntity(0, id, date, admin, name, img, des, link, vid, tvViews.getText().toString(), timeStamp));
-
-
-                    tvWl.setText("Watchlist Added");
-                    imgWL.setImageResource(R.drawable.ic_baseline_bookmark_added_24);
-                    Toast.makeText(download.this, "Adding to watchlist...", Toast.LENGTH_SHORT).show();
-
+            databaseReference.child(id).child("views").get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
                 }
+                else {
+                    String views = String.valueOf(task.getResult().getValue());
+                    Integer add = Integer.parseInt(views)+1;
+                    String update = String.valueOf(add);
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("views",update);
+                    FirebaseDatabase.getInstance().getReference().child("movies")
+                            .child(id).updateChildren(map)
+                            .addOnSuccessListener(unused -> {
 
-                databaseReference.child(id).child("views").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        if (!task.isSuccessful()) {
-                            Log.e("firebase", "Error getting data", task.getException());
-                        }
-                        else {
-                            String views = String.valueOf(task.getResult().getValue());
-                            Integer add = Integer.parseInt(views)+1;
-                            String update = String.valueOf(add);
-                            Map<String,Object> map = new HashMap<>();
-                            map.put("views",update);
-                            FirebaseDatabase.getInstance().getReference().child("movies")
-                                    .child(id).updateChildren(map)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
+                            })
+                            .addOnFailureListener(e -> {
 
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-
-                                        }
-                                    });
-                        }
-                    }
-                });
-
-                try {
-
-                    Intent i = new Intent(download.this, webPlayer.class);
-                    i.putExtra("url", link);
-                    i.putExtra("title", name);
-                    startActivity(i);
+                            });
                 }
-                catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
-        c_openDrive.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    Intent intent = new Intent(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse(link));
-                    startActivity(intent);
-                }
-                catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-        c_shareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            Intent intent = new Intent(Intent.ACTION_SEND);
-            intent.setType("text/plain");
-            String body = "Watch Latest Movies and WebSeries on BINGE+ App for Free. Download Now! "
-                    +"\n👉 "+APP_LINK
-                    + "\n\n➖➖➖➖➖➖➖➖➖➖➖➖\n" +
-                    name
-                    + "\n" +
-                    des
-                    + "\n\n➖➖➖➖➖➖➖➖➖➖➖➖\n" +
-                    link;
-            String sub = "Sharing Link! Download BINGE+";
-            intent.putExtra(Intent.EXTRA_SUBJECT,sub);
-            intent.putExtra(Intent.EXTRA_TEXT,body);
-            startActivity(Intent.createChooser(intent, "Share Using"));
-            }
-        });
-
-        imgMovie.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                imgDialogFragment cdd = new imgDialogFragment(download.this, img);
-                cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                cdd.show();
-            }
             });
 
-        watchList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDatabase db = Room.databaseBuilder(getApplicationContext(),
-                        mDatabase.class, "room_db").allowMainThreadQueries().build();
-                mDao moviesDao = db.moviesDao();
-                int check = moviesDao.isDataExist(id);
 
-
-                if (check == 0) {
-
-                    String timeStamp = new SimpleDateFormat("dd MMM, yyyy • hh:mm a", Locale.getDefault()).format(new Date());
-                    // data not exist.
-                    moviesDao.insertRecord(new
-                            mEntity(0, id, date, admin, name, img, des, link, vid, tvViews.getText().toString(), timeStamp));
-
-
-                    tvWl.setText("Watchlist Added");
-                    imgWL.setImageResource(R.drawable.ic_baseline_bookmark_added_24);
-                    Toast.makeText(download.this, "Adding to watchlist...", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    deleteDialog(id, name);
-                }
-
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(link));
+                startActivity(intent);
             }
-
+            catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
+            }
 
         });
 
+        c_downloadBtn.setOnClickListener(v -> {
+            try {
+
+                Intent intentWeb = new Intent(download.this, webPlayer.class);
+                intentWeb.putExtra("url", link);
+                intentWeb.putExtra("title", name);
+                startActivity(intentWeb);
+            }
+            catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        c_shareBtn.setOnClickListener(v -> {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        String body = "Watch Latest Movies and WebSeries on BINGE+ App for Free. Download Now! "
+                +"\n👉 "+APP_LINK
+                + "\n\n➖➖➖➖➖➖➖➖➖➖➖➖\n" +
+                name
+                + "\n" +
+                des
+                + "\n\n➖➖➖➖➖➖➖➖➖➖➖➖\n" +
+                link;
+        String sub = "Sharing Link! Download BINGE+";
+        intent.putExtra(Intent.EXTRA_SUBJECT,sub);
+        intent.putExtra(Intent.EXTRA_TEXT,body);
+        startActivity(Intent.createChooser(intent, "Share Using"));
+        });
+
+        imgMovie.setOnClickListener(v -> {
+
+            imgDialogFragment cdd = new imgDialogFragment(download.this, img);
+            cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            cdd.show();
+        });
+
+        watchList.setOnClickListener(v -> {
+
+            int check = moviesDao.isDataExist(id);
 
 
+            if (check == 0) {
 
+                watchList_add_operation(name, img, date, des, link, vid, admin, id, moviesDao);
 
-        watchListCheck(id);
+            } else {
+
+                watchList_delete_operation(id, moviesDao);
+            }
+
+        });
+
+        back.setOnClickListener(v -> onBackPressed());
 
     }
 
+    private void sp_wl_checkbox(SharedPreferences sp) {
 
+        String wl_check = sp.getString("watchlist_check_box", "");
 
-    private void deleteDialog(String key, String name) {
-        AlertDialog dialog = new AlertDialog.Builder(download.this)
-                .setTitle("Remove from watchlist")
-                .setMessage("Are you sure you want to remove: "+name+" from watchlist?")
+        if(wl_check.isEmpty()){
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putString("watchlist_check_box", "true");
+            editor.apply();
+        }else{
+            tvWl.setChecked(!wl_check.equals("false"));
+        }
+    }
 
-                // Specifying a listener allows you to take an action before dismissing the dialog.
-                // The dialog is automatically dismissed when a dialog button is clicked.
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Continue with delete operation
-                        mDatabase db = Room.databaseBuilder(getApplicationContext(),
-                                mDatabase.class, "room_db").allowMainThreadQueries().build();
-                        mDao moviesDao = db.moviesDao();
+    private void description_check(String des) {
 
-                        //delete from room_db
-                        moviesDao.deleteByKey(key);
+        if (des.isEmpty()){
+            tvDes.setText(R.string.description_not_available);
 
-                        tvWl.setText("Add to watchlist");
-                        imgWL.setImageResource(R.drawable.ic_baseline_bookmark_add_24);
-                        Toast.makeText(download.this, "Removing from watchlist...", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            tvDes.setText(des);
+        }
+    }
 
+    private void watchList_add_operation(String name, String img, String date, String des, String link, String vid, String admin, String id, mDao moviesDao) {
+
+        String timeStamp = new SimpleDateFormat("dd MMM, yyyy • hh:mm a", Locale.getDefault()).format(new Date());
+        // data not exist.
+        moviesDao.insertRecord(new
+                mEntity(0, id, date, admin, name, img, des, link, vid, tvViews.getText().toString(), timeStamp));
+
+        new CountDownTimer(2000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                // Used for formatting digit to be in 2 digits only
+                title.setText(R.string.adding_to_watchlist);
+            }
+            // When the task is over it will print 00:00:00 there
+            public void onFinish() {
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        // Used for formatting digit to be in 2 digits only
+                        title.setText(R.string.watchlist_added);
                     }
+                    // When the task is over it will print 00:00:00 there
+                    public void onFinish() {
+                        title.setText(R.string.post_details);
+                    }
+                }.start();
+            }
+        }.start();
 
 
-                })
 
-                // A null listener allows the button to dismiss the dialog and take no further action.
-                .setNegativeButton("No", null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+        imgWL.setImageResource(R.drawable.ic_baseline_favorite_24);
     }
 
 
-    private void watchListCheck(String id) {
-        mDatabase db = Room.databaseBuilder(getApplicationContext(),
-                mDatabase.class, "room_db").allowMainThreadQueries().build();
-        mDao moviesDao = db.moviesDao();
+    private void watchList_delete_operation(String id, mDao moviesDao) {
+
+        //delete from room_db
+        moviesDao.deleteByKey(id);
+
+        new CountDownTimer(2000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                // Used for formatting digit to be in 2 digits only
+                title.setText(R.string.removing_from_watchlist);
+            }
+            // When the task is over it will print 00:00:00 there
+            public void onFinish() {
+                new CountDownTimer(2000, 1000) {
+                    public void onTick(long millisUntilFinished) {
+                        // Used for formatting digit to be in 2 digits only
+                        title.setText(R.string.remove_successfully);
+                    }
+                    // When the task is over it will print 00:00:00 there
+                    public void onFinish() {
+                        title.setText(R.string.post_details);
+                    }
+                }.start();
+            }
+        }.start();
+
+        imgWL.setImageResource(R.drawable.ic_baseline_favorite_border_24);
+    }
+
+
+
+    private void watchListCheck(String id, mDao moviesDao) {
+
         int check = moviesDao.isDataExist(id);
 
         if (check == 0) {
             // data not exist.
-            tvWl.setText("Add to Watch list");
-            imgWL.setImageResource(R.drawable.ic_baseline_bookmark_add_24);
+            imgWL.setImageResource(R.drawable.ic_baseline_favorite_border_24);
 
         } else {
             // data exist.
-            tvWl.setText("Remove from watchlist");
-            imgWL.setImageResource(R.drawable.ic_baseline_bookmark_added_24);
+
+            imgWL.setImageResource(R.drawable.ic_baseline_favorite_24);
 
         }
     }
@@ -360,52 +357,44 @@ public class download extends YouTubeBaseActivity  {
         tvWl = findViewById(R.id.tvWl);
         imgWL = findViewById(R.id.imgWL);
         c_openDrive = findViewById(R.id.c_openDrive);
+        title = findViewById(R.id.title);
     }
 
     private void views(String id) {
 
-        databaseReference.child(id).child("views").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
-                }
-                else {
-                    String views = String.valueOf(task.getResult().getValue());
-                    Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                    if (views.equals("null")){
-                        Map<String,Object> map = new HashMap<>();
-                        map.put("views","0");
-                        FirebaseDatabase.getInstance().getReference().child("movies")
-                                .child(id).updateChildren(map)
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void unused) {
+        databaseReference.child(id).child("views").get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("firebase", "Error getting data", task.getException());
+            }
+            else {
+                String views = String.valueOf(task.getResult().getValue());
+                Log.d("firebase", String.valueOf(task.getResult().getValue()));
+                if (views.equals("null")){
+                    Map<String,Object> map = new HashMap<>();
+                    map.put("views","0");
+                    FirebaseDatabase.getInstance().getReference().child("movies")
+                            .child(id).updateChildren(map)
+                            .addOnSuccessListener(unused -> {
 
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
+                            })
+                            .addOnFailureListener(e -> {
 
-                                    }
-                                });
-                    }else {
-                        databaseReference.child(id).child("views").addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                String views = (String) dataSnapshot.getValue();
-                                String download =  views + " Views";
-                                tvViews.setText(download);
+                            });
+                }else {
+                    databaseReference.child(id).child("views").addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            String views = (String) dataSnapshot.getValue();
+                            String download =  views + " Views";
+                            tvViews.setText(download);
 
-                            }
+                        }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                            }
-                        });
-                    }
+                        }
+                    });
                 }
             }
         });
@@ -414,13 +403,10 @@ public class download extends YouTubeBaseActivity  {
     }
 
     private void bannerAds() {
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
-            @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {}
-        });
+        MobileAds.initialize(this, initializationStatus -> {});
 
         MobileAds.setRequestConfiguration(
-                new RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+                new RequestConfiguration.Builder().setTestDeviceIds(Collections.singletonList("ABIDE012345"))
                         .build());
 
         AdView adView = findViewById(R.id.adView);

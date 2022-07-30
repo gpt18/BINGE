@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class add extends AppCompatActivity {
 
@@ -77,7 +78,12 @@ public class add extends AppCompatActivity {
         btnPublish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insert();
+                
+                if(Objects.requireNonNull(itMovieName.getText()).toString().isEmpty()){
+                    Toast.makeText(add.this, "Movie Name can't be empty!", Toast.LENGTH_SHORT).show();
+                }else{
+                    insert();
+                }
             }
         });
     }

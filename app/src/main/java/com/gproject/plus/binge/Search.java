@@ -110,7 +110,7 @@ public class Search extends AppCompatActivity {
         String notFound = "No results for: "+text;
 
         for (model item : itemList){
-            if (item.getName().toLowerCase().contains(text.toLowerCase())){
+            if (item.getName().toLowerCase().contains(text.toLowerCase()) || item.getMessage().toLowerCase().contains(text.toLowerCase())){
                 filteredList.add(item);
             }
         }

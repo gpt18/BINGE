@@ -19,6 +19,7 @@ import android.view.Window;
 import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -30,6 +31,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.monstertechno.adblocker.AdBlockerWebView;
+import com.monstertechno.adblocker.util.AdBlocker;
 
 import im.delight.android.webview.AdvancedWebView;
 
@@ -38,7 +41,7 @@ public class webPlayer extends AppCompatActivity {
     AdvancedWebView mWebView;
     SwipeRefreshLayout mySwipeRefreshLayout;
     TextView tvUrl, tvError;
-    ImageView errorImg, img_help;
+    ImageView errorImg, img_help, img_back;
     LinearLayout llError, llWebview;
 
     @Override
@@ -53,6 +56,7 @@ public class webPlayer extends AppCompatActivity {
         llError = findViewById(R.id.llError);
         llWebview = findViewById(R.id.llWebView);
         img_help = findViewById(R.id.img_help);
+        img_back = findViewById(R.id.img_back);
         mySwipeRefreshLayout = findViewById(R.id.swipeContainer);
 
         tvUrl.setSelected(true);
@@ -63,9 +67,12 @@ public class webPlayer extends AppCompatActivity {
 
         mWebView.setMixedContentAllowed(false);
 
+
+
         Intent i = getIntent();
         String url = i.getStringExtra("url");
         String title = i.getStringExtra("title");
+
         startWebView(url);
         tvUrl.setText(title);
 
@@ -114,7 +121,14 @@ public class webPlayer extends AppCompatActivity {
             }
         });
 
+        img_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
+
 
     private void startWebView(String url) {
 

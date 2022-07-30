@@ -7,11 +7,43 @@
     android:background="@color/black"
     tools:context=".firebaseDb.pagination">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/topAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/card_bg_dark"
+        android:elevation="0dp"
+        android:theme="@style/toolbar"
+        app:title="All Uploads"
+        app:layout_collapseMode="pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:menu="@menu/menu_main" />
+
+    <com.gproject.plus.binge.anim.GridRecyclerView
         android:id="@+id/recycler_view_user"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/topAppBar"
+        android:paddingTop="50dp"
+        android:paddingHorizontal="20dp"
+        android:layoutAnimation="@anim/grid_layout_animation_from_bottom"
+        android:layout_marginTop="0dp"
+        android:clipToPadding="false"/>
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recycler_view_user"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/topAppBar"-->
+<!--        android:paddingTop="50dp"-->
+<!--        android:paddingHorizontal="20dp"-->
+<!--        android:layoutAnimation="@anim/grid_layout_animation_from_bottom"-->
+<!--        android:layout_marginTop="0dp"-->
+<!--        android:clipToPadding="false"/>-->
 
     <ProgressBar
         android:id="@+id/progressBar1"

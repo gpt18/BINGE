@@ -39,39 +39,43 @@ import com.orhanobut.dialogplus.ViewHolder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder> {
+public class adapter extends RecyclerView.Adapter<adapter.myViewHolder> {
     Context context;
+    private List<model> itemList;
 
-    public adapter(@NonNull FirebaseRecyclerOptions<model> options, Context context) {
-        super(options);
+
+    public adapter(@NonNull List<model> itemList, Context context) {
+        this.itemList = itemList;
         this.context = context;
     }
 
-    public adapter(@NonNull FirebaseRecyclerOptions<model> options) {
-        super(options);
+    public void setFilteredList(List<model> filteredList){
+        this.itemList = filteredList;
+        notifyDataSetChanged();
     }
 
+
     @Override
-    protected void onBindViewHolder(@NonNull myViewHolder holder, final int position, @NonNull model model) {
+    public void onBindViewHolder(@NonNull myViewHolder holder,  int position) {
 
-//        Glide.with(holder.imageView.getContext()).load(model.getImg()).into(holder.imageView);
-        holder.tvAdmin.setText(model.getAdmin());
-        holder.tvMovieName.setText(model.getName());
-        holder.tvMessage.setText(model.getMessage());
-        holder.tvDate.setText(model.getDate());
-        holder.tvLink.setText(model.getLink());
-        holder.tvVid.setText(model.getVid());
-        holder.tvViews.setText(model.getViews());
+        holder.tvAdmin.setText(itemList.get(position).getAdmin());
+        holder.tvMovieName.setText(itemList.get(position).getName());
+        holder.tvMessage.setText(itemList.get(position).getMessage());
+        holder.tvDate.setText(itemList.get(position).getDate());
+        holder.tvLink.setText(itemList.get(position).getLink());
+        holder.tvVid.setText(itemList.get(position).getVid());
+        holder.tvViews.setText(itemList.get(position).getViews());
 
 
-        if (model.getImg()==null){
+        if (itemList.get(position).getImg()==null){
             holder.imgMovie.setImageResource(R.mipmap.ic_logo1);
 
         }else {
-            Glide.with(holder.imgMovie.getContext()).load(model.getImg()).into(holder.imgMovie);
+            Glide.with(holder.imgMovie.getContext()).load(itemList.get(position).getImg()).into(holder.imgMovie);
         }
 
         holder.imgEditBtn.setOnClickListener(new View.OnClickListener() {
@@ -95,26 +99,12 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                 Button delete = myView.findViewById(R.id.delete);
                 ImageView more = myView.findViewById(R.id.more);
 
-                itMovieName.setText(model.getName());
-                itMessage.setText(model.getMessage());
-                itMovieLink.setText(model.getLink());
-                itImg.setText(model.getImg());
-                itVid.setText(model.getVid());
-
-                FirebaseDatabase.getInstance().getReference("movies")
-                        .child(getRef(holder.getLayoutPosition()).getKey())
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        String id = "Item Id: "+snapshot.getKey();
-                        itemId.setText(id);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                itMovieName.setText(itemList.get(position).getName());
+                itMessage.setText(itemList.get(position).getMessage());
+                itMovieLink.setText(itemList.get(position).getLink());
+                itImg.setText(itemList.get(position).getImg());
+                itVid.setText(itemList.get(position).getVid());
+                itemId.setText(itemList.get(position).getId());
 
                 dialogPlus.show();
 
@@ -132,7 +122,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                         map.put("date", timeStamp);
 
                         FirebaseDatabase.getInstance().getReference().child("movies")
-                                .child(getRef(holder.getLayoutPosition()).getKey()).updateChildren(map)
+                                .child(itemList.get(position).getId()).updateChildren(map)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void unused) {
@@ -162,7 +152,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                             public void onClick(DialogInterface dialog, int which) {
 
                                 FirebaseDatabase.getInstance().getReference().child("movies")
-                                        .child(getRef(holder.getLayoutPosition()).getKey()).removeValue();
+                                        .child(itemList.get(position).getId()).removeValue();
 
                                 dialogPlus.dismiss();
                                 Toast.makeText(myView.getContext(),"Deleted Successfully", Toast.LENGTH_SHORT ).show();
@@ -205,7 +195,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         holder.tvLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String download_link  = model.getLink();
+                String download_link  = itemList.get(position).getLink();
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(download_link));
                 v.getContext().startActivity(intent);
@@ -220,7 +210,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
 
             @Override
             public boolean onLongClick(View v) {
-                myClip[0] = ClipData.newPlainText("text", model.getLink());
+                myClip[0] = ClipData.newPlainText("text", itemList.get(position).getLink());
                 clipboard.setPrimaryClip(myClip[0]);
                 Toast.makeText(context, "Copied", Toast.LENGTH_SHORT).show();
                 return true;
@@ -234,11 +224,11 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
                 intent.setType("text/plain");
                 String body = "Watch Latest Movies and WebSeries on BINGE+ App for Free. Download Now! https://bit.ly/3P5PvJd "
                         + "\n\n📽️📽️📽️📽️📽️📽️📽️\n" +
-                        model.getName()
+                        itemList.get(position).getName()
                         + "\n\n🎬🎬🎬🎬🎬🎬🎬🎬🎬🎬\n" +
-                        model.getMessage()
+                        itemList.get(position).getMessage()
                         + "\n\n🍿🍿🍿🍿🍿🍿🍿🍿🍿🍿\n" +
-                        model.getLink();
+                        itemList.get(position).getLink();
                 String sub = "Sharing Link! Download BINGE+";
                 intent.putExtra(Intent.EXTRA_SUBJECT,sub);
                 intent.putExtra(Intent.EXTRA_TEXT,body);
@@ -246,6 +236,11 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
             }
         });
 
+    }
+
+    @Override
+    public int getItemCount() {
+        return itemList.size();
     }
 
     @NonNull

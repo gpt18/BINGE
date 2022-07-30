@@ -16,6 +16,8 @@ import com.gproject.plus.binge.model;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -43,6 +45,10 @@ public class pagination extends AppCompatActivity {
         recycler_view_user= findViewById(R.id.recycler_view_user);
         progressBar= findViewById(R.id.progressBar1);
         getLastKeyFromFirebase(); //43
+
+        int resId = R.anim.grid_layout_animation_from_bottom;
+        LayoutAnimationController animation = AnimationUtils.loadLayoutAnimation(this, resId);
+        recycler_view_user.setLayoutAnimation(animation);
 
         //   manager=new LinearLayoutManager(getContext());
 
@@ -131,7 +137,7 @@ public class pagination extends AppCompatActivity {
                         else
                             last_node="end";
 
-                        // Toast.makeText(getContext(), "last_node"+last_node, Toast.LENGTH_SHORT).show();
+                         Toast.makeText(getApplicationContext(), "last_node"+last_node, Toast.LENGTH_SHORT).show();
 
                         adapter.addAll(itemList);
                         adapter.notifyDataSetChanged();

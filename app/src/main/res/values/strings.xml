@@ -3,8 +3,7 @@
     <string name="app_bio">Find latest films and TV shows right here.</string>
     <string name="app_bio1">Request films and web series here.</string>
     <string name="bug">Bug Report at: edutechnical2018@gmail.com</string>
-    <string name="guide_download"> Stream Online: For watch movies online.
-        \n1. Click on the G-Drive button.
+    <string name="guide_download">Click on the G-Drive button.
         \n2. You will be directed to the Google Drive on your phone.
         \n3. Tap on 3 dots of the episode/quality of the content you wanna download.
         \n4. Click on download.
@@ -20,7 +19,7 @@
         \nIf not resolved: 2) Use G-Drive Button and download and watch locally. (Use VLC player or MX player)</string>
     <string name="latest_uploads">Latest Uploads</string>
     <string name="pagination">Data limit to 51 Movies at a time for better app performance. Use search 🔍 for finding any Movies/WebSeries.</string>
-    <string name="search_info"> 🤖 Search engine is now better than before. 🦄 \n(ex: 2022)</string>
+    <string name="search_info"> 🤖 Search engine is now better than before. 🦄 \n(ex: 2022, amazon, netflix)</string>
 
     <string name="content">With the idea of imparting programming
       knowledge, Mr. Sandeep Jain, an IIT Roorkee alumnus started a
@@ -39,4 +38,26 @@
   </string>
 
     <string name="dummy">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa</string>
+    <string name="search">Search</string>
+    <string name="ready_to_search">Ready to Search... 🔍</string>
+    <string name="add_to_watch_list">Always add to watch list</string>
+    <string name="description_not_available">Description not available!</string>
+    <string name="description">Description</string>
+    <string name="_0_downloads">0 Downloads</string>
+    <string name="g_prajapati">G Prajapati</string>
+    <string name="posted_by">Posted by:</string>
+    <string name="dummy_date">22-05-2022 19:96 PM</string>
+    <string name="last_updated_on">Last updated on:</string>
+    <string name="watch_list">Watch List</string>
+    <string name="post_details">Post Details</string>
+    <string name="movie_poster">movie_poster</string>
+    <string name="download_ic">download_ic</string>
+    <string name="g_drive">G-Drive</string>
+    <string name="stream_online">Stream Online</string>
+    <string name="q_how_to_watch_or_download_movies">Q. How to watch or download movies?</string>
+    <string name="troubleshooting_steps_for_stream_online">Troubleshooting Steps for Stream Online!</string>
+    <string name="adding_to_watchlist">Adding to watchlist...</string>
+    <string name="watchlist_added">Watchlist Added!</string>
+    <string name="removing_from_watchlist">Removing from watchlist...</string>
+    <string name="remove_successfully">Removed Successfully!</string>
 </resources>

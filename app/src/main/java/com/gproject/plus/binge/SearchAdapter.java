@@ -95,20 +95,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewHold
                 i.putExtra("id", itemList.get(position).getId());
                 v.getContext().startActivity(i);
 
-//                FirebaseDatabase.getInstance().getReference("movies").child(getRef(position).getKey())
-//                        .addListenerForSingleValueEvent(new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                id = snapshot.getKey();
-//
-//
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(@NonNull DatabaseError error) {
-//
-//                            }
-//                        });
 
 
             }
@@ -127,10 +113,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewHold
 
     }
 
-//    private DatabaseReference getRef(int position) {
-//
-//        return key;
-//    }
+
 
     @Override
     public int getItemCount() {

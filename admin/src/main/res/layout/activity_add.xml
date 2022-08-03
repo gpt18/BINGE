@@ -109,10 +109,10 @@
                 app:boxBackgroundColor="@color/card_bg_dark">
 
                 <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/itMessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/itMessage"
-                    android:hint="Your Message"
+                    android:hint="Description"
                     android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>

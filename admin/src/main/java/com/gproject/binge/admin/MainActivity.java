@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         fbAdd = findViewById(R.id.fbAdd);
         searchView = (SearchView) findViewById(R.id.searchView);
 
+        tvUsername.setSelected(true);
+
         //init
         itemList = new ArrayList<>();
 
@@ -120,12 +122,13 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                itemList.clear();
                 for (DataSnapshot data : snapshot.getChildren()) {
                     model item = data.getValue(model.class);
                     itemList.add(item);
-                    adapter = new adapter(itemList, getApplicationContext());
-                    recyclerView.setAdapter(adapter);
                 }
+                adapter = new adapter(itemList, getApplicationContext());
+                recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -162,6 +165,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (filteredList.isEmpty()){
                 Toast.makeText(this, "Not found", Toast.LENGTH_SHORT).show();
+                adapter = new adapter(itemList, getApplicationContext());
+                recyclerView.setAdapter(adapter);
             }
             else {
 

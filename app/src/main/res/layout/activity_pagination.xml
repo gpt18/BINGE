@@ -11,7 +11,7 @@
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/card_bg_dark"
+        android:background="@color/teal_blue_color"
         android:elevation="0dp"
         android:theme="@style/toolbar"
         app:title="All Uploads"

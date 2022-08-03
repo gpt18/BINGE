@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -93,7 +94,8 @@ public class mAdapter extends RecyclerView.Adapter<mAdapter.myViewHolder> {
 
         TextView tvAdmin, tvMovieName, tvDate, tvViews;
         ImageView  imgMovie, remove;
-        CardView c_movie, item;
+        CardView c_movie;
+        RelativeLayout item;
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);

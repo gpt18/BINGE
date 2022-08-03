@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/card_bg_dark">
+        android:background="@color/teal_blue_color">
 
         <ImageView
             android:id="@+id/back"
@@ -70,7 +70,7 @@
                     android:id="@+id/c_movie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/card_bg_dark"
+                    android:background="@color/teal_blue_color"
                     android:layout_marginStart="20dp"
                     app:cardCornerRadius="10dp">
 
@@ -222,7 +222,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         app:cardCornerRadius="10dp"
-                        app:strokeColor="@color/card_bg_dark"
+                        app:strokeColor="@color/teal_blue_color"
                         app:strokeWidth="1dp"
                         android:layout_marginEnd="10dp"
                         >
@@ -250,7 +250,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
                         app:cardCornerRadius="10dp"
-                        app:strokeColor="@color/card_bg_dark"
+                        app:strokeColor="@color/teal_blue_color"
                         app:strokeWidth="1dp"
                         android:clickable="true"
                         android:focusable="true"
@@ -321,7 +321,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         app:cardCornerRadius="10dp"
-                        app:strokeColor="@color/card_bg_dark"
+                        app:strokeColor="@color/teal_blue_color"
                         app:strokeWidth="1dp"
                         android:layout_marginStart="10dp"
                         >

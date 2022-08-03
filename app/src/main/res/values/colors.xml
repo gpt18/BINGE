@@ -7,7 +7,13 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="card_bg_dark">#FF424242</color>
+    <color name="light_white">#FFFFF7</color>
+    <color name="teal_blue_color">#367588</color>
     <color name="shimmer_color">#BFBDBD</color>
+    <color name="transparent">#00BFBDBD</color>
+    <color name="Bright_Navy_Blue">#115ede</color>
+    <color name="ultramarine_color">#2142AB</color>
+    <color name="may_green">#53803F</color>
+    <color name="royal_maroon_color">#670E10</color>
 
 </resources>

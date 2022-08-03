@@ -23,7 +23,6 @@ public class watchList extends AppCompatActivity {
     ImageView imgHeader;
     RecyclerView recView;
     Toolbar toolbar;
-    mDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

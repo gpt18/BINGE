@@ -19,10 +19,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Binge">
         <activity
-            android:name=".main_home_page"
-            android:exported="false" />
-        <activity
-            android:name=".home_page"
+            android:name=".main.main_home_page"
+            android:screenOrientation="portrait"
             android:exported="false" />
         <activity
             android:name=".webPlayer"

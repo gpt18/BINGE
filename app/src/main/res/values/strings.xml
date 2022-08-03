@@ -2,7 +2,7 @@
     <string name="app_name">BINGE+</string>
     <string name="app_bio">Find latest films and TV shows right here.</string>
     <string name="app_bio1">Request films and web series here.</string>
-    <string name="bug">Bug Report at: edutechnical2018@gmail.com</string>
+    <string name="bug">Bug Report at: admin.binge@gmail.com</string>
     <string name="guide_download">Click on the G-Drive button.
         \n2. You will be directed to the Google Drive on your phone.
         \n3. Tap on 3 dots of the episode/quality of the content you wanna download.
@@ -60,4 +60,6 @@
     <string name="watchlist_added">Watchlist Added!</string>
     <string name="removing_from_watchlist">Removing from watchlist...</string>
     <string name="remove_successfully">Removed Successfully!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

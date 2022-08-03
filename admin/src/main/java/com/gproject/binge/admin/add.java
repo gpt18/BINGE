@@ -84,6 +84,7 @@ public class add extends AppCompatActivity {
                 }else{
                     insert();
                 }
+
             }
         });
     }

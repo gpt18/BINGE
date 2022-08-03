@@ -12,7 +12,7 @@
         android:id="@+id/c_movie"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/card_bg_dark"
+        android:background="@color/teal_blue_color"
         app:cardCornerRadius="10dp"
         android:clickable="true"
         android:focusable="true"

@@ -60,6 +60,7 @@ public class pagination extends AppCompatActivity {
         recycler_view_user.setAdapter(adapter);
         recycler_view_user.setLayoutManager(manager);
         getUsers();
+
         recycler_view_user.addOnScrollListener(new RecyclerView.OnScrollListener()
         {
             @Override

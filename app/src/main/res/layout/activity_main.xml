@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             android:scrollbarAlwaysDrawHorizontalTrack="false"
-            app:contentScrim="@color/card_bg_dark"
+            app:contentScrim="@color/teal_blue_color"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
             app:expandedTitleTextAppearance="@style/expandedBarTextStyle"
             ads:titleCollapseMode="fade"

@@ -17,6 +17,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.AbsListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -86,6 +87,8 @@ public class HomeFragment extends Fragment {
 
     int currentitems,tottalitems,scrolledoutitems;
 
+    TextView tvTotal;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,7 +107,9 @@ public class HomeFragment extends Fragment {
 
         getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.ultramarine_color));
 
+        getTotalItems();
         recyclerView1 = view.findViewById(R.id.recyclerView1);
+        tvTotal = view.findViewById(R.id.tvTotal);
 
 //        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL,false);
         GridLayoutManager manager1 = new GridLayoutManager(getContext(),3);   //for grid layout
@@ -125,6 +130,23 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private void getTotalItems() {
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int childCount = (int) dataSnapshot.getChildrenCount();
+                String countText =  "Total: "+ childCount;
+                tvTotal.setText(countText);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
 
     @Override

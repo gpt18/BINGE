@@ -11,9 +11,22 @@
     <color name="teal_blue_color">#367588</color>
     <color name="shimmer_color">#BFBDBD</color>
     <color name="transparent">#00BFBDBD</color>
-    <color name="Bright_Navy_Blue">#115ede</color>
+    <color name="bright_navy_blue">#115ede</color>
+<!--    home fragment theme color-->
     <color name="ultramarine_color">#2142AB</color>
+    <color name="tint_ultramarine_color">#4D68BC</color>
+    <color name="cyan_cornflower_blue">#2187AB</color>
+
+<!--    more fragment theme color-->
+    <color name="metallic_bronze">#AB7E40</color>
+
     <color name="may_green">#53803F</color>
     <color name="royal_maroon_color">#670E10</color>
+    <color name="blue_morpho_color">#0399C4</color>
+    <color name="dried_burgundy_color">#7F2440</color>
+    <color name="blue_heron_color">#6E819D</color>
+    <color name="isla_color">#98C1F5</color>
+    <color name="lLilac_pink_color">#D2A1CC</color>
+    <color name="poison_dart_frog_color">#406DAB</color>
 
 </resources>

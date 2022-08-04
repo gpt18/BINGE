@@ -5,6 +5,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.gproject.plus.binge.MainActivity;
 import com.gproject.plus.binge.R;
 import com.gproject.plus.binge.fragment.HomeFragment;
+import com.gproject.plus.binge.fragment.MoreFragment;
 import com.gproject.plus.binge.fragment.SearchFragment;
 import com.gproject.plus.binge.fragment.WatchListFragment;
 import com.orhanobut.dialogplus.DialogPlus;
@@ -69,7 +70,8 @@ public class main_home_page extends AppCompatActivity {
                       break;
 
                   case R.id.nav_more:
-                      moreDialog();
+                      fragment = new MoreFragment();
+                      getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
                       break;
 
                   default:

@@ -8,21 +8,35 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="light_white">#FFFFF7</color>
-    <color name="teal_blue_color">#367588</color>
+
     <color name="shimmer_color">#BFBDBD</color>
     <color name="transparent">#00BFBDBD</color>
     <color name="bright_navy_blue">#115ede</color>
+
 <!--    home fragment theme color-->
     <color name="ultramarine_color">#2142AB</color>
     <color name="tint_ultramarine_color">#4D68BC</color>
     <color name="cyan_cornflower_blue">#2187AB</color>
 
+<!--    search fragment theme color-->
+    <color name="teal_blue_color">#367588</color>
+    <color name="tint_teal_blue_color">#5E91A0</color>
+    <color name="tone_teal_blue_color">#457786</color>
+    <color name="coal_gray_color">#353535</color>
+
+<!--    watchlist fragment theme color-->
+    <color name="royal_maroon_color">#670E10</color>
+    <color name="tint_royal_maroon_color">#853E40</color>
+    <color name="tone_royal_maroon_color">#6C2526</color>
+
 <!--    more fragment theme color-->
     <color name="metallic_bronze">#AB7E40</color>
     <color name="poison_dart_frog_color">#406DAB</color>
+    <color name="tint_poison_dart_frog_color">#668ABC</color>
+    <color name="tone_poison_dart_frog_color">#4D71A2</color>
+
 
     <color name="may_green">#53803F</color>
-    <color name="royal_maroon_color">#670E10</color>
     <color name="blue_morpho_color">#0399C4</color>
     <color name="dried_burgundy_color">#7F2440</color>
     <color name="blue_heron_color">#6E819D</color>
@@ -30,6 +44,5 @@
     <color name="lLilac_pink_color">#D2A1CC</color>
 
 
-    <color name="coal_gray_color">#353535</color>
 
 </resources>

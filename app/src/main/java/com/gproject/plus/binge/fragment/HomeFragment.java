@@ -131,11 +131,14 @@ public class HomeFragment extends Fragment {
                 shimmer.setVisibility(View.GONE);
                 recyclerView1.setVisibility(View.VISIBLE);
 
+                itemList.clear();
                 for (DataSnapshot data : dataSnapshot.getChildren()){
                     model item = data.getValue(model.class);
                     itemList.add(0, item);
 
                 }
+                adapterMovies = new AdapterMovies(itemList, getContext());
+                recyclerView1.setAdapter(adapterMovies);
 
 
             }

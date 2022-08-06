@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+<corners
+    android:radius="100dp"
+    />
+<stroke
+    android:width="1dp"
+    android:color="@color/tint_royal_maroon_color"/>
+<gradient
+    android:type="linear"
+    android:angle="90"
+    android:startColor="@color/black"
+    android:endColor="@color/royal_maroon_color" />
+</shape>

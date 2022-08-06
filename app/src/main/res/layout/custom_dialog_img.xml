@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:gravity="center"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/closePoster"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:scaleType="fitCenter"
+        android:tintMode="@color/white"
+        android:layout_marginBottom="10dp"
+        app:srcCompat="@drawable/ic_baseline_close_24" />
+
+
+    <TextView
+        android:id="@+id/tvPosterTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Poster Title Goes here Poster Title Goes here"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:singleLine="true"
+        android:ellipsize="marquee"
+        android:selectAllOnFocus="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true" />
+
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="300dp"
+        android:layout_height="460dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/transparent"
+        android:layout_margin="10dp"
+        app:cardElevation="4dp">
+
+        <ImageView
+            android:id="@+id/bigImg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            app:srcCompat="@mipmap/ic_logo" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/favImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="100dp"
+        app:contentPadding="20dp"
+        app:cardBackgroundColor="@color/transparent"
+        android:layout_margin="10dp"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/white">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

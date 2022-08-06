@@ -54,24 +54,25 @@ public class MainHomePage extends AppCompatActivity {
                   case R.id.nav_home:
                       fragment = new HomeFragment();
                       getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
-
+                      navigationView.setBackgroundResource(R.drawable.bg_round_nav_1);
                       break;
 
                   case R.id.nav_search:
                       fragment = new SearchFragment();
                       getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
-
+                      navigationView.setBackgroundResource(R.drawable.bg_round_nav_2);
                       break;
 
                   case R.id.nav_watchlist:
                       fragment = new WatchListFragment();
                       getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
-
+                      navigationView.setBackgroundResource(R.drawable.bg_round_nav_3);
                       break;
 
                   case R.id.nav_more:
                       fragment = new MoreFragment();
                       getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
+                      navigationView.setBackgroundResource(R.drawable.bg_round_nav_4);
                       break;
 
                   default:

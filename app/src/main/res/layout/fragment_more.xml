@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/gradient__bg_4"
+    android:background="@drawable/gradient_bg_4"
     tools:context=".fragment.MoreFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout

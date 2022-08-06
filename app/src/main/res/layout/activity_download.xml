@@ -153,7 +153,7 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:layout_marginStart="8dp"
-                            app:drawableLeftCompat="@drawable/ic_baseline_downloading_24"
+                            android:drawableStart="@drawable/ic_baseline_downloading_24"
                             android:drawablePadding="8dp"
                             android:text="@string/_0_downloads"
                             android:textColor="@color/white"

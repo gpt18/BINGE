@@ -213,7 +213,7 @@ public class download extends YouTubeBaseActivity  {
 
         imgMovie.setOnClickListener(v -> {
 
-            imgDialogFragment cdd = new imgDialogFragment(download.this, img);
+            imgDialogFragment cdd = new imgDialogFragment(download.this, img, name);
             cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             cdd.show();
         });

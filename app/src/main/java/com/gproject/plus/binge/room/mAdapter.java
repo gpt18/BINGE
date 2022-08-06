@@ -1,6 +1,9 @@
 package com.gproject.plus.binge.room;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +15,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.gproject.plus.binge.R;
 import com.gproject.plus.binge.download;
 
@@ -23,6 +29,7 @@ import java.util.List;
 
 public class mAdapter extends RecyclerView.Adapter<mAdapter.myViewHolder> {
 
+    Context context;
     List<mEntity> moviesTable;
 
     public mAdapter(List<mEntity> moviesTable) {
@@ -55,7 +62,17 @@ public class mAdapter extends RecyclerView.Adapter<mAdapter.myViewHolder> {
                 //delete from room_db
                 moviesDao.deleteByKey(moviesTable.get(position).getKey());
 
-                Toast.makeText(v.getContext(), "Removing from watchlist...", Toast.LENGTH_SHORT).show();
+                //snack bar
+                Snackbar snack = Snackbar.make(v,
+                        "Item removed from watchlist...", Snackbar.LENGTH_LONG);
+                CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams)
+                        snack.getView().getLayoutParams();
+                params.setMargins(20, 20, 20, 250);
+                snack.getView().setLayoutParams(params);
+                snack.show();
+
+
+//                Toast.makeText(v.getContext(), "Removing from watchlist...", Toast.LENGTH_SHORT).show();
 
                 //delete form arraylist
                 moviesTable.remove(position);

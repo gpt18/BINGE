@@ -185,7 +185,7 @@ public class adapter extends FirebaseRecyclerAdapter<model, adapter.myViewHolder
         holder.imgMovie.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                imgDialogFragment cdd = new imgDialogFragment((Activity) context, model.getImg());
+                imgDialogFragment cdd = new imgDialogFragment((Activity) context, model.getImg(), model.getName());
                 cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 cdd.show();
                 return true;

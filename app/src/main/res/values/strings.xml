@@ -65,4 +65,5 @@
     <string name="failed_to_load">Failed to load!😒</string>
     <string name="total_loading">Total: ⏳</string>
     <string name="premium">Premium</string>
+    <string name="no_item_in_watchlist">No item in Watchlist</string>
 </resources>

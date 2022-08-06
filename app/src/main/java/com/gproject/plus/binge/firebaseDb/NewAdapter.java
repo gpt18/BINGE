@@ -101,7 +101,7 @@ public class NewAdapter extends RecyclerView.Adapter<NewAdapter.myViewHolder>
         holder.imgMovie.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                imgDialogFragment cdd = new imgDialogFragment((Activity) context, itemList.get(position).getImg());
+                imgDialogFragment cdd = new imgDialogFragment((Activity) context, itemList.get(position).getImg(), itemList.get(position).getName());
                 cdd.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 cdd.show();
                 return true;

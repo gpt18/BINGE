@@ -19,6 +19,7 @@
 
 <!--    more fragment theme color-->
     <color name="metallic_bronze">#AB7E40</color>
+    <color name="poison_dart_frog_color">#406DAB</color>
 
     <color name="may_green">#53803F</color>
     <color name="royal_maroon_color">#670E10</color>
@@ -27,6 +28,8 @@
     <color name="blue_heron_color">#6E819D</color>
     <color name="isla_color">#98C1F5</color>
     <color name="lLilac_pink_color">#D2A1CC</color>
-    <color name="poison_dart_frog_color">#406DAB</color>
+
+
+    <color name="coal_gray_color">#353535</color>
 
 </resources>

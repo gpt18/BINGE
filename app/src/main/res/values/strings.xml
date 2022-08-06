@@ -62,4 +62,7 @@
     <string name="remove_successfully">Removed Successfully!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="failed_to_load">Failed to load!😒</string>
+    <string name="total_loading">Total: ⏳</string>
+    <string name="premium">Premium</string>
 </resources>

@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -106,13 +107,14 @@ public class MoreFragment extends Fragment {
             }
         });
 
-        SharedPreferences sp = this.getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        SharedPreferences sp = this.getActivity().getSharedPreferences("key", Context.MODE_PRIVATE);
 
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String APP_LINK = sp.getString("app_link", "");
+                Log.e("applink",APP_LINK);
 
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");

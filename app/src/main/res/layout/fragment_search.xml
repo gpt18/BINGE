@@ -73,10 +73,11 @@
            android:id="@+id/recyclerView"
            android:layout_width="match_parent"
            android:layout_height="wrap_content"
-           android:paddingTop="100dp"
            android:clipToPadding="false"
            android:paddingLeft="20dp"
-           android:paddingRight="20dp" />
+           android:paddingTop="100dp"
+           android:paddingRight="20dp"
+           android:paddingBottom="100dp" />
 
    </RelativeLayout>
 

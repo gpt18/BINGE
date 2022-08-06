@@ -125,7 +125,7 @@
                         </com.facebook.shimmer.ShimmerFrameLayout>
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/recyclerView1"
+                            android:id="@+id/rcHomeFragment"
                             android:layout_width="0dp"
                             android:nestedScrollingEnabled="false"
                             android:layout_height="match_parent"

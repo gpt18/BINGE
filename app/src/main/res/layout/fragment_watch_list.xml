@@ -62,8 +62,10 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recView"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="30dp"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="30dp"
+                    android:paddingTop="30dp"
+                    android:paddingBottom="100dp"
                     android:clipToPadding="false"/>
 
             </LinearLayout>

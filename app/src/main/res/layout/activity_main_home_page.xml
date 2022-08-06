@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,24 +7,28 @@
     android:id="@+id/body_container"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:background="@color/black"
-    tools:context=".main.main_home_page">
+    tools:context=".main.MainHomePage">
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:padding="4dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/dialog_bg_round"
+       android:layout_margin="20dp"
+        android:layout_gravity="bottom"
+        android:background="@drawable/bg_round_nav"
         android:elevation="2dp"
         app:menu="@menu/menu_bottom_nav"
         app:itemIconSize="30dp"
-        app:labelVisibilityMode="unlabeled"
+        app:itemTextColor="@color/white"
+        app:itemPaddingBottom="4dp"
+        app:labelVisibilityMode="selected"
         android:id="@+id/bottom_navigation"
-        app:itemIconTint="@drawable/nav_item_selector"/>
+        app:itemIconTint="@drawable/nav_item_selector"
+        app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
+    />
 <!--        app:itemRippleColor="@android:color/transparent"-->
 
 
-</RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

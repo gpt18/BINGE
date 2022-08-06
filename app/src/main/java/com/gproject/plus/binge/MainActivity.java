@@ -358,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
 
         tvUsername = findViewById(R.id.tvUsername);
         toolbar = findViewById(R.id.topAppBar);
-        recyclerView1 = findViewById(R.id.recyclerView1);
+        recyclerView1 = findViewById(R.id.rcHomeFragment);
         recyclerView = findViewById(R.id.recyclerView);
         shimmer1 = findViewById(R.id.shimmer1);
         shimmer2 = findViewById(R.id.shimmer2);

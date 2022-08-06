@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.gproject.plus.binge.main.main_home_page;
+import com.gproject.plus.binge.main.MainHomePage;
 
 public class splash extends AppCompatActivity {
 
@@ -28,7 +28,7 @@ public class splash extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(splash.this, main_home_page.class);
+                Intent intent = new Intent(splash.this, MainHomePage.class);
                 startActivity(intent);
                 finish();
             }

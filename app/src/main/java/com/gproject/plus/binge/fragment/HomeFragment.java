@@ -3,6 +3,7 @@ package com.gproject.plus.binge.fragment;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -81,8 +83,8 @@ public class HomeFragment extends Fragment {
         GridLayoutManager gridLayout = new GridLayoutManager(getContext(),3);   //for grid layout
         recyclerView1.setLayoutManager(gridLayout);
 
-        adapterMovies = new AdapterMovies(itemList, getContext());
-        recyclerView1.setAdapter(adapterMovies);
+//        adapterMovies = new AdapterMovies(itemList, getContext());
+//        recyclerView1.setAdapter(adapterMovies);
 
 
 //
@@ -121,6 +123,7 @@ public class HomeFragment extends Fragment {
 
     private void getTotalItems() {
 
+/*
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -148,6 +151,107 @@ public class HomeFragment extends Fragment {
                 tvFailed.setVisibility(View.VISIBLE);
             }
         });
+*/
+
+
+
+/*
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int childCount = (int) snapshot.getChildrenCount();
+                String countText =  "Total: "+ childCount;
+                tvTotal.setText(countText);
+                tvFailed.setVisibility(View.GONE);
+                shimmer.setVisibility(View.GONE);
+                recyclerView1.setVisibility(View.VISIBLE);
+
+                for (DataSnapshot data : snapshot.getChildren()){
+                    model item = data.getValue(model.class);
+//                    item.setId(data.getKey());
+                    itemList.add(0, item);
+                }
+                adapterMovies = new AdapterMovies(itemList, getContext());
+                recyclerView1.setAdapter(adapterMovies);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+*/
+
+
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                tvFailed.setVisibility(View.GONE);
+                shimmer.setVisibility(View.GONE);
+                recyclerView1.setVisibility(View.VISIBLE);
+
+                model item = snapshot.getValue(model.class);
+                itemList.add(0, item);
+
+                setTotalItem();
+
+                adapterMovies = new AdapterMovies(itemList, getContext());
+                recyclerView1.setAdapter(adapterMovies);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                /*itemList.remove(snapshot.getValue(model.class));
+                adapterMovies.notifyDataSetChanged();
+                recyclerView1.setAdapter(adapterMovies);*/
+
+                databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        itemList.clear();
+                        for (DataSnapshot data : snapshot.getChildren()){
+                            model item = data.getValue(model.class);
+                            itemList.add(0, item);
+
+                        }
+                        adapterMovies = new AdapterMovies(itemList, getContext());
+                        recyclerView1.setAdapter(adapterMovies);
+                        setTotalItem();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void setTotalItem() {
+        int childCount = (int) itemList.size();
+        String countText =  "Total: "+ childCount;
+        tvTotal.setText(countText);
     }
 
 

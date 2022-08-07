@@ -1,52 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<!--    <androidx.cardview.widget.CardView-->
-<!--        android:id="@+id/item"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="8dp"-->
-<!--        app:cardCornerRadius="10dp"-->
-<!--        android:elevation="5dp">-->
-
-<!--        -->
-
-<!--    </androidx.cardview.widget.CardView>-->
 
     <RelativeLayout
         android:id="@+id/item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="15dp"
-        android:layout_gravity="center">
+        android:gravity="center"
+        android:paddingVertical="15dp">
 
 
         <ImageView
             android:id="@+id/remove"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:paddingTop="8dp"
-            app:srcCompat="@drawable/ic_baseline_close_24"
-            android:layout_alignParentEnd="true"/>
+            app:srcCompat="@drawable/ic_baseline_close_24" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/c_movie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:background="@color/teal_blue_color"
-            app:cardCornerRadius="10dp"
-            android:layout_centerVertical="true">
+            app:cardCornerRadius="10dp">
 
             <ImageView
                 android:id="@+id/imgMovie"
                 android:layout_width="80dp"
                 android:layout_height="120dp"
-                android:scaleType="centerCrop"
-                android:background="@color/shimmer_color" />
+                android:background="@color/shimmer_color"
+                android:scaleType="centerCrop" />
 
         </androidx.cardview.widget.CardView>
 
@@ -67,8 +57,8 @@
                 android:padding="8dp"
                 android:text="@string/dummy"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="16dp"/>
+                android:textSize="16dp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -109,37 +99,20 @@
                     android:textColor="#FFFF8D" />
 
 
-                <ImageView
-                    android:id="@+id/imageView2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="10dp"
-                    android:src="@drawable/ic_baseline_downloading_24" />
-
-                <TextView
-                    android:id="@+id/tvViews"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:text="0 Downloads"
-                    android:textColor="@color/white" />
 
             </LinearLayout>
 
         </LinearLayout>
 
 
-
-
-
-
-
-
     </RelativeLayout>
 
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:background="@color/tint_royal_maroon_color"
+        android:layout_height="1dp" />
 
-</RelativeLayout>
+
+
+</LinearLayout>

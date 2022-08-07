@@ -113,7 +113,7 @@ public class download extends YouTubeBaseActivity  {
 
         tvMovieName.setText(name);
         tvDate.setText(date);
-        description_check(des);
+        tvDes.setText(des);
         tvAdmin.setText(admin);
         Glide.with(this).load(img).into(imgMovie);
         views(id);
@@ -148,27 +148,30 @@ public class download extends YouTubeBaseActivity  {
                }
            }
 
-            databaseReference.child(id).child("views").get().addOnCompleteListener(task -> {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
+/*
+           adding views to the firebase when download button clicked
+*/
+            databaseReference.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()){
+                        String view = (String) snapshot.child("views").getValue();
+                        if(view !=null){
+                            Integer addView = Integer.parseInt(view)+1;
+                            databaseReference.child(id)
+                                    .child("views")
+                                    .setValue(String.valueOf(addView));
+                        }
+                    }else{
+                        Log.d("DownloadActivity", "onViewAdd: id["+id+"] not exist");
+                    }
                 }
-                else {
-                    String views = String.valueOf(task.getResult().getValue());
-                    Integer add = Integer.parseInt(views)+1;
-                    String update = String.valueOf(add);
-                    Map<String,Object> map = new HashMap<>();
-                    map.put("views",update);
-                    FirebaseDatabase.getInstance().getReference().child("movies")
-                            .child(id).updateChildren(map)
-                            .addOnSuccessListener(unused -> {
 
-                            })
-                            .addOnFailureListener(e -> {
-
-                            });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(download.this, "onCancelled: DatabaseError.viewUpdate", Toast.LENGTH_SHORT).show();
                 }
             });
-
 
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -176,7 +179,7 @@ public class download extends YouTubeBaseActivity  {
                 startActivity(intent);
             }
             catch (Exception e) {
-                Toast.makeText(getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Link not found", Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -251,16 +254,6 @@ public class download extends YouTubeBaseActivity  {
         }
     }
 
-    private void description_check(String des) {
-
-        if (des.isEmpty()){
-            tvDes.setText(R.string.description_not_available);
-
-        }
-        else {
-            tvDes.setText(des);
-        }
-    }
 
     private void watchList_add_operation(String name, String img, String date, String des, String link, String vid, String admin, String id, mDao moviesDao) {
 
@@ -362,43 +355,32 @@ public class download extends YouTubeBaseActivity  {
 
     private void views(String id) {
 
-        databaseReference.child(id).child("views").get().addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                Log.e("firebase", "Error getting data", task.getException());
-            }
-            else {
-                String views = String.valueOf(task.getResult().getValue());
-                Log.d("firebase", String.valueOf(task.getResult().getValue()));
-                if (views.equals("null")){
-                    Map<String,Object> map = new HashMap<>();
-                    map.put("views","0");
-                    FirebaseDatabase.getInstance().getReference().child("movies")
-                            .child(id).updateChildren(map)
-                            .addOnSuccessListener(unused -> {
+        databaseReference.child(id).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                            })
-                            .addOnFailureListener(e -> {
+                if (snapshot.exists()){
+                    String view = (String) snapshot.child("views").getValue();
+                    if(view !=null){
+                        String download =  view + " Downloads";
+                        tvViews.setText(download);
+                        Log.d("view update", "onDataChange: view fetched ["+view+"]");
 
-                            });
-                }else {
-                    databaseReference.child(id).child("views").addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String views = (String) dataSnapshot.getValue();
-                            String download =  views + " Views";
-                            tvViews.setText(download);
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+                    }else{
+                        tvViews.setText("error");
+                    }
+                }
+                else{
+                    Toast.makeText(download.this, "This item no longer available", Toast.LENGTH_SHORT).show();
+                    Log.d("view update", "onDataChange: view fetched [item deleted]");
                 }
             }
-        });
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(download.this, "onCancelled: DatabaseError.viewShow", Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 

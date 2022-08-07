@@ -3,6 +3,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 import com.gproject.plus.binge.R;
@@ -22,6 +23,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -84,7 +86,27 @@ public class MainHomePage extends AppCompatActivity {
       });
     }
 
+    private void userCurrentStatus(String state){
 
+        String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(android_id).setValue(state);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        userCurrentStatus("1");
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        userCurrentStatus("0");
+
+    }
 
     //****************************Checking In-AppUpdate using Firebase************************//
 

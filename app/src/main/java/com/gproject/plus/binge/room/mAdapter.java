@@ -50,7 +50,6 @@ public class mAdapter extends RecyclerView.Adapter<mAdapter.myViewHolder> {
         holder.tvMovieName.setText(moviesTable.get(position).getName());
         holder.tvAdmin.setText(moviesTable.get(position).getAdmin());
         holder.tvDate.setText(moviesTable.get(position).getAddTime());
-        holder.tvViews.setText(moviesTable.get(position).getViews());
 
         holder.remove.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,7 +108,7 @@ public class mAdapter extends RecyclerView.Adapter<mAdapter.myViewHolder> {
 
     class myViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tvAdmin, tvMovieName, tvDate, tvViews;
+        TextView tvAdmin, tvMovieName, tvDate;
         ImageView  imgMovie, remove;
         CardView c_movie;
         RelativeLayout item;
@@ -124,7 +123,6 @@ public class mAdapter extends RecyclerView.Adapter<mAdapter.myViewHolder> {
             c_movie = itemView.findViewById(R.id.c_movie);
             remove = itemView.findViewById(R.id.remove);
             item = itemView.findViewById(R.id.item);
-            tvViews = itemView.findViewById(R.id.tvViews);
 
         }
     }

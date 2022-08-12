@@ -14,16 +14,29 @@
         android:layout_height="wrap_content"
         android:background="@color/teal_blue_color"
         app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@color/coal_gray_color"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground">
 
-        <ImageView
-            android:id="@+id/imgMovie"
-            android:layout_width="118dp"
-            android:layout_height="170dp"
-            android:scaleType="centerCrop"
-            tools:srcCompat="@tools:sample/backgrounds/scenic" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgMovie"
+                android:layout_width="118dp"
+                android:layout_height="170dp"
+                android:scaleType="centerCrop" />
+
+            <ProgressBar
+                android:id="@+id/PbPosterLoading"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+
+        </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
 
@@ -36,6 +49,6 @@
         android:maxLines="2"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:text="This is hre title of new movies"
+        android:text="Loading..."
         android:textColor="@color/white" />
 </LinearLayout>

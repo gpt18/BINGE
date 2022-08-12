@@ -3,12 +3,14 @@ package com.gproject.plus.binge.main;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,11 +18,14 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 import com.gproject.plus.binge.R;
 
 import com.gproject.plus.binge.download;
 import com.gproject.plus.binge.imgDialogFragment;
 import com.gproject.plus.binge.model;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -53,6 +58,24 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.myViewHold
         }else {
             Glide.with(holder.imgMovie.getContext()).load(itemList.get(position).getImg()).into(holder.imgMovie);
         }
+
+        /*holder.PbPosterLoading.setVisibility(View.VISIBLE);
+        Picasso.with(holder.imgMovie.getContext()).load(itemList.get(position).getImg())
+                .into(holder.imgMovie, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        holder.PbPosterLoading.setVisibility(View.GONE);
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        holder.PbPosterLoading.setVisibility(View.VISIBLE);
+                    }
+                })
+        ;
+        */
+
 
         holder.imgMovie.setOnClickListener(new View.OnClickListener() {
 
@@ -96,12 +119,14 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.myViewHold
 
         TextView tvMovieName;
         ImageView imgMovie;
+        ProgressBar PbPosterLoading;
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imgMovie = itemView.findViewById(R.id.imgMovie);
             tvMovieName = itemView.findViewById(R.id.tvMovieName);
+            PbPosterLoading = itemView.findViewById(R.id.PbPosterLoading);
         }
     }
 }

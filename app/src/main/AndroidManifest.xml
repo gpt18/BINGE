@@ -20,6 +20,7 @@
         android:theme="@style/Theme.Binge">
         <activity
             android:name=".main.MainHomePage"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity

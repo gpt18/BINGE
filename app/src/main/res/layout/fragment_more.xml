@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/gradient_bg_4"
+    android:background="@drawable/gradient_bg_1"
     tools:context=".fragment.MoreFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -24,7 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:fitsSystemWindows="true"
-                app:contentScrim="@color/poison_dart_frog_color"
+                app:contentScrim="@color/coal_gray_color"
                 app:layout_scrollFlags="scroll|snap|exitUntilCollapsed"
                 ads:title="About Us"
                 app:collapsedTitleTextColor="@color/white">

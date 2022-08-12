@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/gradient_bg_2"
+    android:background="@drawable/gradient_bg_1"
     tools:context=".fragment.HomeFragment">
 
 
@@ -107,7 +107,7 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/ultramarine_color">
+            android:background="@color/coal_gray_color">
 
             <LinearLayout
                 android:id="@+id/homeHeader"
@@ -119,7 +119,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/tint_ultramarine_color"
+                    app:cardBackgroundColor="@color/teal_700"
                     app:cardCornerRadius="20dp"
                     android:elevation="2dp"
                     android:layout_margin="10dp">
@@ -162,7 +162,7 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/tint_ultramarine_color"
+                    app:cardBackgroundColor="@color/teal_700"
                     app:cardCornerRadius="20dp"
                     android:elevation="2dp"
                     android:layout_margin="10dp">

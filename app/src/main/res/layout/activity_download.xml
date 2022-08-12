@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/teal_blue_color">
+        android:background="@color/coal_gray_color">
 
         <ImageView
             android:id="@+id/back"
@@ -72,6 +72,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/teal_blue_color"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="8dp"
                     app:cardCornerRadius="10dp">
 
                     <ImageView
@@ -158,6 +159,7 @@
                             android:text="@string/_0_downloads"
                             android:textColor="@color/white"
                             android:singleLine="true"
+                            android:paddingTop="8dp"
                             android:ellipsize="marquee"
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true" />
@@ -178,7 +180,7 @@
                <LinearLayout
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
-                   android:padding="20dp"
+                   android:padding="40dp"
                    android:orientation="vertical"
                    android:background="@drawable/dialog_bg_round">
 
@@ -188,7 +190,15 @@
                        android:text="@string/description"
                        android:textColor="@color/teal_200"
                        android:textSize="20sp"
+
                        />
+
+                   <View
+                       android:id="@+id/view2"
+                       android:layout_width="match_parent"
+                       android:layout_height="1dp"
+                       android:background="@color/teal_700"
+                       android:layout_marginVertical="8dp"/>
 
                    <TextView
                        android:id="@+id/tvDes"
@@ -213,7 +223,7 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                    android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="10dp">
 

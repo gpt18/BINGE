@@ -75,7 +75,7 @@ public class MoreFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_more, container, false);
 
-        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.poison_dart_frog_color));
+//        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.poison_dart_frog_color));
 
 
         ImageView imgTelegram = view.findViewById(R.id.imgTelegram);

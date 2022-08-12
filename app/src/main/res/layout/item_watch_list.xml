@@ -110,7 +110,7 @@
     <View
         android:id="@+id/view"
         android:layout_width="wrap_content"
-        android:background="@color/tint_royal_maroon_color"
+        android:background="@color/teal_700"
         android:layout_height="1dp" />
 
 

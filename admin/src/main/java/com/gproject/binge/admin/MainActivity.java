@@ -88,12 +88,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        tvUsername.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getMovieCount(username);
-            }
-        });
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -129,6 +123,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 adapter = new adapter(itemList, getApplicationContext());
                 recyclerView.setAdapter(adapter);
+
+                int childCount = (int) snapshot.getChildrenCount();
+                String subTitle = username+" | "+"Total Items: "+ childCount;
+                tvUsername.setText(subTitle);
             }
 
             @Override
@@ -137,19 +135,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-//        FirebaseRecyclerOptions<model> options
-//                = new FirebaseRecyclerOptions.Builder<model>()
-//                .setQuery(databaseReference, model.class)
-//                .build();
-//
-//
-//        adapter = new adapter(options, getApplicationContext());
-//        recyclerView.setAdapter(adapter);
 
         adapter = new adapter(itemList, getApplicationContext());
         recyclerView.setAdapter(adapter);
 
-        getMovieCount(username);
+        getUserCount();
 
     }
 
@@ -157,14 +147,14 @@ public class MainActivity extends AppCompatActivity {
         List<model> filteredList = new ArrayList<>();
 
         for (model item : itemList){
-            if (item.getName().toLowerCase().contains(text.toLowerCase()) || item.getMessage().toLowerCase().contains(text.toLowerCase())){
+            if (item.getName().toLowerCase().contains(text.toLowerCase()) || item.getMessage().toLowerCase().contains(text.toLowerCase()) || item.getId().toLowerCase().contains(text.toLowerCase())){
                 filteredList.add(item);
             }
         }
 
 
             if (filteredList.isEmpty()){
-                Toast.makeText(this, "Not found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Not Match found", Toast.LENGTH_SHORT).show();
                 adapter = new adapter(itemList, getApplicationContext());
                 recyclerView.setAdapter(adapter);
             }
@@ -178,24 +168,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void getMovieCount(String username) {
+    private void getUserCount() {
 
         final int[] childCount = {0};
         final int[] onlineCount = {0};
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                int childCount = (int) dataSnapshot.getChildrenCount();
-                String subTitle = username+" | "+"Total Items: "+ childCount;
-                tvUsername.setText(subTitle);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
 
         DatabaseReference dbRefUser = FirebaseDatabase.getInstance().getReference("users");
 
@@ -211,18 +187,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 String online = "Online: "+ onlineCount[0];
                 tvUserOnline.setText(online);
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        dbRefUser.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                childCount[0] = (int) dataSnapshot.getChildrenCount()-1;
+                childCount[0] = (int) snapshot.getChildrenCount()-1;
 
                 String users = "Total Users: "+ childCount[0];
                 tvUser.setText(users);
@@ -235,24 +201,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
-
         });
 
 
 
-
-
-
     }
 
-
-
-
-    private void processSearch(String query) {
-
-
-    }
 }

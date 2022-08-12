@@ -15,6 +15,7 @@ import com.gproject.plus.binge.fragment.WatchListFragment;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -32,49 +33,56 @@ public class MainHomePage extends AppCompatActivity {
 
     BottomNavigationView navigationView;
 
+    final Fragment fragment1 = new HomeFragment();
+    final Fragment fragment2 = new SearchFragment();
+    final Fragment fragment3 = new WatchListFragment();
+    final Fragment fragment4 = new MoreFragment();
+    final FragmentManager fm = getSupportFragmentManager();
+    Fragment active = fragment1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_home_page);
-//        this line hide actionbar
-//        getSupportActionBar().hide();
-//        this line hide status bar
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         checkForUpdate();
+/*        this line hide actionbar
+        getSupportActionBar().hide();
+        this line hide status bar
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);*/
+
+        fm.beginTransaction().add(R.id.body_container, fragment4, "4").hide(fragment4).commit();
+        fm.beginTransaction().add(R.id.body_container, fragment3, "3").hide(fragment3).commit();
+        fm.beginTransaction().add(R.id.body_container, fragment2, "2").hide(fragment2).commit();
+        fm.beginTransaction().add(R.id.body_container, fragment1, "1").commit();
+
 
         navigationView = findViewById(R.id.bottom_navigation);
-        getSupportFragmentManager().beginTransaction().replace(R.id.body_container, new HomeFragment()).commit();
         navigationView.setSelectedItemId(R.id.nav_home);
+
 
 
       navigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
           @Override
           public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-              Fragment fragment = null;
               switch (item.getItemId()){
                   case R.id.nav_home:
-                      fragment = new HomeFragment();
-                      getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
-                      navigationView.setBackgroundResource(R.drawable.bg_round_nav_1);
-                      break;
+                     fm.beginTransaction().hide(active).show(fragment1).commit();
+                     active = fragment1;
+                     break;
 
                   case R.id.nav_search:
-                      fragment = new SearchFragment();
-                      getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
-                      navigationView.setBackgroundResource(R.drawable.bg_round_nav_2);
+                      fm.beginTransaction().hide(active).show(fragment2).commit();
+                      active = fragment2;
                       break;
 
                   case R.id.nav_watchlist:
-                      fragment = new WatchListFragment();
-                      getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
-                      navigationView.setBackgroundResource(R.drawable.bg_round_nav_3);
+                      fm.beginTransaction().hide(active).show(fragment3).commit();
+                      active = fragment3;
                       break;
 
                   case R.id.nav_more:
-                      fragment = new MoreFragment();
-                      getSupportFragmentManager().beginTransaction().replace(R.id.body_container, fragment).commit();
-                      navigationView.setBackgroundResource(R.drawable.bg_round_nav_4);
+                      fm.beginTransaction().hide(active).show(fragment4).commit();
+                      active = fragment4;
                       break;
 
                   default:

@@ -64,9 +64,10 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.ultramarine_color));
-
+        //getting item count in the arraylist
         getTotalItems();
+
+        //hooker for all the view
         recyclerView1 = view.findViewById(R.id.rcHomeFragment);
         tvTotal = view.findViewById(R.id.tvTotal);
         bottom_navigation = view.findViewById(R.id.bottom_navigation);
@@ -75,40 +76,40 @@ public class HomeFragment extends Fragment {
         shimmer = view.findViewById(R.id.shimmer);
         tvFailed = view.findViewById(R.id.tvFailed);
 
+        //set loading visibility
         startupComponent();
 
-
+        //init arraylist
         itemList = new ArrayList<>();
 
+        //setting layout manager to the recyclerview
         GridLayoutManager gridLayout = new GridLayoutManager(getContext(),3);   //for grid layout
         recyclerView1.setLayoutManager(gridLayout);
 
-//        adapterMovies = new AdapterMovies(itemList, getContext());
-//        recyclerView1.setAdapter(adapterMovies);
+
+        //recycler view scroll event
+/*
+        recyclerView1.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0 ) {
+                    toolbar.setSubtitle("Scroll Up");
+
+                } else if (dy < 0 && tvTotal.isShown()) {
+                    toolbar.setSubtitle("Scroll down");
+
+                }
 
 
-//
-//        recyclerView1.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                if (dy > 0 ) {
-//                    toolbar.setSubtitle("Scroll Up");
-//
-//                } else if (dy < 0 && tvTotal.isShown()) {
-//                    toolbar.setSubtitle("Scroll down");
-//
-//                }
-//
-//
-//            }
-//
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//
-//                super.onScrollStateChanged(recyclerView, newState);
-////                toolbar.setSubtitle("state change");
-//            }
-//        });
+            }
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+
+                super.onScrollStateChanged(recyclerView, newState);
+//                toolbar.setSubtitle("state change");
+            }
+        });*/
 
 
 
@@ -122,67 +123,6 @@ public class HomeFragment extends Fragment {
     }
 
     private void getTotalItems() {
-
-/*
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int childCount = (int) dataSnapshot.getChildrenCount();
-                String countText =  "Total: "+ childCount;
-                tvTotal.setText(countText);
-                tvFailed.setVisibility(View.GONE);
-                shimmer.setVisibility(View.GONE);
-                recyclerView1.setVisibility(View.VISIBLE);
-
-                itemList.clear();
-                for (DataSnapshot data : dataSnapshot.getChildren()){
-                    model item = data.getValue(model.class);
-                    itemList.add(0, item);
-
-                }
-                adapterMovies = new AdapterMovies(itemList, getContext());
-                recyclerView1.setAdapter(adapterMovies);
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                tvFailed.setVisibility(View.VISIBLE);
-            }
-        });
-*/
-
-
-
-/*
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int childCount = (int) snapshot.getChildrenCount();
-                String countText =  "Total: "+ childCount;
-                tvTotal.setText(countText);
-                tvFailed.setVisibility(View.GONE);
-                shimmer.setVisibility(View.GONE);
-                recyclerView1.setVisibility(View.VISIBLE);
-
-                for (DataSnapshot data : snapshot.getChildren()){
-                    model item = data.getValue(model.class);
-//                    item.setId(data.getKey());
-                    itemList.add(0, item);
-                }
-                adapterMovies = new AdapterMovies(itemList, getContext());
-                recyclerView1.setAdapter(adapterMovies);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-*/
-
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override

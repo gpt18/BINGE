@@ -20,6 +20,10 @@ import android.widget.TextView;
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.RequestConfiguration;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -32,6 +36,7 @@ import com.gproject.plus.binge.main.AdapterMovies;
 import com.gproject.plus.binge.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -54,6 +59,8 @@ public class SearchFragment extends Fragment {
 
     private List<model> itemList;
 
+    AdView adView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -61,7 +68,7 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-       getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.teal_blue_color));
+//       getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.teal_blue_color));
 
 
         imageView = view.findViewById(R.id.imageView4);
@@ -69,11 +76,14 @@ public class SearchFragment extends Fragment {
         not_found = view.findViewById(R.id.not_found);
         tvInfo = view.findViewById(R.id.tvInfo);
         searchView = view.findViewById(R.id.searchView);
-        searchView.requestFocus();
+        adView = view.findViewById(R.id.adView);
+
 
         //init
         itemList = new ArrayList<>();
 
+        //banner Ads
+        bannerAds();
 
 
 
@@ -83,20 +93,6 @@ public class SearchFragment extends Fragment {
 
         databaseReference = FirebaseDatabase.getInstance().getReference("movies");
 
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot data : snapshot.getChildren()) {
-//                    model item = data.getValue(model.class);
-//                    itemList.add(item);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -185,6 +181,7 @@ public class SearchFragment extends Fragment {
             recyclerView.setVisibility(View.GONE);
             imageView.setVisibility(View.VISIBLE);
             not_found.setVisibility(View.VISIBLE);
+            adView.setVisibility(View.VISIBLE);
             not_found.setText("Ready to Search... 🔍");
 
         }else{
@@ -192,12 +189,14 @@ public class SearchFragment extends Fragment {
                 recyclerView.setVisibility(View.GONE);
                 imageView.setVisibility(View.VISIBLE);
                 not_found.setVisibility(View.VISIBLE);
+                adView.setVisibility(View.VISIBLE);
                 not_found.setText(notFound);
             }
             else {
                 imageView.setVisibility(View.GONE);
                 not_found.setVisibility(View.GONE);
                 tvInfo.setVisibility(View.GONE);
+                adView.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
                 recyclerView.setAdapter(SearchAdapter);
                 SearchAdapter.setFilteredList(filteredList);
@@ -207,4 +206,16 @@ public class SearchFragment extends Fragment {
 
 
     }
+
+    private void bannerAds() {
+        MobileAds.initialize(getContext(), initializationStatus -> {});
+
+        MobileAds.setRequestConfiguration(
+                new RequestConfiguration.Builder().setTestDeviceIds(Collections.singletonList("ABIDE012345"))
+                        .build());
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
+    }
+
 }

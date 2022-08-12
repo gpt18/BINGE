@@ -34,8 +34,6 @@ public class WatchListFragment extends Fragment {
     }
 
 
-
-
     ImageView imgHeader;
     RecyclerView recView;
     TextView tvNoItem;
@@ -46,7 +44,7 @@ public class WatchListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_watch_list, container, false);
 
-        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.royal_maroon_color));
+//        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(getActivity(), R.color.royal_maroon_color));
 
         imgHeader = view.findViewById(R.id.imgHeader);
         tvNoItem = view.findViewById(R.id.tvNoItem);

@@ -7,19 +7,19 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.gproject.plus.binge.MainActivity;
 import com.gproject.plus.binge.R;
 
 /**
@@ -85,6 +85,8 @@ public class MoreFragment extends Fragment {
         LinearLayout request = view.findViewById(R.id.request);
         LinearLayout share = view.findViewById(R.id.share);
 
+
+
         Glide.with(MoreFragment.this).load("https://i.ibb.co/YPK0gHb/bing-admin.jpg").into(imgRequest);
         Glide.with(MoreFragment.this)
                 .load("https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Telegram_2019_Logo.svg/182px-Telegram_2019_Logo.svg.png")
@@ -126,6 +128,25 @@ public class MoreFragment extends Fragment {
                 intent.putExtra(Intent.EXTRA_SUBJECT,sub);
                 intent.putExtra(Intent.EXTRA_TEXT,body);
                 startActivity(Intent.createChooser(intent, "Share Using"));
+            }
+        });
+
+
+        boolean adsIn = sp.getBoolean("adsIn", false);
+
+        final CheckBox checkBox = (CheckBox) view.findViewById(R.id.checkBox);
+        final SharedPreferences.Editor editor = sp.edit();
+        if(sp.contains("adsIn") && adsIn) {
+            checkBox.setChecked(true);
+        }else {
+            checkBox.setChecked(false);
+
+        }
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                editor.putBoolean("adsIn", checkBox.isChecked());
+                editor.apply();
             }
         });
 

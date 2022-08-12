@@ -52,29 +52,37 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.myViewHold
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         holder.tvMovieName.setText(itemList.get(position).getName());
 
-        if (itemList.get(position).getImg()==null){
+       /* if (itemList.get(position).getImg()==null){
             holder.imgMovie.setImageResource(R.mipmap.ic_logo_round);
 
         }else {
             Glide.with(holder.imgMovie.getContext()).load(itemList.get(position).getImg()).into(holder.imgMovie);
-        }
+        }*/
 
-        /*holder.PbPosterLoading.setVisibility(View.VISIBLE);
-        Picasso.with(holder.imgMovie.getContext()).load(itemList.get(position).getImg())
+
+        holder.PbPosterLoading.setVisibility(View.VISIBLE);
+        holder.imgMovie.setVisibility(View.VISIBLE);
+        final ProgressBar progressView = holder.PbPosterLoading;
+        Picasso.get()
+                .load(itemList.get(position).getImg())
                 .into(holder.imgMovie, new Callback() {
                     @Override
                     public void onSuccess() {
-                        holder.PbPosterLoading.setVisibility(View.GONE);
-
+                        progressView.setVisibility(View.GONE);
                     }
 
                     @Override
-                    public void onError() {
-                        holder.PbPosterLoading.setVisibility(View.VISIBLE);
+                    public void onError(Exception e) {
+                        if (itemList.get(position).getImg()==null){
+                            holder.imgMovie.setImageResource(R.drawable.hd_logo);
+
+                        }else {
+                            progressView.setVisibility(View.GONE);
+                            Glide.with(holder.imgMovie.getContext()).load(itemList.get(position).getImg()).into(holder.imgMovie);
+                        }
                     }
-                })
-        ;
-        */
+
+                });
 
 
         holder.imgMovie.setOnClickListener(new View.OnClickListener() {

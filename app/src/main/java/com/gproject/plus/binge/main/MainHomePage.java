@@ -11,6 +11,8 @@ import com.gproject.plus.binge.fragment.HomeFragment;
 import com.gproject.plus.binge.fragment.MoreFragment;
 import com.gproject.plus.binge.fragment.SearchFragment;
 import com.gproject.plus.binge.fragment.WatchListFragment;
+import com.gproject.plus.binge.room.mAdapter;
+import com.gproject.plus.binge.room.mEntity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,10 +26,14 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.util.List;
 
 public class MainHomePage extends AppCompatActivity {
 
@@ -39,6 +45,9 @@ public class MainHomePage extends AppCompatActivity {
     final Fragment fragment4 = new MoreFragment();
     final FragmentManager fm = getSupportFragmentManager();
     Fragment active = fragment1;
+
+    boolean doubleBackToExitPressedOnce = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +123,25 @@ public class MainHomePage extends AppCompatActivity {
         super.onStop();
         userCurrentStatus("0");
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                doubleBackToExitPressedOnce=false;
+            }
+        }, 2000);
     }
 
     //****************************Checking In-AppUpdate using Firebase************************//

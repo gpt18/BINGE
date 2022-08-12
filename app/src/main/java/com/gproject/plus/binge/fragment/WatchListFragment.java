@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,8 @@ public class WatchListFragment extends Fragment {
     RecyclerView recView;
     TextView tvNoItem;
 
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,10 +51,19 @@ public class WatchListFragment extends Fragment {
 
         imgHeader = view.findViewById(R.id.imgHeader);
         tvNoItem = view.findViewById(R.id.tvNoItem);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
 
         Glide.with(this).load("https://bit.ly/3NMVr8q").into(imgHeader);
 
         getRoomData(view);
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeRefreshLayout.setRefreshing(false);
+                getRoomData(view);
+            }
+        });
 
         return view;
     }

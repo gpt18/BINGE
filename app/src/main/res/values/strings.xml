@@ -66,4 +66,5 @@
     <string name="total_loading">Total: ⏳</string>
     <string name="premium">Premium</string>
     <string name="no_item_in_watchlist">No item in Watchlist</string>
+    <string name="turn_off_interstitial_ads">Turn off Interstitial Ads in Post Details</string>
 </resources>

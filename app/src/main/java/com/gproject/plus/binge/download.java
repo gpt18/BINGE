@@ -11,9 +11,11 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,7 +62,7 @@ public class download extends YouTubeBaseActivity  {
     private InterstitialAd mInterstitialAd;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("movies");
 
-
+    Boolean adsIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +88,7 @@ public class download extends YouTubeBaseActivity  {
         //setup SP
         SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
         String APP_LINK = sp.getString("app_link", "");
+        adsIn = sp.getBoolean("adsIn", false);
 
         //Setup Room Db
         mDatabase db = Room.databaseBuilder(getApplicationContext(),
@@ -433,7 +436,9 @@ public class download extends YouTubeBaseActivity  {
     public void onBackPressed() {
         super.onBackPressed();
 
-        showInterstitial();
+        if(!adsIn){
+            showInterstitial();
+        }
     }
 
 

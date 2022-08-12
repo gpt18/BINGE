@@ -24,7 +24,6 @@
         app:itemPaddingBottom="4dp"
         app:labelVisibilityMode="selected"
         android:id="@+id/bottom_navigation"
-
         app:itemIconTint="@drawable/nav_item_selector"
         app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
     />

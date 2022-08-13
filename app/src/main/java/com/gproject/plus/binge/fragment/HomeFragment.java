@@ -5,17 +5,19 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.ChildEventListener;
@@ -28,8 +30,11 @@ import com.gproject.plus.binge.R;
 import com.gproject.plus.binge.main.AdapterMovies;
 import com.gproject.plus.binge.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class HomeFragment extends Fragment {
@@ -57,6 +62,9 @@ public class HomeFragment extends Fragment {
 
     private List<model> itemList;
 
+    TextView msgTitle;
+    ImageView logo;
+    LottieAnimationView inDayAnim;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -75,6 +83,9 @@ public class HomeFragment extends Fragment {
         toolbar = view.findViewById(R.id.homeToolbar);
         shimmer = view.findViewById(R.id.shimmer);
         tvFailed = view.findViewById(R.id.tvFailed);
+        msgTitle = view.findViewById(R.id.myTitle);
+        logo = view.findViewById(R.id.logo);
+        inDayAnim = view.findViewById(R.id.inDayAnim);
 
         //set loading visibility
         startupComponent();
@@ -111,9 +122,25 @@ public class HomeFragment extends Fragment {
             }
         });*/
 
+        eventCreator();
 
 
         return view;
+    }
+
+    private void eventCreator() {
+        msgTitle.setSelected(true);
+        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        msgTitle.setText(date);
+        if (date.equals("2022-08-15")){
+            logo.setVisibility(View.GONE);
+            inDayAnim.setVisibility(View.VISIBLE);
+            msgTitle.setText("Happy Independence Day");
+        }else{
+            logo.setVisibility(View.VISIBLE);
+            inDayAnim.setVisibility(View.GONE);
+            msgTitle.setText("BINGE+ 🍿📽️🎬");
+        }
     }
 
     private void startupComponent() {

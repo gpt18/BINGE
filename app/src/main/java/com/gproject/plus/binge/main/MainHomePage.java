@@ -11,8 +11,7 @@ import com.gproject.plus.binge.fragment.HomeFragment;
 import com.gproject.plus.binge.fragment.MoreFragment;
 import com.gproject.plus.binge.fragment.SearchFragment;
 import com.gproject.plus.binge.fragment.WatchListFragment;
-import com.gproject.plus.binge.room.mAdapter;
-import com.gproject.plus.binge.room.mEntity;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -33,7 +32,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import java.util.List;
 
 public class MainHomePage extends AppCompatActivity {
 
@@ -106,6 +104,10 @@ public class MainHomePage extends AppCompatActivity {
     private void userCurrentStatus(String state){
 
         String android_id = Settings.Secure.getString(this.getContentResolver(), Settings.Secure.ANDROID_ID);
+        SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("deviceId", android_id);
+        editor.apply();
 
         FirebaseDatabase.getInstance().getReference().child("users").child(android_id).setValue(state);
 

@@ -11,11 +11,9 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,9 +43,7 @@ import com.gproject.plus.binge.room.mEntity;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
 
 public class download extends YouTubeBaseActivity  {
@@ -187,7 +183,7 @@ public class download extends YouTubeBaseActivity  {
 
         });
 
-        c_downloadBtn.setOnClickListener(v -> {
+       /* c_downloadBtn.setOnClickListener(v -> {
             try {
 
                 Intent intentWeb = new Intent(download.this, webPlayer.class);
@@ -198,7 +194,7 @@ public class download extends YouTubeBaseActivity  {
             catch (Exception e) {
                 Toast.makeText(getApplicationContext(), "Link load error", Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
 
         c_shareBtn.setOnClickListener(v -> {
         Intent intent = new Intent(Intent.ACTION_SEND);

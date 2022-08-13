@@ -24,11 +24,6 @@
             android:screenOrientation="portrait"
             android:exported="false" />
         <activity
-            android:name=".webPlayer"
-            android:configChanges="orientation|screenSize"
-            android:exported="true"
-            android:screenOrientation="sensor" />
-        <activity
             android:name=".download"
             android:exported="false" />
         <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->

@@ -2,8 +2,7 @@ package com.gproject.plus.binge.fragment;
 
 import android.os.Bundle;
 
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

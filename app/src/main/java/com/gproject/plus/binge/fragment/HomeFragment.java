@@ -9,12 +9,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -130,17 +132,30 @@ public class HomeFragment extends Fragment {
 
     private void eventCreator() {
         msgTitle.setSelected(true);
+
         String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        msgTitle.setText(date);
-        if (date.equals("2022-08-15")){
-            logo.setVisibility(View.GONE);
-            inDayAnim.setVisibility(View.VISIBLE);
-            msgTitle.setText("Happy Independence Day");
+        if ( date.equals("2022-08-15") ||  date.equals("2022-08-16")){
+
+            new CountDownTimer(5000, 1000) {
+                public void onTick(long millisUntilFinished) {
+                    // Used for formatting digit to be in 2 digits only
+//                    msgTitle.setText("Thank you for downloading BINGE+ App");
+                }
+                // When the task is over it will print 00:00:00 there
+                public void onFinish() {
+                    logo.setVisibility(View.GONE);
+                    inDayAnim.setVisibility(View.VISIBLE);
+                    msgTitle.setText("Happy Independence Day");
+                }
+            }.start();
+
+
         }else{
             logo.setVisibility(View.VISIBLE);
             inDayAnim.setVisibility(View.GONE);
             msgTitle.setText("BINGE+ 🍿📽️🎬");
         }
+
     }
 
     private void startupComponent() {

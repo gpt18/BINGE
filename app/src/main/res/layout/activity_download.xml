@@ -158,8 +158,9 @@
                             android:drawablePadding="8dp"
                             android:text="@string/_0_downloads"
                             android:textColor="@color/white"
-                            android:singleLine="true"
+
                             android:paddingTop="8dp"
+                            android:singleLine="true"
                             android:ellipsize="marquee"
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true" />

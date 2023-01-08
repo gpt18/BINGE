@@ -27,7 +27,9 @@ import com.gproject.plus.binge.model;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.myViewHolder> {
     Context context;
@@ -51,6 +53,8 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.myViewHold
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, int position) {
         holder.tvMovieName.setText(itemList.get(position).getName());
+        holder.tvShowView.setText((itemList.get(position).getViews()));
+
 
        /* if (itemList.get(position).getImg()==null){
             holder.imgMovie.setImageResource(R.mipmap.ic_logo_round);
@@ -99,6 +103,8 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.myViewHold
                 i.putExtra("vid",itemList.get(position).getVid());
                 i.putExtra("admin",itemList.get(position).getAdmin());
                 i.putExtra("id", itemList.get(position).getId());
+                i.putExtra("zip", itemList.get(position).getZip());
+
                 v.getContext().startActivity(i);
 
 
@@ -125,7 +131,7 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.myViewHold
 
     public class myViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvMovieName;
+        TextView tvMovieName, tvShowView, tvShowZip;
         ImageView imgMovie;
         ProgressBar PbPosterLoading;
 
@@ -135,6 +141,8 @@ public class AdapterMovies extends RecyclerView.Adapter<AdapterMovies.myViewHold
             imgMovie = itemView.findViewById(R.id.imgMovie);
             tvMovieName = itemView.findViewById(R.id.tvMovieName);
             PbPosterLoading = itemView.findViewById(R.id.PbPosterLoading);
+            tvShowView = itemView.findViewById(R.id.tvShowView);
+            tvShowZip = itemView.findViewById(R.id.tvShowZip);
         }
     }
 }

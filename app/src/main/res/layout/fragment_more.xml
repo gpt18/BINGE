@@ -53,7 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="200dp">
 
 
                 <TextView
@@ -63,7 +64,7 @@
                     android:paddingLeft="16dp"
                     android:paddingRight="16dp"
                     android:paddingTop="16dp"
-                    android:text="BINGE+ App is Created with 💖 by G. Prajapati."
+                    android:text="@string/binge_app_is_created_with_by_g_prajapati"
                     android:textSize="18sp"
                     android:textColor="#FFFFFF" />
 
@@ -83,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:text="Scroll Down to see more options"
+                    android:text="@string/scroll_down_to_see_more_options"
                     android:textColor="@color/teal_200"
                     android:textSize="14sp" />
 
@@ -114,7 +115,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="Share App"
+                            android:text="@string/share_app"
                             android:textColor="@color/teal_200" />
                     </LinearLayout>
 
@@ -156,7 +157,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
-                            android:text="Telegram"
+                            android:text="@string/telegram"
                             android:textColor="@color/teal_200" />
                     </LinearLayout>
 
@@ -217,7 +218,7 @@
                     android:id="@+id/version"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Version"
+                    android:text="@string/version"
                     android:textAlignment="center"
                     android:textColor="@color/teal_200" />
 

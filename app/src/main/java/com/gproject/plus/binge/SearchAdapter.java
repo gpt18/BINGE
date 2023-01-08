@@ -46,6 +46,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
+import java.util.Objects;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewHolder> {
 
@@ -70,6 +71,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewHold
 
         holder.tvMovieName.setText(itemList.get(position).getName());
 
+        holder.tvShowView.setText((itemList.get(position).getViews()));
+
+        if(Objects.equals(itemList.get(position).getZip(), "1")){
+            holder.tvShowZip.setText("ZIP");
+        }
+
         if (itemList.get(position).getImg()==null){
             holder.imgMovie.setImageResource(R.mipmap.ic_logo_round);
 
@@ -93,6 +100,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewHold
                 i.putExtra("vid",itemList.get(position).getVid());
                 i.putExtra("admin",itemList.get(position).getAdmin());
                 i.putExtra("id", itemList.get(position).getId());
+                i.putExtra("zip", itemList.get(position).getZip());
+
                 v.getContext().startActivity(i);
 
 
@@ -132,7 +141,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewHold
 
     public class myViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvAdmin,tvMovieName;
+        TextView tvAdmin,tvMovieName, tvShowView, tvShowZip;
         ImageView  imgMovie;
         CardView c_movie;
 
@@ -143,6 +152,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.myViewHold
             tvAdmin = itemView.findViewById(R.id.tvAdmin);
             tvMovieName = itemView.findViewById(R.id.tvMovieName);
             c_movie = itemView.findViewById(R.id.c_movie);
+            tvShowView = itemView.findViewById(R.id.tvShowView);
+            tvShowZip = itemView.findViewById(R.id.tvShowZip);
         }
     }
 

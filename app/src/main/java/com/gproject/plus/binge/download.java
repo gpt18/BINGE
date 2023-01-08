@@ -44,6 +44,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 
 public class download extends YouTubeBaseActivity  {
@@ -80,6 +81,7 @@ public class download extends YouTubeBaseActivity  {
         String vid = i.getStringExtra("vid");
         String admin = i.getStringExtra("admin");
         String id = i.getStringExtra("id");
+        String zip = i.getStringExtra("zip");
 
         //setup SP
         SharedPreferences sp = getSharedPreferences("key", MODE_PRIVATE);
@@ -112,7 +114,24 @@ public class download extends YouTubeBaseActivity  {
 
         tvMovieName.setText(name);
         tvDate.setText(date);
-        tvDes.setText(des);
+
+        String zipDes = des +
+                "\n\n" +
+                "How to watch web series having rar/zip files:\n" +
+                "\n" +
+                "1. Download the zip/rar file on your device.\n" +
+                "2. Download Zarchiver app from the Play Store.\n" +
+                "3. Open the folder where the zip/rar was downloaded, through the Zarchiver app.\n" +
+                "4. Hold on the zip/rar file, select extract here.\n" +
+                "5. Done.";
+
+
+        if(Objects.equals(zip, "1")){
+            tvDes.setText(zipDes);
+        }else{
+            tvDes.setText(des);
+        }
+
         tvAdmin.setText(admin);
         Glide.with(this).load(img).into(imgMovie);
         views(id);

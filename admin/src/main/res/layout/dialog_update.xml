@@ -55,7 +55,7 @@
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackground"
-            android:src="@drawable/ic_baseline_more_vert_24"/>
+            android:src="@drawable/admob_close_button_white_circle_black_cross"/>
 
 
     </LinearLayout>
@@ -96,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/itMessage"
-                    android:hint="Your Message"
+                    android:hint="Description"
                     android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -116,6 +116,22 @@
                     android:textColor="@color/white" />
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/zip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/white"
+                    android:text="ZIP / RAR File" />
+
+            </LinearLayout>
 
 
             <com.google.android.material.textfield.TextInputLayout

@@ -1,12 +1,12 @@
 package com.gproject.binge.admin;
 
 public class model {
-    String admin, img, link, message, name, official, date, button, vid, id, views;
+    String admin, img, link, message, name, official, date, button, vid, id, views, zip;
 
     public model() {
     }
 
-    public model(String admin, String img, String link, String message, String name, String official, String date, String views, String id) {
+    public model(String admin, String img, String link, String message, String name, String official, String date, String views, String id, String zip) {
         this.admin = admin;
         this.img = img;
         this.link = link;
@@ -16,6 +16,15 @@ public class model {
         this.date = date;
         this.views = views;
         this.id = id;
+        this.zip = zip;
+    }
+
+    public String getZip() {
+        return zip;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
     }
 
     public String getId() {

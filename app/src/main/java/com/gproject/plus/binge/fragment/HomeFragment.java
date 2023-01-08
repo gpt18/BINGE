@@ -20,6 +20,13 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.ChildEventListener;
@@ -31,6 +38,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.gproject.plus.binge.R;
 import com.gproject.plus.binge.main.AdapterMovies;
 import com.gproject.plus.binge.model;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -89,6 +99,8 @@ public class HomeFragment extends Fragment {
         logo = view.findViewById(R.id.logo);
         inDayAnim = view.findViewById(R.id.inDayAnim);
 
+        msgTitle.setSelected(true);
+
         //set loading visibility
         startupComponent();
 
@@ -124,38 +136,74 @@ public class HomeFragment extends Fragment {
             }
         });*/
 
-        eventCreator();
+//        eventCreator();
+
+        RequestQueue requestQueue;
+        requestQueue = Volley.newRequestQueue(getContext());
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
+                "https://raw.githubusercontent.com/gpt18/lecture0/master/res.json", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    msgTitle.setText(response.getString("msg"));
+                    Glide.with(HomeFragment.this).load(response.getString("logo")).into(logo);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("myapp", "Something went wrong");
+
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
 
 
         return view;
     }
 
-    private void eventCreator() {
-        msgTitle.setSelected(true);
+//    private void eventCreator() {
+//        msgTitle.setSelected(true);
+//
+//        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+//        if(date.equals("2022-08-15")){
+//            String msg = "Happy Independence Day";
+//            counterMessage(msg);
+//        }
+//        else if ( date.equals("2022-08-14") ||  date.equals("2022-08-16")){
+//
+//            String msg = "🎉 Celebrating 75th Independence Day";
+//            counterMessage(msg);
+//
+//        }else{
+//            logo.setVisibility(View.VISIBLE);
+//            inDayAnim.setVisibility(View.GONE);
+//            msgTitle.setText("BINGE+ 🍿📽️🎬");
+//        }
+//
+//    }
 
-        String date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
-        if ( date.equals("2022-08-15") ||  date.equals("2022-08-16")){
-
-            new CountDownTimer(5000, 1000) {
-                public void onTick(long millisUntilFinished) {
-                    // Used for formatting digit to be in 2 digits only
+    private void counterMessage(String text) {
+        new CountDownTimer(5000, 1000) {
+            public void onTick(long millisUntilFinished) {
+                // Used for formatting digit to be in 2 digits only
 //                    msgTitle.setText("Thank you for downloading BINGE+ App");
-                }
-                // When the task is over it will print 00:00:00 there
-                public void onFinish() {
-                    logo.setVisibility(View.GONE);
-                    inDayAnim.setVisibility(View.VISIBLE);
-                    msgTitle.setText("Happy Independence Day");
-                }
-            }.start();
-
-
-        }else{
-            logo.setVisibility(View.VISIBLE);
-            inDayAnim.setVisibility(View.GONE);
-            msgTitle.setText("BINGE+ 🍿📽️🎬");
-        }
-
+            }
+            // When the task is over it will print 00:00:00 there
+            public void onFinish() {
+                logo.setVisibility(View.GONE);
+                inDayAnim.setVisibility(View.VISIBLE);
+                msgTitle.setText(text);
+            }
+        }.start();
     }
 
     private void startupComponent() {

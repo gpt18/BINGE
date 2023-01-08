@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 public class adapter extends RecyclerView.Adapter<adapter.myViewHolder> {
     Context context;
@@ -69,6 +71,10 @@ public class adapter extends RecyclerView.Adapter<adapter.myViewHolder> {
         holder.tvLink.setText(itemList.get(position).getLink());
         holder.tvVid.setText(itemList.get(position).getVid());
         holder.tvViews.setText(itemList.get(position).getViews());
+
+        if(Objects.equals(itemList.get(position).getZip(), "1")){
+            holder.tvZip.setText("True");
+        }
 
 
         if (itemList.get(position).getImg()==null){
@@ -98,6 +104,7 @@ public class adapter extends RecyclerView.Adapter<adapter.myViewHolder> {
                 Button submit = myView.findViewById(R.id.addSubmit);
                 Button delete = myView.findViewById(R.id.delete);
                 ImageView more = myView.findViewById(R.id.more);
+                CheckBox zip = myView.findViewById(R.id.zip);
 
                 itMovieName.setText(itemList.get(position).getName());
                 itMessage.setText(itemList.get(position).getMessage());
@@ -106,17 +113,28 @@ public class adapter extends RecyclerView.Adapter<adapter.myViewHolder> {
                 itVid.setText(itemList.get(position).getVid());
                 itemId.setText(itemList.get(position).getId());
 
+                if(Objects.equals(itemList.get(position).getZip(), "1")){
+                    zip.setChecked(true);
+                }
+
                 dialogPlus.show();
 
                 submit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
+                        String Zip = "0";
+                        if(zip.isChecked()){
+                            Zip = "1";
+                        }
+
                         Map<String,Object> map = new HashMap<>();
                         map.put("name",itMovieName.getText().toString());
                         map.put("message",itMessage.getText().toString());
                         map.put("link",itMovieLink.getText().toString());
                         map.put("img", itImg.getText().toString());
                         map.put("vid", itVid.getText().toString());
+                        map.put("zip", Zip);
 
                         String timeStamp = new SimpleDateFormat("dd MMM, yyyy • hh:mm a", Locale.getDefault()).format(new Date());
                         map.put("date", timeStamp);
@@ -175,15 +193,17 @@ public class adapter extends RecyclerView.Adapter<adapter.myViewHolder> {
                     @Override
                     public void onClick(View v) {
 
-                        AlertDialog alertDialog = new AlertDialog.Builder(myView.getContext())
-                                .setTitle("Developer")
-                                .setMessage("BINGE+ App is Created by G. Prajapati.")
-                                .setPositiveButton("Thanks", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        Toast.makeText(myView.getContext(), "Your Welcome", Toast.LENGTH_SHORT).show();
-                                    }
-                                })
-                                .show();
+                        dialogPlus.dismiss();
+
+//**                        AlertDialog alertDialog = new AlertDialog.Builder(myView.getContext())
+//                                .setTitle("Developer")
+//                                .setMessage("BINGE+ App is Created by G. Prajapati.")
+//                                .setPositiveButton("Thanks", new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int which) {
+//                                        Toast.makeText(myView.getContext(), "Your Welcome", Toast.LENGTH_SHORT).show();
+//                                    }
+//                                })
+//                                .show();
 
 
                     }
@@ -255,8 +275,9 @@ public class adapter extends RecyclerView.Adapter<adapter.myViewHolder> {
 
     public class myViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvAdmin,tvMovieName, tvMessage, tvDate, tvLink, tvVid, tvViews;
+        TextView tvAdmin,tvMovieName, tvMessage, tvDate, tvLink, tvVid, tvViews, tvZip;
         ImageView imgMovie, imgShareBtn, imgEditBtn;
+
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -271,6 +292,7 @@ public class adapter extends RecyclerView.Adapter<adapter.myViewHolder> {
             tvLink = itemView.findViewById(R.id.tvLink);
             tvVid = itemView.findViewById(R.id.tvVid);
             tvViews = itemView.findViewById(R.id.tvViews);
+            tvZip = itemView.findViewById(R.id.tvZip);
         }
     }
 }

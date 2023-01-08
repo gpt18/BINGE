@@ -188,6 +188,30 @@
                         android:text="Oh! Description of the Post not available."
                         android:textColor="@color/white" />
 
+               <LinearLayout
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:orientation="horizontal">
+
+                   <TextView
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:paddingHorizontal="8dp"
+                       android:textIsSelectable="true"
+                       android:text="Zip/Rar:"
+                       android:textColor="@color/teal_200" />
+
+                   <TextView
+                       android:id="@+id/tvZip"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:padding="8dp"
+                       android:textIsSelectable="true"
+                       android:text="False"
+                       android:textColor="@color/white" />
+
+               </LinearLayout>
+
                 <TextView
                     android:id="@+id/tvLink"
                     android:layout_width="wrap_content"

@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ public class add extends AppCompatActivity {
     ImageView imgBack;
     TextInputEditText itMovieName, itMessage, itMovieLink, itImg, itVid;
     Button btnPublish;
+    CheckBox zip;
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference().child("movies");
 
     @Override
@@ -66,6 +68,7 @@ public class add extends AppCompatActivity {
         btnPublish = findViewById(R.id.btnPublish);
         itImg = findViewById(R.id.itImg);
         itVid = findViewById(R.id.itVid);
+        zip = findViewById(R.id.zip);
 
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +93,10 @@ public class add extends AppCompatActivity {
     }
 
     private void insert() {
+        String Zip = "0";
+        if(zip.isChecked()){
+            Zip = "1";
+        }
 
         String key = dbRef.push().getKey();
 
@@ -101,6 +108,7 @@ public class add extends AppCompatActivity {
         map.put("img", itImg.getText().toString());
         map.put("vid", itVid.getText().toString());
         map.put("views", "0");
+        map.put("zip",Zip);
 
         String timeStamp = new SimpleDateFormat("dd MMM, yyyy • hh:mm a", Locale.getDefault()).format(new Date());
         map.put("date", timeStamp);
